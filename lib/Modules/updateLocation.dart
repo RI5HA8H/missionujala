@@ -12,14 +12,18 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:missionujala/Modules/allUIDScreen.dart';
 import 'package:missionujala/Resource/Colors/app_colors.dart';
+import 'package:missionujala/Resource/Utiles/appBar.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Resource/StringLocalization/allAPI.dart';
 import '../Resource/StringLocalization/baseUrl.dart';
 import '../Resource/StringLocalization/titles.dart';
+import '../Resource/Utiles/drawer.dart';
 import '../Resource/Utiles/normalButton.dart';
 import '../Resource/Utiles/toasts.dart';
+import '../generated/assets.dart';
+import '../userProfile.dart';
 import '../venderLoginScreen.dart';
 
 
@@ -84,6 +88,10 @@ class _updateLocationState extends State<updateLocation> {
       latController.text='$lat';
       longController.text='$long';
       setState(() {});
+    }else{
+      latController.text='${await getCurrentLatitude()}';
+      longController.text='${await getCurrentLongitude()}';
+      setState(() {});
     }
   }
 
@@ -106,17 +114,53 @@ class _updateLocationState extends State<updateLocation> {
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
-          leadingWidth: 30,
-          title: Text('${allTitle.updateLocationModule}',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.white),),
+          leadingWidth: 50,
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: Image.asset(Assets.iconsMenuIcon,color: appcolors.primaryColor,width: 50,height: 50,),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              );
+            },
+          ),
+          title: Image.asset(Assets.imagesMuAppbarLogo,height: 50,),
+          actions: [
+            IconButton(
+              icon: Image.asset(Assets.imagesDepartmentLogo,width: 50,height: 50,),
+              onPressed: () {
+                //Navigator.of(context).push(MaterialPageRoute(builder: (context) => userProfile()));
+              },
+            ),
+            IconButton(
+              icon: Image.asset(Assets.imagesProfileLogo,width: 50,height: 50,),
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => userProfile()));
+              },
+            ),
+          ],
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(MediaQuery.of(context).size.height/15),
+            child: Container(
+              alignment: Alignment.centerLeft,
+              color: appcolors.screenBckColor,
+              padding: EdgeInsets.only(left: 10,right: 10,top: 10,bottom: 10),
+              child: Text(allTitle.updateLocationModule,style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: appcolors.primaryColor),),
+            ),
+          ),
         ),
+        drawer: drawer(),
         body: scroll ? Center(child: CircularProgressIndicator()) : Stack(
           children: [
+
             lat.toString() == '1.1' ? GoogleMap(
               mapType: MapType.normal,
               initialCameraPosition: _kGooglePlex,
               onMapCreated: (GoogleMapController controller) async {
                 controller.animateCamera(CameraUpdate.newCameraPosition(
-                    CameraPosition(target: LatLng(26.8757974846786, 80.91264367256315), zoom: 10,)
+                    CameraPosition(target: LatLng(await getCurrentLatitude(), await getCurrentLongitude()), zoom: 18,)
                 ));
                 setState(() {});
               },
@@ -145,7 +189,7 @@ class _updateLocationState extends State<updateLocation> {
         ),
         bottomNavigationBar: Container(
           height: MediaQuery.of(context).size.height/4.5,
-          color: Colors.grey[100],
+          color: appcolors.screenBckColor,
           padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
           child:Column(
             children: [
@@ -157,7 +201,7 @@ class _updateLocationState extends State<updateLocation> {
                 children: [
                   Container(
                     height: 50,
-                    width: MediaQuery.of(context).size.width*0.3,
+                    width: MediaQuery.of(context).size.width*0.4,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(5.0), // Adjust the radius as needed
@@ -183,7 +227,7 @@ class _updateLocationState extends State<updateLocation> {
                   ),
                   Container(
                     height: 50,
-                    width: MediaQuery.of(context).size.width*0.3,
+                    width: MediaQuery.of(context).size.width*0.4,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(5.0), // Adjust the radius as needed
@@ -207,31 +251,26 @@ class _updateLocationState extends State<updateLocation> {
                       style: TextStyle(fontSize: 12,),
                     ),
                   ),
-                  Container(
+                  /*Container(
                     child: GestureDetector(
                         child: normalButton(name: 'Get LatLong',bckColor: Colors.orangeAccent,height: 50,width: MediaQuery.of(context).size.width*0.25,bordeRadious: 10,fontSize: 10,scroll: scrollLatLong,),
                         onTap: () async {
                           setState(() {scrollLatLong=true;});
-                          double lat=await getCurrentLatitude();
+                          double lat= await getCurrentLatitude();
                           double long=await getCurrentLongitude();
                           latController.text='$lat';
                           longController.text='$long';
                           setState(() {isLatLong=true;scrollLatLong=false;});
                         }
                     ),
-                  ),
+                  ),*/
                 ],
               ) ,
               SizedBox(height: 20,),
               InkWell(
                 child: normalButton(name: 'Update Current Location',height:45,bordeRadious: 10,fontSize:14,textColor: Colors.white,bckColor: appcolors.primaryColor,),
                 onTap: (){
-                  if(isLatLong==false){
-                    toasts().redToastLong('Please Get LatLong');
-                  }else{
-                    updateLatlong();
-                    //toasts().greenToastShort('LatLong Updated Successfully');
-                  }
+                  updateLatlong();
                 },
               ),
             ],
@@ -304,14 +343,18 @@ class _updateLocationState extends State<updateLocation> {
   Future<void> updateLatlong() async {
     setState(() {scroll = true;});
 
+    String cLat='${await getCurrentLatitude()}';
+    String cLong='${await getCurrentLongitude()}';
+
+
     var headers = {
       'Authorization': 'Bearer $userToken'
     };
 
     var request = http.MultipartRequest('POST', Uri.parse(urls().base_url + allAPI().updateLocationURL));
     request.fields.addAll({
-      'AMCVisitLatitude': latController.text.toString(),
-      'AMCVisitLongitude': longController.text.toString(),
+      'AMCVisitLatitude': cLat.toString(),
+      'AMCVisitLongitude': cLong.toString(),
       'UIDNo':'${widget.uIdNo}',
     });
     request.headers.addAll(headers);
@@ -346,6 +389,10 @@ class _updateLocationState extends State<updateLocation> {
       toasts().greenToastShort('Current Lantlong Updated');
       lat=results['installedSystemList'][0]['latitude'];
       long=results['installedSystemList'][0]['longitude']!;
+
+      latController.text='$lat';
+      longController.text='$long';
+
       print('lattttttttttttttttttttttttttttt--${lat}');
       setState(() {scroll = false; });
     }

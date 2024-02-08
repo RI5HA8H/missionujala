@@ -7,21 +7,31 @@ class allAPI{
 
   String financialYearURL = 'FinancialYear';
 
-  String schemesURL = 'Scheme';
+  String schemesByFYURL = 'GetSchemes';
 
-  String pusrchaseOrderURL = 'PurchaseOrder';
+  String pusrchaseOrderBySFYURL = 'GetPurchaseOrder';
 
-  String installedListURL = 'InstalledSystem';
+  String disctrictByPOURL = 'GetDistrictbyPO';
 
-  String getUidDetailesURL = 'InstalledSystem/GetDetailByUID';
+  String blockByDPOURL = 'GetBlockbyPOD';
 
-  String installedAllListURL = 'InstalledSystem/GetInstalledSystemDetail';
+  String villageByDBPO = 'GetVillagebyPODB';
 
-  String pusrchaseOrderOfflineURL = 'GetOfflineData/PurchaseOrderDetail';
 
-  String disctrictURL = 'GetOfflineData/GetDistrictMaster';
 
-  String blockURL = 'GetOfflineData/GetBlockMaster';
+
+  String disctrictURL = 'GetDistrictMaster';
+
+  String blockURL = 'GetBlockMaster';
+
+
+
+
+  String getUidByDistrictBlockURL = 'GetDetailByBlockDistrict';
+
+  String installedAllListURL = 'GetInstalledSystemDetail';
+
+  String getUidDetailesURL = 'GetDetailByUID';
 
 
 
@@ -29,13 +39,13 @@ class allAPI{
 
   //User_POST_Apis--------------------------------
 
-  String venderLoginURL = 'token';
+  String venderLoginURL = 'Token';
 
   String userLoginURL = 'GetOTP';
 
-  String updateLocationURL = 'InstalledSystem/UpdateLocation';
+  String updateLocationURL = 'UpdateLocation';
 
-  String getRadiousLocationURL = 'InstalledSystem/GetRadius';
+  String getRadiousLocationURL = 'GEORadius';
 
 
 }

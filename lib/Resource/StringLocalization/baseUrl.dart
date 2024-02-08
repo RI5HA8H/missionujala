@@ -3,8 +3,8 @@
 
 class urls {
   //Devlopment URL
-  String base_url = 'http://resimsapi.data-center.co.in/api/';
+  String base_url = 'http://resimsapi.data-center.co.in/api/MissionUjala/';
 
   //Live URL
-  //String base_url = 'https://support.icheckgate.in/api/';
+  //String base_url = 'http://resimsapi.data-center.co.in/api/';
 }

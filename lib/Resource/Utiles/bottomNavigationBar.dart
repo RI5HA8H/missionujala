@@ -3,6 +3,7 @@
 import 'package:custom_navigation_bar/custom_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:missionujala/Modules/allUIDScreen.dart';
 import 'package:missionujala/Modules/viewLocations.dart';
 import 'package:missionujala/Resource/Colors/app_colors.dart';
 import 'package:missionujala/generated/assets.dart';
@@ -36,20 +37,16 @@ class _bottomNavigationBarState extends State<bottomNavigationBar> {
       backgroundColor: Colors.white,
       items: [
         CustomNavigationBarItem(
-          icon: Image.asset(Assets.iconsHome,color: widget.position==0 ? appcolors.primaryColor : appcolors.primaryThemeColor,),
-          title: Text(allTitle.home,style: TextStyle(fontSize: 10, color: widget.position==0 ? appcolors.primaryColor : appcolors.primaryThemeColor,fontWeight: FontWeight.bold),),
+          icon: Image.asset(Assets.iconsHome,color: widget.position==0 ? appcolors.primaryThemeColor : appcolors.primaryColor,),
+          title: Text(allTitle.home,style: TextStyle(fontSize: 10, color: widget.position==0 ? appcolors.primaryThemeColor : appcolors.primaryColor,fontWeight: FontWeight.bold),),
         ),
         CustomNavigationBarItem(
-          icon: Image.asset(Assets.iconsStrretLight,color: widget.position==1 ? appcolors.primaryColor : appcolors.primaryThemeColor,),
-          title: Text(allTitle.viewLocationModule,style: TextStyle(fontSize: 8, color:widget.position==1 ? appcolors.primaryColor : appcolors.primaryThemeColor,fontWeight: FontWeight.bold),),
+          icon: Image.asset(Assets.iconsUpdateBottomLocation,color: widget.position==1 ? appcolors.primaryThemeColor : appcolors.primaryColor,),
+          title: Text(allTitle.updateLocationModule,style: TextStyle(fontSize: 10,color: widget.position==1 ? appcolors.primaryThemeColor : appcolors.primaryColor, fontWeight: FontWeight.bold),),
         ),
         CustomNavigationBarItem(
-          icon: Image.asset(Assets.iconsProfile,color: widget.position==2 ? appcolors.primaryColor : appcolors.primaryThemeColor,),
-          title: Text(allTitle.profile,style: TextStyle(fontSize: 10, color:widget.position==2 ? appcolors.primaryColor : appcolors.primaryThemeColor,fontWeight: FontWeight.bold),),
-        ),
-        CustomNavigationBarItem(
-          icon: Image.asset(Assets.iconsComplaint,color: widget.position==3 ? appcolors.primaryColor : appcolors.primaryThemeColor,),
-          title: Text(allTitle.complaint,style: TextStyle(fontSize: 10,color: widget.position==3 ? appcolors.primaryColor : appcolors.primaryThemeColor, fontWeight: FontWeight.bold),),
+          icon: Image.asset(Assets.iconsBottomProfile,color: widget.position==2 ? appcolors.primaryThemeColor : appcolors.primaryColor,),
+          title: Text(allTitle.profile,style: TextStyle(fontSize: 10, color:widget.position==2 ? appcolors.primaryThemeColor : appcolors.primaryColor,fontWeight: FontWeight.bold),),
         ),
       ],
       currentIndex: widget.position!,
@@ -61,13 +58,10 @@ class _bottomNavigationBarState extends State<bottomNavigationBar> {
             Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => viewLocations()), (Route<dynamic> route) => false);
           }
           if(currentIndex==1){
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => viewLocations()));
+            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => allUIDScreen()), (Route<dynamic> route) => false);
           }
           if(currentIndex==2){
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => userProfile()));
-          }
-          if(currentIndex==3){
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => userProfile()));
+            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => userProfile()), (Route<dynamic> route) => false);
           }
         });
       },

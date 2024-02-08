@@ -2,7 +2,11 @@
 
 import 'package:flutter/material.dart';
 
+import 'Modules/viewLocations.dart';
 import 'Resource/StringLocalization/titles.dart';
+import 'Resource/Utiles/appBar.dart';
+import 'Resource/Utiles/bottomNavigationBar.dart';
+import 'Resource/Utiles/drawer.dart';
 
 
 class userProfile extends StatefulWidget {
@@ -15,14 +19,20 @@ class userProfile extends StatefulWidget {
 class _userProfileState extends State<userProfile> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        leadingWidth: 40,
-        title: Text('${allTitle.profile}',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.white),),
-      ),
-      body: Container(
-
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => viewLocations()), (Route<dynamic> route) => false);
+        return false;
+      },
+      child: Scaffold(
+        appBar: appBar(),
+        drawer: drawer(),
+        body: Container(
+          child: Center(
+            child: Text('Hello User'),
+          ),
+        ),
+        bottomNavigationBar: bottomNavigationBar(1),
       ),
     );
   }

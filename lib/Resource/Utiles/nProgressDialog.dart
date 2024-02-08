@@ -8,7 +8,7 @@ class nDialog {
   static ProgressDialog nProgressDialog(BuildContext context) {
     return ProgressDialog(
       context,
-      blur: 5,
+      blur: 0,
       dismissable: false,
       //title: Text(""),
       message: Text("Please wait.."),

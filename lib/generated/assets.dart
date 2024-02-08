@@ -3,6 +3,8 @@ class Assets {
   Assets._();
 
   static const String fontsPoppinsRegular = 'assets/fonts/Poppins-Regular.ttf';
+  static const String iconsBottomProfile = 'assets/icons/bottomProfile.png';
+  static const String iconsBottomStrretLight = 'assets/icons/bottomStrretLight.png';
   static const String iconsBrowser = 'assets/icons/browser.png';
   static const String iconsComplaint = 'assets/icons/complaint.png';
   static const String iconsHome = 'assets/icons/home.png';
@@ -16,6 +18,7 @@ class Assets {
   static const String iconsProfile = 'assets/icons/profile.png';
   static const String iconsSetting = 'assets/icons/setting.png';
   static const String iconsStrretLight = 'assets/icons/strretLight.png';
+  static const String iconsUpdateBottomLocation = 'assets/icons/updateBottomLocation.png';
   static const String iconsUpdateLocation = 'assets/icons/updateLocation.png';
   static const String iconsViewLocation = 'assets/icons/viewLocation.png';
   static const String iconsWifi = 'assets/icons/wifi.png';
