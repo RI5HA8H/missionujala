@@ -6,6 +6,7 @@ import 'package:missionujala/Modules/allUIDScreen.dart';
 import 'package:missionujala/Modules/viewLocations.dart';
 import 'package:missionujala/Resource/Colors/app_colors.dart';
 import 'package:missionujala/generated/assets.dart';
+import 'package:missionujala/userLoginScreen.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,6 +26,7 @@ class _drawerState extends State<drawer> {
 
   String userName  = "XXXXXXXXXX";
   String _version = 'Loading...';
+  String loginType='';
 
   @override
   void initState() {
@@ -36,7 +38,8 @@ class _drawerState extends State<drawer> {
   getUserName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      userName = prefs.getString('vendorName')!;
+      loginType = prefs.getString('loginType')!;
+      loginType=='user' ? userName = prefs.getString('userName')! : userName = prefs.getString('vendorName')!;
     });
   }
 
@@ -50,7 +53,7 @@ class _drawerState extends State<drawer> {
   @override
   Widget build(BuildContext context) {
     return  Container(
-      color: appcolors.primaryColor,
+      color: Colors.white,
       child: Drawer(
         backgroundColor: Colors.transparent,
         shape: RoundedRectangleBorder(
@@ -58,38 +61,36 @@ class _drawerState extends State<drawer> {
               topRight: Radius.circular(0),
             bottomRight: Radius.circular(0)),
         ),
-        width: MediaQuery.of(context).size.width/1.5,
+        width: MediaQuery.of(context).size.width/1.4,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 50,),
+                  SizedBox(height: 30,),
                   Container(
-                    child:CircleAvatar(
-                      radius: 52,
-                      backgroundColor: appcolors.whiteColor,
-                      child: CircleAvatar(
-                        radius: 51,
-                        backgroundColor: appcolors.whiteColor,
-                        backgroundImage: NetworkImage('https://cdn-icons-png.flaticon.com/512/219/219983.png'),
-                      ),
-                    ),
+                    padding: EdgeInsets.only(left: 20,right: 30),
+                    child: Image.asset('assets/images/muLogo.png',width: 150,height: 100,),
                   ),
 
                   SizedBox(height: 20,),
-                  Center(child: Text("${userName.toUpperCase()}",style:TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color:appcolors.whiteColor),textAlign: TextAlign.center,)),
-                  SizedBox(height: 50,),
+                  Container(
+                    padding: EdgeInsets.only(left: 20,right: 20),
+                      child: Divider(thickness: 2,color: Colors.grey[300],),
+                  ),
+                  SizedBox(height: 20,),
 
                   InkWell(
                     child: ListTile(
                       dense: true,
-                      visualDensity: VisualDensity(vertical: -2),
-                      title: Text('${allTitle.profile}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 14,color: appcolors.whiteColor,)),
+                      visualDensity: VisualDensity(vertical: 0),
+                      title: Text('${allTitle.profile}',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16,color: appcolors.primaryColor,)),
                       leading:ImageIcon(
                         AssetImage(Assets.iconsProfile),
-                        color: appcolors.whiteColor,
-                        size: 20,
+                        color: appcolors.primaryColor,
+                        size: 24,
                       ),
                     ),
 
@@ -100,27 +101,27 @@ class _drawerState extends State<drawer> {
                   InkWell(
                     child: ListTile(
                       dense: true,
-                      visualDensity: VisualDensity(vertical: -2),
-                      title: Text('${allTitle.viewLocationModule}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 14,color: appcolors.whiteColor,)),
+                      visualDensity: VisualDensity(vertical: 0),
+                      title: Text('${allTitle.viewLocationModule}',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16,color: appcolors.primaryColor,)),
                       leading:ImageIcon(
-                        AssetImage(Assets.iconsViewLocation),
-                        color: appcolors.whiteColor,
-                        size:20,
+                        AssetImage(Assets.iconsStrretLight),
+                        color: appcolors.primaryColor,
+                        size:24,
                       ),
                     ),
                     onTap: (){
                       Navigator.of(context).push(MaterialPageRoute(builder: (context) => viewLocations()));
                     },
                   ),
-                  InkWell(
+                  loginType=='user' ? Container() : InkWell(
                     child: ListTile(
                       dense: true,
-                      visualDensity: VisualDensity(vertical: -2),
-                      title: Text('${allTitle.updateLocationModule}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 14,color: appcolors.whiteColor,)),
+                      visualDensity: VisualDensity(vertical: 0),
+                      title: Text('${allTitle.updateLocationModule}',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16,color: appcolors.primaryColor,)),
                       leading:ImageIcon(
                         AssetImage(Assets.iconsUpdateLocation),
-                        color: appcolors.whiteColor,
-                        size:20,
+                        color: appcolors.primaryColor,
+                        size:24,
                       ),
                     ),
                     onTap: (){
@@ -130,12 +131,27 @@ class _drawerState extends State<drawer> {
                   InkWell(
                     child: ListTile(
                       dense: true,
-                      visualDensity: VisualDensity(vertical: -2),
-                      title: Text('${allTitle.logout}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 14,color: appcolors.whiteColor,),),
+                      visualDensity: VisualDensity(vertical: 0),
+                      title: Text('${allTitle.setting}',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16,color: appcolors.primaryColor,)),
+                      leading:ImageIcon(
+                        AssetImage(Assets.iconsSetting),
+                        color: appcolors.primaryColor,
+                        size:24,
+                      ),
+                    ),
+                    onTap: (){
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => userLoginScreen()));
+                    },
+                  ),
+                  InkWell(
+                    child: ListTile(
+                      dense: true,
+                      visualDensity: VisualDensity(vertical: 0),
+                      title: Text('${allTitle.logout}',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16,color: appcolors.primaryColor,),),
                       leading:ImageIcon(
                         AssetImage(Assets.iconsLogout),
-                        color: appcolors.whiteColor,
-                        //size: 20,
+                        color: appcolors.primaryColor,
+                        size: 24,
                       ),
                     ),
                     onTap: ()async{
@@ -152,7 +168,7 @@ class _drawerState extends State<drawer> {
                 padding: EdgeInsets.only(top: 15,bottom: 15),
                   child: Align(
                     alignment: FractionalOffset.bottomCenter,
-                    child:Text("version: $_version",style:TextStyle(fontWeight: FontWeight.bold,fontSize: 15,color: appcolors.whiteColor,),),
+                    child:Text("version: $_version",style:TextStyle(fontWeight: FontWeight.bold,fontSize: 15,color: appcolors.primaryColor,),),
                   )),
             ],
           ),

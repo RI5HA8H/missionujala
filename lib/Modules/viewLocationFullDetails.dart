@@ -67,7 +67,7 @@ class _viewLocationFullDetailsState extends State<viewLocationFullDetails> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       loginType = prefs.getString('loginType')!;
-      print('uuu--${widget.uIdNo}');
+      print('uuu--${loginType}');
     });
 
   }
@@ -92,7 +92,7 @@ class _viewLocationFullDetailsState extends State<viewLocationFullDetails> {
               Divider(),
               Text('Place Name : ${widget.uIdPlace}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,),),
               Divider(),
-              Text('Mobile No : ${widget.uIdMob}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,),),
+              Text('Mobile No : ${widget.uIdMob.toString()=='null' ? 'N/A' : widget.uIdMob}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,),),
               Divider(),
               Text('Village Name : ${widget.uIdVillage}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,),),
               Divider(),
@@ -174,9 +174,9 @@ class _viewLocationFullDetailsState extends State<viewLocationFullDetails> {
         color: Colors.grey[100],
         padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
         child: loginType=='user' ? InkWell(
-          child: normalButton(name: 'Raise complaint',height:45,bordeRadious: 10,fontSize:14,textColor: Colors.black,bckColor: appcolors.primaryTextColor,),
+          child: normalButton(name: 'Report Issue',height:45,bordeRadious: 10,fontSize:14,textColor: Colors.black,bckColor: appcolors.primaryTextColor,),
           onTap: (){
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => complaintScreen()));
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => complaintScreen(widget.uIdNo)));
           },
         ) :
         InkWell(

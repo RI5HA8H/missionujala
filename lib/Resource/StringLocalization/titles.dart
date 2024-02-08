@@ -4,13 +4,16 @@ class allTitle {
   allTitle._();
 
   static const String appName = 'Mission Ujala';
-  static const String viewLocationModule = 'View Location';
+  static const String viewLocationModule = 'Nearby Street Lights';
   static const String updateLocationModule = 'Update Location';
-  static const String viewLocationFullDetails = 'UID Details';
-  static const String userComplaint = 'User Complaint';
+  static const String viewLocationFullDetails = 'Installed System Details';
+  static const String userComplaint = 'Report Issue';
   static const String logout = 'Logout';
   static const String profile = 'Profile';
   static const String allUIDModules = 'Installed System';
+  static const String setting = 'Settings';
+  static const String complaint = 'Complaint';
+  static const String home = 'Home';
   static const String xyz = '';
 
 

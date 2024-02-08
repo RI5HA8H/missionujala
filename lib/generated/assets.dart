@@ -4,18 +4,29 @@ class Assets {
 
   static const String fontsPoppinsRegular = 'assets/fonts/Poppins-Regular.ttf';
   static const String iconsBrowser = 'assets/icons/browser.png';
+  static const String iconsComplaint = 'assets/icons/complaint.png';
+  static const String iconsHome = 'assets/icons/home.png';
   static const String iconsImgIcon = 'assets/icons/imgIcon.png';
   static const String iconsIngICON = 'assets/icons/ingICON.png';
   static const String iconsIsMapMarker = 'assets/icons/isMapMarker.png';
   static const String iconsLogout = 'assets/icons/logout.png';
-  static const String iconsMenu = 'assets/icons/menu.png';
+  static const String iconsMarkerIcon = 'assets/icons/markerIcon.png';
+  static const String iconsMenuIcon = 'assets/icons/menuIcon.png';
   static const String iconsPdfIcon = 'assets/icons/pdfIcon.png';
   static const String iconsProfile = 'assets/icons/profile.png';
+  static const String iconsSetting = 'assets/icons/setting.png';
+  static const String iconsStrretLight = 'assets/icons/strretLight.png';
   static const String iconsUpdateLocation = 'assets/icons/updateLocation.png';
   static const String iconsViewLocation = 'assets/icons/viewLocation.png';
   static const String iconsWifi = 'assets/icons/wifi.png';
+  static const String imagesDepartmentLogo = 'assets/images/departmentLogo.png';
   static const String imagesHomeBanner1 = 'assets/images/homeBanner1.png';
+  static const String imagesLoginFooter = 'assets/images/loginFooter.png';
+  static const String imagesMuAppbarLogo = 'assets/images/muAppbarLogo.png';
+  static const String imagesMuLogo = 'assets/images/muLogo.png';
   static const String imagesProfileImg = 'assets/images/profileImg.png';
+  static const String imagesProfileLogo = 'assets/images/profileLogo.png';
+  static const String imagesSplashBackground = 'assets/images/SplashBackground.png';
   static const String imagesSplashBottom = 'assets/images/splashBottom.png';
 
 }

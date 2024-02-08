@@ -19,9 +19,9 @@ class allAPI{
 
   String pusrchaseOrderOfflineURL = 'GetOfflineData/PurchaseOrderDetail';
 
-  String disctrictURL = 'GetOfflineData/GetBlockMaster';
+  String disctrictURL = 'GetOfflineData/GetDistrictMaster';
 
-  String blockURL = 'GetOfflineData/GetDistrictMaster';
+  String blockURL = 'GetOfflineData/GetBlockMaster';
 
 
 

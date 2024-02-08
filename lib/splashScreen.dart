@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:missionujala/Modules/viewLocations.dart';
 import 'package:missionujala/Resource/Colors/app_colors.dart';
 import 'package:missionujala/homeScreen.dart';
+import 'package:missionujala/userLoginScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'venderLoginScreen.dart';
 
@@ -30,7 +31,7 @@ class _splashScreenState extends State<splashScreen> with SingleTickerProviderSt
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>viewLocations()));
       }else
       {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>venderLoginScreen()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>userLoginScreen()));
       }
     });
   }
@@ -42,7 +43,12 @@ class _splashScreenState extends State<splashScreen> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: appcolors.primaryColor,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/SplashBackground.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Center(

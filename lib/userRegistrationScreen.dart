@@ -8,9 +8,12 @@ import 'package:missionujala/Modules/viewLocations.dart';
 import 'package:missionujala/Resource/Colors/app_colors.dart';
 import 'package:missionujala/userLoginScreen.dart';
 import 'package:http/http.dart' as http;
+import 'package:ndialog/ndialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Resource/StringLocalization/allAPI.dart';
 import 'Resource/StringLocalization/baseUrl.dart';
+import 'Resource/Utiles/editText.dart';
+import 'Resource/Utiles/nProgressDialog.dart';
 import 'Resource/Utiles/normalButton.dart';
 import 'Resource/Utiles/simpleEditText.dart';
 import 'Resource/Utiles/toasts.dart';
@@ -27,7 +30,7 @@ class userRegistrationScreen extends StatefulWidget {
 
 class _userRegistrationScreenState extends State<userRegistrationScreen> {
 
-  bool scroll = false;
+  late ProgressDialog progressDialog;
   bool halfUI = true;
   bool? check1 = true;
   TextEditingController nameController = TextEditingController();
@@ -49,201 +52,152 @@ class _userRegistrationScreenState extends State<userRegistrationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Column(
-              children: [
-                Container(
-                  color: appcolors.primaryColor,
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height*0.55,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text('User Singup',style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: appcolors.primaryTextColor),),
-                      SizedBox(height: 10,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text('If already have a registered?',style: TextStyle(fontSize: 12,color:Colors.white),),
-                          InkWell(
-                              child: Text(' User Login',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 12,color: appcolors.primaryTextColor),),
-                            onTap: (){
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => userLoginScreen()));
-                            },
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 120,),
-                    ],
-                  ),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height*0.45,
-                  color: appcolors.screenBckColor,
-                ),
-              ],
-            ),
-
-            Positioned(
-                child: SingleChildScrollView(
-                  child: Center(
-                    child: Container(
-                      height: MediaQuery.of(context).size.height/1.75,
-                      margin: EdgeInsets.fromLTRB(20, MediaQuery.of(context).size.height/4, 20, 50),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(25),
-                        child: Container(
-                          color: Colors.white,
-                          child: scroll ? Center(child: LoadingAnimationWidget.waveDots(color: appcolors.primaryColor, size: 50)) : Column(
-                            children: [
-                              SizedBox(height: 20,),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
-                                child: simpleEditText(
-                                  controllers: nameController,
-                                  focusNode: nameFocusNode,
-                                  hint: 'Enter User Name',
-                                  label: 'User Number',
-                                  keyboardTypes: TextInputType.text,
-                                  maxlength: 30,),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
-                                child: simpleEditText(
-                                  controllers: mobileController,
-                                  focusNode: mobileFocusNode,
-                                  hint: 'Enter Mobile Number',
-                                  label: 'Mobile Number',
-                                  keyboardTypes: TextInputType.number,
-                                  maxlength: 10,),
-                              ),
-
-                              halfUI ? Padding(
-                                padding: const EdgeInsets.fromLTRB(20, 50, 20, 10),
-                                child: GestureDetector(
-                                  child: normalButton(name: 'Send OTP',bordeRadious: 25,bckColor: appcolors.primaryTextColor,),
-                                  onTap: (){
-                                    if (nameController.text.isEmpty == true || mobileController.text.isEmpty == true) {
-                                      toasts().redToastLong('Proper Fill the Details');
-                                    } else {
-                                      nameFocusNode.unfocus();
-                                      mobileFocusNode.unfocus();
-                                      otpFocusNode.unfocus();
-                                      setState(() {halfUI = false;});
-                                      sendOtpAPI();
-                                    }
-                                  },
-                                ),
-                              ) :
-
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
-                                    child: simpleEditText(controllers: otpController,
-                                      focusNode: otpFocusNode,
-                                      hint: 'Enter OTP',
-                                      label: 'Recived OTP',
-                                      keyboardTypes: TextInputType.number,
-                                      maxlength: 6,),
-                                  ),
-
-
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        /* Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            Container( alignment: Alignment.centerLeft,
-                                              child: Checkbox(
-                                                activeColor:appcolors.primaryColor,
-                                                value: check1,
-                                                onChanged: (bool? value) {
-                                                  if(value!=null){
-                                                    setState(() {
-                                                      check1 = value;
-                                                    });
-                                                  }
-                                                },),),
-                                            Container( alignment: Alignment.centerLeft,
-                                                child: Text( 'Remember Me',style: TextStyle(fontWeight: FontWeight.bold,color: appcolors.primaryColor,fontSize: 12),)),
-
-                                          ],
-                                        ),*/
-                                        Container(),
-                                        InkWell(
-                                          child: Text('Resend OTP?',style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold,color: appcolors.primaryColor),),
-                                          onTap: (){
-                                            setState(() {
-                                              otpController.clear();
-                                              mobileFocusNode.unfocus();
-                                              otpFocusNode.unfocus();
-                                              halfUI=true;
-                                            });
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-
-
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                                    child: GestureDetector(
-                                      child: normalButton(name: 'Singup',bordeRadious: 25,bckColor: appcolors.primaryTextColor,),
-                                      onTap: (){
-                                        if (mobileController.text.isEmpty == true || otpController.text.isEmpty == true) {
-                                          toasts().redToastLong('Proper Fill the Details');
-                                        } else {
-                                          mobileFocusNode.unfocus();
-                                          otpFocusNode.unfocus();
-                                          setState(() {scroll = true;});
-                                          if(otpController.text.toString()!=apiOTP){
-                                            toasts().redToastLong('OTP does not match');
-                                          }else{
-                                            toasts().redToastLong('User Login Successfull');
-                                            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => viewLocations()), (Route<dynamic> route) => false);
-                                          }
-                                        }
-                                      },
-                                    ),
-                                  ),
-
-
-                                ],
-                              ),
-                              SizedBox(height: 20,),
-
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-            ),
-          ],
+    return SafeArea(
+      child: Container(
+        height: double.infinity,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [appcolors.l1GradColor,appcolors.l2GradColor,appcolors.l3GradColor,appcolors.l4GradColor,],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
         ),
-      ),
-    );
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.only(left: 20,right: 20),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 50,),
+                    Text('User Singup',style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: appcolors.primaryColor),),
+                    SizedBox(height: 10,),
+                    Text('Participate in the awareness campaign and encourage others to join!',style: TextStyle(fontSize: 12,color: appcolors.primaryColor),),
+
+                    SizedBox(height: 50,),
+                    editTextSimple(
+                      controllers: nameController,
+                      focusNode: nameFocusNode,
+                      hint: 'Enter User Name',
+                      keyboardTypes: TextInputType.text,
+                      readOnly: !halfUI,
+                      maxlength: 30,),
+
+                    SizedBox(height: 10,),
+                    editTextSimple(
+                      controllers: mobileController,
+                      focusNode: mobileFocusNode,
+                      hint: 'Enter Mobile Number',
+                      keyboardTypes: TextInputType.number,
+                      readOnly: !halfUI,
+                      maxlength: 10,),
+
+                    SizedBox(height: 10,),
+                    halfUI ? GestureDetector(
+                      child: normalButton(name: 'Send OTP',bordeRadious: 25,bckColor: appcolors.primaryColor,),
+                      onTap: (){
+                        if (nameController.text.isEmpty == true || mobileController.text.isEmpty == true) {
+                          toasts().redToastLong('Proper Fill the Details');
+                        } else {
+                          mobileFocusNode.unfocus();
+                          otpFocusNode.unfocus();
+                          setState(() {halfUI = false;});
+                          sendOtpAPI();
+                        }
+                      },
+                    ) :
+
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        editTextSimple(
+                          controllers: otpController,
+                          focusNode: otpFocusNode,
+                          hint: 'Enter OTP',
+                          keyboardTypes: TextInputType.number,
+                          maxlength: 6,),
+
+                        SizedBox(height: 10,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(),
+                            InkWell(
+                              child: Text('Resend OTP?',style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold,color: appcolors.primaryColor),),
+                              onTap: (){
+                                setState(() {
+                                  otpController.clear();
+                                  mobileFocusNode.unfocus();
+                                  otpFocusNode.unfocus();
+                                  halfUI=true;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+
+                        SizedBox(height: 10,),
+                        GestureDetector(
+                          child: normalButton(name: 'Login',bordeRadious: 25,bckColor: appcolors.primaryColor,),
+                          onTap: (){
+                            if (nameController.text.isEmpty == true || mobileController.text.isEmpty == true || otpController.text.isEmpty == true) {
+                              toasts().redToastLong('Proper Fill the Details');
+                            } else {
+                              nameFocusNode.unfocus();
+                              mobileFocusNode.unfocus();
+                              otpFocusNode.unfocus();
+                              if(otpController.text.toString()==apiOTP.toString()){
+                                toasts().greenToastShort('User Login Successfull');
+                                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => viewLocations()), (Route<dynamic> route) => false);
+                              }else{
+                                toasts().redToastLong('OTP does not match');
+                              }
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text('If you are already singup then click ',style: TextStyle(fontSize: 12,color:Colors.blueGrey),),
+                        InkWell(
+                          child: Text(' User Singin',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 12,color: Colors.blue),),
+                          onTap: (){
+                            nameFocusNode.unfocus();
+                            mobileFocusNode.unfocus();
+                            otpFocusNode.unfocus();
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => userLoginScreen()));
+                          },
+                        ),
+                      ],
+                    ),
+                  ]
+              ),
+            ),
+          ),
+          bottomNavigationBar: Container(
+            height: MediaQuery.of(context).size.height*0.25,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/loginFooter.png"),
+                fit: BoxFit.fill,
+              ),),
+          ),
+        ),
+      ),);
   }
 
   Future<void> sendOtpAPI() async {
-    setState(() {scroll = true;});
+    progressDialog=nDialog.nProgressDialog(context);
+    progressDialog.show();
 
     var request = http.MultipartRequest('POST', Uri.parse(urls().base_url + allAPI().userLoginURL));
     request.fields.addAll({
@@ -255,7 +209,7 @@ class _userRegistrationScreenState extends State<userRegistrationScreen> {
 
     if (response.statusCode == 200) {
       print(await 'aaaaaaaaa-----${results}');
-      if(results['status']=='success'){
+      if(results['userKey'].runtimeType==int){
         toasts().greenToastShort('OTP Send Successfull');
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('userKey', '${results['userKey']}');
@@ -265,17 +219,18 @@ class _userRegistrationScreenState extends State<userRegistrationScreen> {
         prefs.setString('userDistrictKey', '${results['districtKey']}');
         prefs.setString('userCompanyKey', '${results['companyKey']}');
         prefs.setString('loginType', 'user');
-        apiOTP=results['otp'];
-        setState(() {scroll = false;});
+        apiOTP=int.parse('${results['otp']}');
+        toasts().greenToastShort('OTP - ${results['otp']}');
+        progressDialog.dismiss();
 
       }else{
-        toasts().redToastLong(results['status']);
-        setState(() {scroll = false;});
+        toasts().redToastLong('Something is wrong');
+        progressDialog.dismiss();
       }
     }
     else {
       toasts().redToastLong('Server Error');
-      setState(() {scroll = false;});
+      progressDialog.dismiss();
     }
   }
 }

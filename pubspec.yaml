@@ -47,6 +47,10 @@ dependencies:
   shape_maker: ^0.0.3
   info_popup: ^4.3.1
   rflutter_alert: ^2.0.7
+  toggle_switch: ^2.1.0
+  image_picker: ^1.0.2
+  ndialog: ^4.3.1
+  custom_navigation_bar: ^0.8.2
   url_launcher:
   dropdown_button2:
   http:

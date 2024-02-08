@@ -336,8 +336,8 @@ class _allUIDScreenState extends State<allUIDScreen> {
                         installedSystemList[index]['placeName'],
                         installedSystemList[index]['blockName'],
                         installedSystemList[index]['districtName'],
-
                         installedSystemList[index]['installationDate'],
+
                         installedSystemList[index]['status'],
                         installedSystemList[index]['beneficiaryName'],
                         installedSystemList[index]['fatherName'],
