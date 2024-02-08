@@ -32,7 +32,7 @@ class _userProfileState extends State<userProfile> {
             child: Text('Hello User'),
           ),
         ),
-        bottomNavigationBar: bottomNavigationBar(1),
+        bottomNavigationBar: bottomNavigationBar(2),
       ),
     );
   }

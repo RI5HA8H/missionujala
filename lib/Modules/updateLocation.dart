@@ -45,6 +45,7 @@ class _updateLocationState extends State<updateLocation> {
   static  CameraPosition _kGooglePlex = CameraPosition(target: LatLng(26.439602610044293, 82.58186811379103), zoom: 20,);
 
   bool scroll=false;
+  bool latlonfUpdated=false;
   String userToken='';
   bool scrollLatLong=false;
   bool isLatLong=false;
@@ -107,7 +108,8 @@ class _updateLocationState extends State<updateLocation> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => allUIDScreen()), (Route<dynamic> route) => false);
+        Navigator.pop(context);
+        Navigator.pop(context,latlonfUpdated);
         return false;
       },
 
@@ -362,6 +364,7 @@ class _updateLocationState extends State<updateLocation> {
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
+      latlonfUpdated=true;
       print(await 'aaaaaaaaa-----${results}');
       getUidRefresh();
       //setState(() {scroll = false;});

@@ -2,8 +2,11 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/services.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:http/http.dart' as http;
 import 'dart:ui' as ui;
 import 'package:custom_info_window/custom_info_window.dart';
@@ -11,6 +14,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:in_app_update/in_app_update.dart';
 import 'package:missionujala/Modules/updateLocation.dart';
 import 'package:missionujala/Modules/viewLocationFullDetails.dart';
 import 'package:missionujala/Resource/Colors/app_colors.dart';
@@ -25,6 +29,7 @@ import '../Resource/StringLocalization/baseUrl.dart';
 import '../Resource/StringLocalization/titles.dart';
 import '../Resource/Utiles/appBar.dart';
 import '../Resource/Utiles/bottomNavigationBar.dart';
+import '../Resource/Utiles/checkInternet.dart';
 import '../Resource/Utiles/drawer.dart';
 import '../Resource/Utiles/nProgressDialog.dart';
 import '../Resource/Utiles/normalButton.dart';
@@ -60,8 +65,8 @@ class _viewLocationsState extends State<viewLocations> {
   Position? currentPosition;
   final Set<Marker> markerr={};
   var allApiMarker=[];
-  double lat= 1.1;
-  double long= 1.1;
+  double lat= 26.830000;
+  double long= 80.91999;
   var districtTypeItem = [];
   var blockTypeItem = [];
   var districtDropdownValue;
@@ -73,6 +78,31 @@ class _viewLocationsState extends State<viewLocations> {
     LatLng(26.820000,80.98999),
   ];
 
+  StreamSubscription? internetconnection;
+  bool isoffline = false;
+  bool ActiveConnection = false;
+  String T = "";
+  Future CheckUserConnection() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        setState(() {
+          ActiveConnection = true;
+          T = "Turn off the data and repress again";
+          print(T);
+        });
+      }
+    } on SocketException catch (_) {
+      setState(() {
+        ActiveConnection = false;
+        setState(() {
+          isoffline = true;
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => checkInternet()));
+        });
+      });
+    }
+  }
+
 
 
   @override
@@ -80,6 +110,29 @@ class _viewLocationsState extends State<viewLocations> {
     super.initState();
     getLocation();
     getUserToken();
+    CheckUserConnection();
+    _checkVersion();
+    internetconnection = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+      // whenevery connection status is changed.
+      if(result == ConnectivityResult.none){
+        //there is no any connection
+        setState(() {
+          isoffline = true;
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => checkInternet()));
+        });
+      }else if(result == ConnectivityResult.mobile){
+        //connection is mobile data network
+        setState(() {
+          isoffline = false;
+        });
+      }else if(result == ConnectivityResult.wifi){
+        //connection is from wifi
+        setState(() {
+          isoffline = false;
+        });
+      }
+      super.initState();
+    });
     setState(() {});
   }
 
@@ -87,6 +140,7 @@ class _viewLocationsState extends State<viewLocations> {
   void dispose() {
     markerr.clear();
     customInfoWindowController.dispose();
+    internetconnection!.cancel();
     super.dispose();
   }
 
@@ -98,6 +152,30 @@ class _viewLocationsState extends State<viewLocations> {
     double longitude=await getCurrentLongitude();
     getRadiousLatlong(latitude,longitude);
     getDistrict();
+  }
+
+  void _checkVersion() async {
+
+    InAppUpdate.checkForUpdate().then((updateInfo) {
+      if (updateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
+        if (updateInfo.immediateUpdateAllowed) {
+          // Perform immediate update
+          InAppUpdate.performImmediateUpdate().then((appUpdateResult) {
+            if (appUpdateResult == AppUpdateResult.success) {
+              //App Update successful
+            }
+          });
+        } else if (updateInfo.flexibleUpdateAllowed) {
+          //Perform flexible update
+          InAppUpdate.startFlexibleUpdate().then((appUpdateResult) {
+            if (appUpdateResult == AppUpdateResult.success) {
+              //App Update successful
+              InAppUpdate.completeFlexibleUpdate();
+            }
+          });
+        }
+      }
+    });
   }
 
 
@@ -278,7 +356,9 @@ class _viewLocationsState extends State<viewLocations> {
                             toasts().redToastShort('Proper fill the details');
                           }else{
                             setState(() {showFilter=false;});
-                            getUidByDistrictBlobk();
+                            lat= 26.830000;
+                            long= 80.91999;
+                            getUidByDistrictBlock();
                           }
                         },
                       ),
@@ -301,7 +381,7 @@ class _viewLocationsState extends State<viewLocations> {
             onMapCreated: (GoogleMapController controller) {
               //_controller.complete(controller);
               controller.animateCamera(CameraUpdate.newCameraPosition(
-                  CameraPosition(target: LatLng(lat,long), zoom: 15,)
+                  CameraPosition(target: LatLng(lat,long), zoom: 12,)
               ));
               customInfoWindowController.googleMapController = controller;
             },
@@ -390,12 +470,16 @@ class _viewLocationsState extends State<viewLocations> {
     for(int i=0;i<allApiMarker[0]['installedSystemList'].length;i++)
     {
       print('ggggggg${i}');
-      markerr.add(
-        Marker(markerId:MarkerId(i.toString()),
-          position: LatLng(double.parse('${allApiMarker[0]['installedSystemList'][i]['latitude']}'),double.parse('${allApiMarker[0]['installedSystemList'][i]['longitude']}')),
-          onTap: () {
-          print('${allApiMarker[0]['installedSystemList'][i]['latitude']}');
-            customInfoWindowController.addInfoWindow!(
+      if(allApiMarker[0]['installedSystemList'][i]['latitude'].toString()!='null'){
+        print('hhhhhhhh${i}');
+        lat=double.parse('${allApiMarker[0]['installedSystemList'][i]['latitude']}');
+        long=double.parse('${allApiMarker[0]['installedSystemList'][i]['longitude']}');
+        markerr.add(
+          Marker(markerId:MarkerId(i.toString()),
+            position: LatLng(double.parse('${allApiMarker[0]['installedSystemList'][i]['latitude']}'),double.parse('${allApiMarker[0]['installedSystemList'][i]['longitude']}')),
+            onTap: () {
+              print('${allApiMarker[0]['installedSystemList'][i]['latitude']}');
+              customInfoWindowController.addInfoWindow!(
                 ClipRRect(
                   borderRadius: BorderRadius.circular(5),
                   child: Scaffold(
@@ -425,7 +509,7 @@ class _viewLocationsState extends State<viewLocations> {
                                   children: [
                                     Text('UID-${allApiMarker[0]['installedSystemList'][i]['uidNo']}',style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold,),),
                                     SizedBox(height: 2,),
-                                    Text('${allApiMarker[0]['installedSystemList'][i]['latitude']},${allApiMarker[0]['installedSystemList'][i]['longitude']}',style: TextStyle(fontSize: 12,),),
+                                    Text('${allApiMarker[0]['installedSystemList'][i]['schemeName']}',style: TextStyle(fontSize: 10,),),
                                     SizedBox(height: 2,),
                                     Text('${allApiMarker[0]['installedSystemList'][i]['villageName']}, ${allApiMarker[0]['installedSystemList'][i]['blockName']}, ${allApiMarker[0]['installedSystemList'][i]['districtName']}',style: TextStyle(fontSize: 10,),),
 
@@ -442,8 +526,9 @@ class _viewLocationsState extends State<viewLocations> {
                       padding: const EdgeInsets.only(bottom: 10,left: 10,right: 10),
                       child: InkWell(
                         child: normalButton(name: 'SHOW MORE',height:35,width: 100,bordeRadious: 10,fontSize:10,textColor: Colors.white,bckColor: appcolors.greenTextColor,),
-                        onTap: (){
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => viewLocationFullDetails(
+                        onTap: () async {
+                          bool updateUid= false;
+                          updateUid=await Navigator.of(context).push(MaterialPageRoute(builder: (context) => viewLocationFullDetails(
                             '${allApiMarker[0]['installedSystemList'][i]['uidKey']}',
                             '${allApiMarker[0]['installedSystemList'][i]['uidNo']}',
                             '${allApiMarker[0]['installedSystemList'][i]['mobileNo']}',
@@ -462,17 +547,27 @@ class _viewLocationsState extends State<viewLocations> {
                             '${allApiMarker[0]['installedSystemList'][i]['photoPath']}',
                             '${allApiMarker[0]['installedSystemList'][i]['formatPath1']}',
                           )));
+                          print('uuuuuuuuuuuuuuu-->$updateUid');
+
+                          if(updateUid == true){
+                            double latitude=await getCurrentLatitude();
+                            double longitude=await getCurrentLongitude();
+                            getRadiousLatlong(latitude,longitude);
+                            getDistrict();
+                          }
+
                         },
                       ),
                     ),
                   ),
                 ),
-              LatLng(double.parse('${allApiMarker[0]['installedSystemList'][i]['latitude']}'),double.parse('${allApiMarker[0]['installedSystemList'][i]['longitude']}')),
-            );
-          },
-          icon: BitmapDescriptor.fromBytes(markerIcon!),
-        ),
-      );
+                LatLng(double.parse('${allApiMarker[0]['installedSystemList'][i]['latitude']}'),double.parse('${allApiMarker[0]['installedSystemList'][i]['longitude']}')),
+              );
+            },
+            icon: BitmapDescriptor.fromBytes(markerIcon!),
+          ),
+        );
+      }
     }
     setState(() {});
   }
@@ -486,8 +581,7 @@ class _viewLocationsState extends State<viewLocations> {
 
 
   Future<void> getRadiousLatlong(double lati,double longi) async {
-    progressDialog1=nDialog.nProgressDialog(context);
-    progressDialog1.show();
+    setState(() {scroll=true;});
     lat=lati;
     long=longi;
     markerr.clear();
@@ -507,13 +601,12 @@ class _viewLocationsState extends State<viewLocations> {
       allApiMarker=results;
       print('llllllllll--->${results.length}');
       showMarkers();
-      progressDialog1.dismiss();
-      setState(() {});
+      setState(() {scroll=false;});
 
     }
     else {
       toasts().redToastLong('Server Error');
-      progressDialog1.dismiss();
+      setState(() {scroll=false;});
     }
   }
 
@@ -536,7 +629,6 @@ class _viewLocationsState extends State<viewLocations> {
       //progressDialog2.dismiss();
     }
   }
-
 
   Future<void> getBlock() async {
     progressDialog3=nDialog.nProgressDialog(context);
@@ -563,9 +655,11 @@ class _viewLocationsState extends State<viewLocations> {
     }
   }
 
-  Future<void> getUidByDistrictBlobk() async {
-    progressDialog4=nDialog.nProgressDialog(context);
-    progressDialog4.show();
+
+  Future<void> getUidByDistrictBlock() async {
+    setState(() {scroll=true;});
+    markerr.clear();
+
     var headers = {
       'Authorization': 'Bearer $userToken'
     };
@@ -580,13 +674,14 @@ class _viewLocationsState extends State<viewLocations> {
       print(await 'aaaaaaaaa-----${results}');
       allApiMarker=results;
       showMarkers();
-      progressDialog4.dismiss();
-      setState(() {});
+      setState(() {scroll=false;});
     }
     else {
       toasts().redToastLong('Server Error');
-      progressDialog4.dismiss();
+      setState(() {scroll=false;});
     }
   }
 
+
 }
+
