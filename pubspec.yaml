@@ -51,6 +51,8 @@ dependencies:
   image_picker: ^1.0.2
   ndialog: ^4.3.1
   custom_navigation_bar: ^0.8.2
+  flutter_pdfview: ^1.2.5
+  extended_image: ^8.2.0
   url_launcher:
   dropdown_button2:
   http:
