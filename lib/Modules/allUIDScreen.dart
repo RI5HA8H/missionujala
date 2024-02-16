@@ -77,447 +77,455 @@ class _allUIDScreenState extends State<allUIDScreen> {
 
 
   @override
-  Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => viewLocations()), (Route<dynamic> route) => false);
-        return false;
-      },
-      child: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          appBar: appBar(),
-          drawer: drawer(),
-          body: Container(
-            color: appcolors.screenBckColor,
-            child: scroll1 ? Center(child: CircularProgressIndicator()) : Container(
-              padding: EdgeInsets.only(left: 10,right: 10,top: 10),
-              child: Column(
+  Widget build(BuildContext context){
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: appBar(),
+        drawer: drawer(),
+        body: scroll1 ? Center(child: CircularProgressIndicator()) : Container(
+          child: NestedScrollView(
+            // The headerSliverBuilder callback defines the sliver widgets in the header
+            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+              return <Widget>[
+                // SliverAppBar is the header that remains visible while scrolling
+                SliverAppBar(
+                  expandedHeight: MediaQuery.of(context).size.height*0.6,
+                  floating: false,
+                  elevation: 0,
+                  forceElevated: true,
+                  pinned: false,
+                  shadowColor: Colors.transparent,
+                  automaticallyImplyLeading: false,
+                  flexibleSpace: FlexibleSpaceBar(
+                    collapseMode: CollapseMode.pin,
+                    background: Container(
+                      padding: EdgeInsets.only(left: 10,right: 10),
+                      child: Column(
+                        children: [
+                          SizedBox(height: 15,),
+                          Container(
+                            height: 45,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(
+                                color: Color(0xffC5C5C5),
+                                width: 0.5,
+                              ),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton2(
+                                isExpanded: true,
+                                hint: Text('Select Financial Year',style: TextStyle(fontSize: 12,),),
+                                iconStyleData: IconStyleData(
+                                  icon: Padding(
+                                    padding: const EdgeInsets.only(right: 16),
+                                    child: Icon(Icons.keyboard_arrow_down),
+                                  ),
+                                ),
+                                dropdownStyleData: DropdownStyleData(
+                                  elevation: 1,
+                                  maxHeight: MediaQuery.of(context).size.height/2,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.grey[50],
+                                  ),
+                                ),
+                                buttonStyleData: ButtonStyleData(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                items: financialTypeItem.map((item1) {
+                                  return DropdownMenuItem(
+                                    value: item1['finYear'],
+                                    child: Container(width: MediaQuery.of(context).size.width/2,child: Text(item1['finYear'],style: TextStyle(fontSize: 12),maxLines: 1,overflow: TextOverflow.ellipsis,)),
+                                  );
+                                }).toList(),
+                                onChanged: (newVal1) {
+                                  setState(() {
+                                    financialDropdownValue = newVal1;
+                                    print('llllllllll----$financialDropdownValue');
+
+                                    schemsTypeItem.clear();
+                                    purchaseTypeItem.clear();
+                                    districtsTypeItem.clear();
+                                    blocksTypeItem.clear();
+                                    villagesTypeItem.clear();
+
+                                    schemsDropdownValue=null;
+                                    purchaseDropdownValue=null;
+                                    districtsDropdownValue=null;
+                                    blocksDropdownValue=null;
+                                    villagesDropdownValue=null;
+
+                                    getSchemes();
+                                  });
+                                },
+                                value: financialDropdownValue,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 10,),
+                          Container(
+                            height: 45,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(
+                                color: Color(0xffC5C5C5),
+                                width: 0.5,
+                              ),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton2(
+                                isExpanded: true,
+                                hint: Text('Select Scheme',style: TextStyle(fontSize: 12,),),
+                                iconStyleData: IconStyleData(
+                                  icon: Padding(
+                                    padding: const EdgeInsets.only(right: 16),
+                                    child: Icon(Icons.keyboard_arrow_down),
+                                  ),
+                                ),
+                                dropdownStyleData: DropdownStyleData(
+                                  elevation: 1,
+                                  maxHeight: MediaQuery.of(context).size.height/2,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.grey[50],
+                                  ),
+                                ),
+                                buttonStyleData: ButtonStyleData(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                items: schemsTypeItem.map((item2) {
+                                  return DropdownMenuItem(
+                                    value: item2['schemeKey'],
+                                    child: Container(width: MediaQuery.of(context).size.width/1.3,child: Text(item2['schemeName'],style: TextStyle(fontSize: 12),maxLines: 2,overflow: TextOverflow.ellipsis,)),
+                                  );
+                                }).toList(),
+                                onChanged: (newVal2) {
+                                  setState(() {
+                                    schemsDropdownValue = newVal2;
+                                    print('llllllllll----$schemsDropdownValue');
+
+                                    purchaseTypeItem.clear();
+                                    districtsTypeItem.clear();
+                                    blocksTypeItem.clear();
+                                    villagesTypeItem.clear();
+
+                                    purchaseDropdownValue=null;
+                                    districtsDropdownValue=null;
+                                    blocksDropdownValue=null;
+                                    villagesDropdownValue=null;
+
+                                    getPurchaseOrder();
+                                  });
+                                },
+                                value: schemsDropdownValue,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 10,),
+                          Container(
+                            height: 45,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(
+                                color: Color(0xffC5C5C5),
+                                width: 0.5,
+                              ),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton2(
+                                isExpanded: true,
+                                hint: Text('Select Purchase Order',style: TextStyle(fontSize: 12,),),
+                                iconStyleData: IconStyleData(
+                                  icon: Padding(
+                                    padding: const EdgeInsets.only(right: 16),
+                                    child: Icon(Icons.keyboard_arrow_down),
+                                  ),
+                                ),
+                                dropdownStyleData: DropdownStyleData(
+                                  elevation: 1,
+                                  maxHeight: MediaQuery.of(context).size.height/2,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.grey[50],
+                                  ),
+                                ),
+                                buttonStyleData: ButtonStyleData(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                items: purchaseTypeItem.map((item3) {
+                                  return DropdownMenuItem(
+                                    value: item3['podKey'].toString()+'_'+item3['purchaseOrderKey'].toString(),
+                                    child: Container(width: MediaQuery.of(context).size.width/1.3,child: Text(item3['orderNo'],style: TextStyle(fontSize: 12),maxLines: 2,overflow: TextOverflow.ellipsis,)),
+                                  );
+                                }).toList(),
+                                onChanged: (newVal3) {
+                                  setState(() {
+                                    enableScroll=true;
+                                    purchaseDropdownValue = newVal3.toString();
+                                    purchaseOrderKey=purchaseDropdownValue.toString().split('_')[1];
+                                    print('llllllllll----$purchaseOrderKey');
+
+                                    districtsTypeItem.clear();
+                                    blocksTypeItem.clear();
+                                    villagesTypeItem.clear();
+
+                                    districtsDropdownValue=null;
+                                    blocksDropdownValue=null;
+                                    villagesDropdownValue=null;
+
+                                    getDistricts();
+                                  });
+                                },
+                                value: enableScroll ? purchaseDropdownValue : null,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 10,),
+                          Container(
+                            height: 45,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(
+                                color: Color(0xffC5C5C5),
+                                width: 0.5,
+                              ),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton2(
+                                isExpanded: true,
+                                hint: Text('Select District',style: TextStyle(fontSize: 12,),),
+                                iconStyleData: IconStyleData(
+                                  icon: Padding(
+                                    padding: const EdgeInsets.only(right: 16),
+                                    child: Icon(Icons.keyboard_arrow_down),
+                                  ),
+                                ),
+                                dropdownStyleData: DropdownStyleData(
+                                  elevation: 1,
+                                  maxHeight: MediaQuery.of(context).size.height/2,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.grey[50],
+                                  ),
+                                ),
+                                buttonStyleData: ButtonStyleData(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                items: districtsTypeItem.map((item4) {
+                                  return DropdownMenuItem(
+                                    value: item4['districtKey'],
+                                    child: Container(width: MediaQuery.of(context).size.width/2,child: Text(item4['districtName'],style: TextStyle(fontSize: 12),maxLines: 1,overflow: TextOverflow.ellipsis,)),
+                                  );
+                                }).toList(),
+                                onChanged: (newVal4) {
+                                  setState(() {
+                                    districtsDropdownValue = newVal4;
+                                    print('llllllllll----$districtsDropdownValue');
+
+                                    blocksTypeItem.clear();
+                                    villagesTypeItem.clear();
+
+                                    blocksDropdownValue=null;
+                                    villagesDropdownValue=null;
+
+                                    getBlocks();
+                                  });
+                                },
+                                value: districtsDropdownValue,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 10,),
+                          Container(
+                            height: 45,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(
+                                color: Color(0xffC5C5C5),
+                                width: 0.5,
+                              ),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton2(
+                                isExpanded: true,
+                                hint: Text('Select Block',style: TextStyle(fontSize: 12,),),
+                                iconStyleData: IconStyleData(
+                                  icon: Padding(
+                                    padding: const EdgeInsets.only(right: 16),
+                                    child: Icon(Icons.keyboard_arrow_down),
+                                  ),
+                                ),
+                                dropdownStyleData: DropdownStyleData(
+                                  elevation: 1,
+                                  maxHeight: MediaQuery.of(context).size.height/2,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.grey[50],
+                                  ),
+                                ),
+                                buttonStyleData: ButtonStyleData(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                items: blocksTypeItem.map((item5) {
+                                  return DropdownMenuItem(
+                                    value: item5['blockKey'],
+                                    child: Container(width: MediaQuery.of(context).size.width/2,child: Text(item5['blockName'],style: TextStyle(fontSize: 12),maxLines: 1,overflow: TextOverflow.ellipsis,)),
+                                  );
+                                }).toList(),
+                                onChanged: (newVal5) {
+                                  setState(() {
+                                    blocksDropdownValue = newVal5;
+                                    print('llllllllll----$blocksDropdownValue');
+
+                                    villagesTypeItem.clear();
+
+                                    villagesDropdownValue=null;
+
+                                    getVillages();
+                                  });
+                                },
+                                value: blocksDropdownValue,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 10,),
+                          Container(
+                            height: 45,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(
+                                color: Color(0xffC5C5C5),
+                                width: 0.5,
+                              ),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton2(
+                                isExpanded: true,
+                                hint: Text('Select Village',style: TextStyle(fontSize: 12,),),
+                                iconStyleData: IconStyleData(
+                                  icon: Padding(
+                                    padding: const EdgeInsets.only(right: 16),
+                                    child: Icon(Icons.keyboard_arrow_down),
+                                  ),
+                                ),
+                                dropdownStyleData: DropdownStyleData(
+                                  elevation: 1,
+                                  maxHeight: MediaQuery.of(context).size.height/2,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.grey[50],
+                                  ),
+                                ),
+                                buttonStyleData: ButtonStyleData(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                items: villagesTypeItem.map((item6) {
+                                  return DropdownMenuItem(
+                                    value: item6['villageName'],
+                                    child: Container(width: MediaQuery.of(context).size.width/2,child: Text(item6['villageName'],style: TextStyle(fontSize: 12),maxLines: 1,overflow: TextOverflow.ellipsis,)),
+                                  );
+                                }).toList(),
+                                onChanged: (newVal6) {
+                                  setState(() {
+                                    villagesDropdownValue = newVal6;
+                                    print('llllllllll----$villagesDropdownValue');
+                                  });
+                                },
+                                value: villagesDropdownValue,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 10,),
+                          InkWell(
+                            child: normalButton(name: 'Search',height:45,bordeRadious: 20,fontSize:14,textColor: Colors.white,bckColor: appcolors.greenTextColor,),
+                            onTap: (){
+                              setState(() {
+                                if(financialDropdownValue==null || schemsDropdownValue==null || purchaseDropdownValue==null || districtsDropdownValue==null ){
+                                  toasts().redToastLong('Proper fill the datails');
+                                }else{
+                                  getInstalledList();
+                                }
+                              });
+                            },
+                          ),
+                          SizedBox(height: 10,),
+
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                SliverPersistentHeader(
+                  pinned: true,
+                  delegate: MySliverPersistentHeaderDelegate(
+                    minHeight: 50.0,
+                    maxHeight: 50.0,
+                    child: Container(
+                      color: appcolors.whiteColor,
+                      child: TabBar(
+                        labelColor: appcolors.primaryColor,
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        labelStyle: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),
+                        tabs: [
+                          Tab(text: 'Pending'),
+                          Tab(text: 'Corrected'),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              ];
+            },
+            // The body contains the scrollable content
+            body:  Container(
+              color: appcolors.screenBckColor,
+              padding: EdgeInsets.only(top: 10),
+              child: TabBarView(
                 children: [
-                  Container(
-                    child: GestureDetector(child: normalButton(name: 'Search Installed System',bckColor: appcolors.buttonColor,textColor: Colors.white,bordeRadious: 10,height: 40,),
-                      onTap: (){
-                        scroll=!scroll;
-                        setState(() {});
-                      },
-                    ),
+                  ListView.builder(
+                    /*shrinkWrap: true,
+                       physics: NeverScrollableScrollPhysics(),*/
+                      itemCount: installedSystemList.length,
+                      itemBuilder: (BuildContext context, int index) => getRow1(index, context)
                   ),
-
-                  scroll ? Column(
-                    children: [
-                      SizedBox(height: 15,),
-                      Container(
-                        height: 45,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(
-                            color: Color(0xffC5C5C5),
-                            width: 0.5,
-                          ),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton2(
-                            isExpanded: true,
-                            hint: Text('Select Financial Year',style: TextStyle(fontSize: 12,),),
-                            iconStyleData: IconStyleData(
-                              icon: Padding(
-                                padding: const EdgeInsets.only(right: 16),
-                                child: Icon(Icons.keyboard_arrow_down),
-                              ),
-                            ),
-                            dropdownStyleData: DropdownStyleData(
-                              elevation: 1,
-                              maxHeight: MediaQuery.of(context).size.height/2,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.grey[50],
-                              ),
-                            ),
-                            buttonStyleData: ButtonStyleData(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.white,
-                              ),
-                            ),
-                            items: financialTypeItem.map((item1) {
-                              return DropdownMenuItem(
-                                value: item1['finYear'],
-                                child: Container(width: MediaQuery.of(context).size.width/2,child: Text(item1['finYear'],style: TextStyle(fontSize: 12),maxLines: 1,overflow: TextOverflow.ellipsis,)),
-                              );
-                            }).toList(),
-                            onChanged: (newVal1) {
-                              setState(() {
-                                financialDropdownValue = newVal1;
-                                print('llllllllll----$financialDropdownValue');
-
-                                schemsTypeItem.clear();
-                                purchaseTypeItem.clear();
-                                districtsTypeItem.clear();
-                                blocksTypeItem.clear();
-                                villagesTypeItem.clear();
-
-                                schemsDropdownValue=null;
-                                purchaseDropdownValue=null;
-                                districtsDropdownValue=null;
-                                blocksDropdownValue=null;
-                                villagesDropdownValue=null;
-
-                                getSchemes();
-                              });
-                            },
-                            value: financialDropdownValue,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10,),
-                      Container(
-                        height: 45,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(
-                            color: Color(0xffC5C5C5),
-                            width: 0.5,
-                          ),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton2(
-                            isExpanded: true,
-                            hint: Text('Select Scheme',style: TextStyle(fontSize: 12,),),
-                            iconStyleData: IconStyleData(
-                              icon: Padding(
-                                padding: const EdgeInsets.only(right: 16),
-                                child: Icon(Icons.keyboard_arrow_down),
-                              ),
-                            ),
-                            dropdownStyleData: DropdownStyleData(
-                              elevation: 1,
-                              maxHeight: MediaQuery.of(context).size.height/2,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.grey[50],
-                              ),
-                            ),
-                            buttonStyleData: ButtonStyleData(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.white,
-                              ),
-                            ),
-                            items: schemsTypeItem.map((item2) {
-                              return DropdownMenuItem(
-                                value: item2['schemeKey'],
-                                child: Container(width: MediaQuery.of(context).size.width/1.3,child: Text(item2['schemeName'],style: TextStyle(fontSize: 12),maxLines: 2,overflow: TextOverflow.ellipsis,)),
-                              );
-                            }).toList(),
-                            onChanged: (newVal2) {
-                              setState(() {
-                                schemsDropdownValue = newVal2;
-                                print('llllllllll----$schemsDropdownValue');
-
-                                purchaseTypeItem.clear();
-                                districtsTypeItem.clear();
-                                blocksTypeItem.clear();
-                                villagesTypeItem.clear();
-
-                                purchaseDropdownValue=null;
-                                districtsDropdownValue=null;
-                                blocksDropdownValue=null;
-                                villagesDropdownValue=null;
-
-                                getPurchaseOrder();
-                              });
-                            },
-                            value: schemsDropdownValue,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10,),
-                      Container(
-                        height: 45,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(
-                            color: Color(0xffC5C5C5),
-                            width: 0.5,
-                          ),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton2(
-                            isExpanded: true,
-                            hint: Text('Select Purchase Order',style: TextStyle(fontSize: 12,),),
-                            iconStyleData: IconStyleData(
-                              icon: Padding(
-                                padding: const EdgeInsets.only(right: 16),
-                                child: Icon(Icons.keyboard_arrow_down),
-                              ),
-                            ),
-                            dropdownStyleData: DropdownStyleData(
-                              elevation: 1,
-                              maxHeight: MediaQuery.of(context).size.height/2,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.grey[50],
-                              ),
-                            ),
-                            buttonStyleData: ButtonStyleData(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.white,
-                              ),
-                            ),
-                            items: purchaseTypeItem.map((item3) {
-                              return DropdownMenuItem(
-                                value: item3['podKey'].toString()+'_'+item3['purchaseOrderKey'].toString(),
-                                child: Container(width: MediaQuery.of(context).size.width/1.3,child: Text(item3['orderNo'],style: TextStyle(fontSize: 12),maxLines: 2,overflow: TextOverflow.ellipsis,)),
-                              );
-                            }).toList(),
-                            onChanged: (newVal3) {
-                              setState(() {
-                                enableScroll=true;
-                                purchaseDropdownValue = newVal3.toString();
-                                purchaseOrderKey=purchaseDropdownValue.toString().split('_')[1];
-                                print('llllllllll----$purchaseOrderKey');
-
-                                districtsTypeItem.clear();
-                                blocksTypeItem.clear();
-                                villagesTypeItem.clear();
-
-                                districtsDropdownValue=null;
-                                blocksDropdownValue=null;
-                                villagesDropdownValue=null;
-
-                                getDistricts();
-                              });
-                            },
-                            value: enableScroll ? purchaseDropdownValue : null,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10,),
-                      Container(
-                        height: 45,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(
-                            color: Color(0xffC5C5C5),
-                            width: 0.5,
-                          ),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton2(
-                            isExpanded: true,
-                            hint: Text('Select District',style: TextStyle(fontSize: 12,),),
-                            iconStyleData: IconStyleData(
-                              icon: Padding(
-                                padding: const EdgeInsets.only(right: 16),
-                                child: Icon(Icons.keyboard_arrow_down),
-                              ),
-                            ),
-                            dropdownStyleData: DropdownStyleData(
-                              elevation: 1,
-                              maxHeight: MediaQuery.of(context).size.height/2,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.grey[50],
-                              ),
-                            ),
-                            buttonStyleData: ButtonStyleData(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.white,
-                              ),
-                            ),
-                            items: districtsTypeItem.map((item4) {
-                              return DropdownMenuItem(
-                                value: item4['districtKey'],
-                                child: Container(width: MediaQuery.of(context).size.width/2,child: Text(item4['districtName'],style: TextStyle(fontSize: 12),maxLines: 1,overflow: TextOverflow.ellipsis,)),
-                              );
-                            }).toList(),
-                            onChanged: (newVal4) {
-                              setState(() {
-                                districtsDropdownValue = newVal4;
-                                print('llllllllll----$districtsDropdownValue');
-
-                                blocksTypeItem.clear();
-                                villagesTypeItem.clear();
-
-                                blocksDropdownValue=null;
-                                villagesDropdownValue=null;
-
-                                getBlocks();
-                              });
-                            },
-                            value: districtsDropdownValue,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10,),
-                      Container(
-                        height: 45,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(
-                            color: Color(0xffC5C5C5),
-                            width: 0.5,
-                          ),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton2(
-                            isExpanded: true,
-                            hint: Text('Select Block',style: TextStyle(fontSize: 12,),),
-                            iconStyleData: IconStyleData(
-                              icon: Padding(
-                                padding: const EdgeInsets.only(right: 16),
-                                child: Icon(Icons.keyboard_arrow_down),
-                              ),
-                            ),
-                            dropdownStyleData: DropdownStyleData(
-                              elevation: 1,
-                              maxHeight: MediaQuery.of(context).size.height/2,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.grey[50],
-                              ),
-                            ),
-                            buttonStyleData: ButtonStyleData(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.white,
-                              ),
-                            ),
-                            items: blocksTypeItem.map((item5) {
-                              return DropdownMenuItem(
-                                value: item5['blockKey'],
-                                child: Container(width: MediaQuery.of(context).size.width/2,child: Text(item5['blockName'],style: TextStyle(fontSize: 12),maxLines: 1,overflow: TextOverflow.ellipsis,)),
-                              );
-                            }).toList(),
-                            onChanged: (newVal5) {
-                              setState(() {
-                                blocksDropdownValue = newVal5;
-                                print('llllllllll----$blocksDropdownValue');
-
-                                villagesTypeItem.clear();
-
-                                villagesDropdownValue=null;
-
-                                getVillages();
-                              });
-                            },
-                            value: blocksDropdownValue,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10,),
-                      Container(
-                        height: 45,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(
-                            color: Color(0xffC5C5C5),
-                            width: 0.5,
-                          ),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton2(
-                            isExpanded: true,
-                            hint: Text('Select Village',style: TextStyle(fontSize: 12,),),
-                            iconStyleData: IconStyleData(
-                              icon: Padding(
-                                padding: const EdgeInsets.only(right: 16),
-                                child: Icon(Icons.keyboard_arrow_down),
-                              ),
-                            ),
-                            dropdownStyleData: DropdownStyleData(
-                              elevation: 1,
-                              maxHeight: MediaQuery.of(context).size.height/2,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.grey[50],
-                              ),
-                            ),
-                            buttonStyleData: ButtonStyleData(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.white,
-                              ),
-                            ),
-                            items: villagesTypeItem.map((item6) {
-                              return DropdownMenuItem(
-                                value: item6['villageName'],
-                                child: Container(width: MediaQuery.of(context).size.width/2,child: Text(item6['villageName'],style: TextStyle(fontSize: 12),maxLines: 1,overflow: TextOverflow.ellipsis,)),
-                              );
-                            }).toList(),
-                            onChanged: (newVal6) {
-                              setState(() {
-                                villagesDropdownValue = newVal6;
-                                print('llllllllll----$villagesDropdownValue');
-                              });
-                            },
-                            value: villagesDropdownValue,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10,),
-                      InkWell(
-                        child: normalButton(name: 'Search',height:45,bordeRadious: 20,fontSize:14,textColor: Colors.white,bckColor: appcolors.greenTextColor,),
-                        onTap: (){
-                          setState(() {
-                            if(financialDropdownValue==null || schemsDropdownValue==null || purchaseDropdownValue==null || districtsDropdownValue==null || blocksDropdownValue==null || villagesDropdownValue==null){
-                              toasts().redToastLong('Proper fill the datails');
-                            }else{
-                              getInstalledList();
-                            }
-                          });
-                        },
-                      ),
-                      SizedBox(height: 10,),
-
-                    ],
-                  ) : Container(),
-
-                  installedSystemList.isEmpty ? Container() : Container(
-                    color: Colors.white60,
-                    margin: EdgeInsets.only(left: 10,right: 10,bottom: 5),
-                    child: TabBar(
-                      labelColor: appcolors.primaryColor,
-                      indicatorSize: TabBarIndicatorSize.tab,
-                      labelStyle: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),
-                      tabs: [
-                        Tab(text: 'Pending'),
-                        Tab(text: 'Corrected'),
-                      ],
-                    ),
+                  ListView.builder(
+                    /*shrinkWrap: true,
+                       physics: NeverScrollableScrollPhysics(),*/
+                      itemCount: installedSystemList.length,
+                      itemBuilder: (BuildContext context, int index) => getRow2(index, context)
                   ),
-
-                  Container(
-                    height: double.infinity,
-                    child: TabBarView(
-                      children: [
-                        ListView.builder(
-                            itemCount: installedSystemList.length,
-                            itemBuilder: (BuildContext context, int index) => getRow1(index, context)
-                        ),
-                        ListView.builder(
-                            itemCount: installedSystemList.length,
-                            itemBuilder: (BuildContext context, int index) => getRow2(index, context)
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  SizedBox(height: 5,),
                 ],
               ),
             ),
           ),
-          bottomNavigationBar: bottomNavigationBar(1),
         ),
+        bottomNavigationBar: bottomNavigationBar(1),
       ),
     );
   }
@@ -541,7 +549,7 @@ class _allUIDScreenState extends State<allUIDScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
 
-                          Text('UID Number : ${installedSystemList[index]['uidNo']}',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black),),
+                          Text('UID No.: ${installedSystemList[index]['uidNo']}',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black),),
                           Text('Installation Date : ${installedSystemList[index]['installationDate']}',style: TextStyle(fontSize: 14,color: Colors.black)),
                           Text('${installedSystemList[index]['placeName']},${installedSystemList[index]['villageName']}',style: TextStyle(fontSize: 12,color: Colors.black)),
                         ],
@@ -567,6 +575,9 @@ class _allUIDScreenState extends State<allUIDScreen> {
                       installedSystemList[index]['longitude'],
                       installedSystemList[index]['photoPath'],
                       installedSystemList[index]['formatPath1'],
+                      installedSystemList[index]['formatPath1Extn'],
+                      installedSystemList[index]['schemeName'],
+                      installedSystemList[index]['serviceValidTill'],
                     )));
                     print('uuuuuuuuuuuuuuu-->$updateUid');
 
@@ -610,7 +621,7 @@ class _allUIDScreenState extends State<allUIDScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
 
-                          Text('UID Number : ${installedSystemList[index]['uidNo']}',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black),),
+                          Text('UID No.: ${installedSystemList[index]['uidNo']}',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black),),
                           Text('Installation Date : ${installedSystemList[index]['installationDate']}',style: TextStyle(fontSize: 14,color: Colors.black)),
                           Text('${installedSystemList[index]['placeName']},${installedSystemList[index]['villageName']}',style: TextStyle(fontSize: 12,color: Colors.black)),
                         ],
@@ -636,6 +647,9 @@ class _allUIDScreenState extends State<allUIDScreen> {
                       installedSystemList[index]['longitude'],
                       installedSystemList[index]['photoPath'],
                       installedSystemList[index]['formatPath1'],
+                      installedSystemList[index]['formatPath1Extn'],
+                      installedSystemList[index]['schemeName'],
+                      installedSystemList[index]['serviceValidTill'],
                     )));
                     print('uuuuuuuuuuuuuuu-->$updateUid');
 
@@ -820,10 +834,17 @@ class _allUIDScreenState extends State<allUIDScreen> {
   Future<void> getInstalledList() async {
     setState(() {scroll1 = true;});
 
+    if(villagesDropdownValue==null){
+      villagesDropdownValue='Select Village';
+    }
+    if(blocksDropdownValue==null){
+      blocksDropdownValue=0;
+    }
+
     var headers = {
       'Authorization': 'Bearer $userToken'
     };
-    print(await 'aaaaaaaaa-----${urls().base_url + allAPI().installedAllListURL+'/$purchaseOrderKey/$districtsDropdownValue/$blocksDropdownValue/$villagesDropdownValue'}');
+    debugPrint(await 'aaaaaaaaa-----${urls().base_url + allAPI().installedAllListURL+'/$purchaseOrderKey/$districtsDropdownValue/$blocksDropdownValue/$villagesDropdownValue'}');
 
     var request = http.Request('GET', Uri.parse(urls().base_url + allAPI().installedAllListURL+'/$purchaseOrderKey/$districtsDropdownValue/$blocksDropdownValue/$villagesDropdownValue'));
     request.headers.addAll(headers);
@@ -842,4 +863,36 @@ class _allUIDScreenState extends State<allUIDScreen> {
     }
   }
 
+}
+class MySliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
+  final double minHeight;
+  final double maxHeight;
+  final Widget child;
+
+  MySliverPersistentHeaderDelegate({
+    required this.minHeight,
+    required this.maxHeight,
+    required this.child,
+  });
+
+  @override
+  double get minExtent => minHeight;
+
+  @override
+  double get maxExtent => maxHeight;
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return SizedBox.expand(
+      child: child,
+    );
+  }
+
+  @override
+  bool shouldRebuild(MySliverPersistentHeaderDelegate oldDelegate) {
+    return maxHeight != oldDelegate.maxHeight ||
+        minHeight != oldDelegate.minHeight ||
+        child != oldDelegate.child;
+  }
 }

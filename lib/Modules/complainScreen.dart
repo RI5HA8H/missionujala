@@ -7,6 +7,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:missionujala/Resource/Colors/app_colors.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import '../Resource/StringLocalization/titles.dart';
+import '../Resource/Utiles/appBar.dart';
+import '../Resource/Utiles/drawer.dart';
 import '../Resource/Utiles/editText.dart';
 import '../Resource/Utiles/normalButton.dart';
 import '../Resource/Utiles/simpleEditText.dart';
@@ -37,10 +39,8 @@ class _complaintScreenState extends State<complaintScreen> {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController reportLatController = TextEditingController();
   TextEditingController reportLongController = TextEditingController();
-  File? galleryFile1;
-  File? galleryFile2;
-  final picker1 = ImagePicker();
-  final picker2 = ImagePicker();
+  File? galleryFile;
+  final picker = ImagePicker();
 
 
   @override
@@ -54,20 +54,23 @@ class _complaintScreenState extends State<complaintScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        leadingWidth: 30,
-        title: Text('${allTitle.userComplaint}',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.white),),
-      ),
+      appBar: appBar(),
+      drawer: drawer(),
       body: SingleChildScrollView(
         child: Container(
           color: appcolors.screenBckColor,
           child: Container(
             padding: EdgeInsets.all(20),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 30,),
-        
+                SizedBox(height: 10,),
+
+                Text('Is Light Working ?',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.black54),),
+
+                SizedBox(height: 10,),
+
                 ToggleSwitch(
                   minWidth: 100.0,
                   cornerRadius: 20.0,
@@ -75,17 +78,17 @@ class _complaintScreenState extends State<complaintScreen> {
                   activeFgColor: Colors.white,
                   inactiveBgColor: Colors.grey,
                   inactiveFgColor: Colors.white,
-                  initialLabelIndex: 1,
+                  initialLabelIndex: 0,
                   totalSwitches: 2,
-                  labels: ['ON', 'OFF'],
+                  labels: ['Yes', 'No'],
                   radiusStyle: true,
                   onToggle: (index) {
                     print('switched to: $index');
                   },
                 ),
-        
-                SizedBox(height: 20,),
-        
+
+                SizedBox(height: 30,),
+
                 editTextSimple(
                   controllers: titleController,
                   focusNode: titleFocusNode,
@@ -95,6 +98,7 @@ class _complaintScreenState extends State<complaintScreen> {
                   maxlength: 50,
                   fontSize: 14,
                   readOnly: true,
+                  etBckgoundColor: appcolors.editTextBckColor,
                 ),
 
                 SizedBox(height: 10,),
@@ -123,7 +127,7 @@ class _complaintScreenState extends State<complaintScreen> {
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         counterText: '',
                         labelText: '',
-                        hintText:'Enter Details Here',
+                        hintText:'Enter your comment',
                         hintStyle: TextStyle(fontSize: 14)
                     ),
                   ),
@@ -131,127 +135,48 @@ class _complaintScreenState extends State<complaintScreen> {
 
                 SizedBox(height: 10,),
                 Container(
-                  height: 100,
+                  height: 150,
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(5.0), // Adjust the radius as needed
+                    borderRadius: BorderRadius.circular(5.0),
                   ),
                   child:Padding(
                     padding: const EdgeInsets.all(10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        InkWell(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(5),
-                            child: Container(
-                              width: MediaQuery.of(context).size.width*0.3,
-                              color: Colors.grey[200],
-                              child: galleryFile1 == null ?  Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.add_a_photo,color: Colors.black,size: 40,),
-                                  Text('Upload',style: TextStyle(fontSize: 10),),
-                                ],
-                              ) : Stack(
-                                alignment: Alignment.bottomRight,
-                                children: [
-                                  Center(child: Image.file(galleryFile1!)),
-                                  Positioned(
-                                      child: Icon(Icons.change_circle_outlined,size: 30,color: appcolors.primaryColor,)
-                                  ),
-                                ],
+                    child: InkWell(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(5),
+                        child: Container(
+                          width: double.infinity,
+                          color: Colors.grey[200],
+                          child: galleryFile == null ?  Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(Icons.add_a_photo,color: Colors.black,size: 40,),
+                              Text('Upload',style: TextStyle(fontSize: 10),),
+                            ],
+                          ) : Stack(
+                            alignment: Alignment.bottomRight,
+                            children: [
+                              Center(child: Image.file(galleryFile!)),
+                              Positioned(
+                                  child: Icon(Icons.change_circle_outlined,size: 30,color: appcolors.primaryColor,)
                               ),
-                            ),
+                            ],
                           ),
-                          onTap: (){
-                            _showPicker1(context: context);
-                          },
                         ),
-                        InkWell(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(5),
-                            child: Container(
-                              width: MediaQuery.of(context).size.width*0.3,
-                              color: Colors.grey[200],
-                                child: galleryFile2 == null ?  Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.add_a_photo,color: Colors.black,size: 40,),
-                                    Text('Upload',style: TextStyle(fontSize: 10),),
-                                  ],
-                                ) : Stack(
-                                  alignment: Alignment.bottomRight,
-                                  children: [
-                                    Center(child: Image.file(galleryFile2!)),
-                                    Positioned(
-                                        child: Icon(Icons.change_circle_outlined,size: 30,color: appcolors.primaryColor,)
-                                    ),
-                                  ],
-                                ),
-                            ),
-                          ),
-                          onTap: (){
-                            _showPicker2(context: context);
-                          },
-                        ),
-                      ],
+                      ),
+                      onTap: (){
+                        _showPicker(context: context);
+                      },
                     ),
                   ),
                 ),
-
-                SizedBox(height: 10,),
-                Container(
-                  child: GestureDetector(
-                      child: normalButton(name: 'Get Latitude & Longitude',bckColor: Colors.grey,height: 40,bordeRadious: 5,),
-                      onTap: () async {
-                        setState(() {scrollLatLong=true;});
-                        double lat=await getCurrentLatitude();
-                        double long=await getCurrentLongitude();
-                        reportLatController.text='$lat';
-                        reportLongController.text='$long';
-                        setState(() {isLatLong=true;scrollLatLong=false;});
-                      }
-                  ),
-                ),
-
-
-                SizedBox(height: 15,),
-                scrollLatLong ? Center(child: CircularProgressIndicator()) : isLatLong ? Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    editTextSimple(
-                      cWidth: MediaQuery.of(context).size.width*0.4,
-                      controllers: reportLatController,
-                      focusNode: reportLatFocusNode,
-                      hint: 'Enter Latitude',
-                      label: 'Latitude',
-                      keyboardTypes: TextInputType.text,
-                      maxlength: 50,
-                      fontSize: 14,
-                      readOnly: true,
-                    ),
-                    editTextSimple(
-                      cWidth: MediaQuery.of(context).size.width*0.4,
-                      controllers: reportLongController,
-                      focusNode: reportLongFocusNode,
-                      hint: 'Enter Longitude',
-                      label: 'Longitude',
-                      keyboardTypes: TextInputType.text,
-                      maxlength: 50,
-                      fontSize: 14,
-                      readOnly: true,
-                    ),
-                  ],
-                ) : Container(),
 
 
                 SizedBox(height: 30,),
                 InkWell(
-                  child: normalButton(name: 'Send',height:45,bordeRadious: 25,fontSize:14,textColor: Colors.black,bckColor: appcolors.primaryTextColor,),
+                  child: normalButton(name: 'Submit',height:45,bordeRadious: 25,fontSize:14,textColor: Colors.white,bckColor: appcolors.buttonColor,),
                   onTap: (){
                     titleFocusNode.unfocus();
                     descriptionFocusNode.unfocus();
@@ -260,14 +185,16 @@ class _complaintScreenState extends State<complaintScreen> {
                     if(titleController.text.isEmpty || descriptionController.text.isEmpty){
                       toasts().redToastLong('Proper fill the details');
                     }else{
-                      titleController.clear();
+                      //titleController.clear();
                       descriptionController.clear();
+                      galleryFile=null;
+
                       toasts().greenToastLong('Send SMS to Related Vendor for the Issue Registered #413827');
                     }
                   },
                 ),
                 SizedBox(height: 50,),
-        
+
               ],
             ),
           ),
@@ -276,21 +203,7 @@ class _complaintScreenState extends State<complaintScreen> {
     );
   }
 
-  Future<double> getCurrentLatitude() async {
-    Position position = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-    );
-    return double.parse(position.latitude.toStringAsFixed(8));
-  }
-
-  Future<double> getCurrentLongitude() async {
-    Position position = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-    );
-    return double.parse(position.longitude.toStringAsFixed(8));
-  }
-
-  void _showPicker1({required BuildContext context,}) {
+  void _showPicker({required BuildContext context,}) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -301,7 +214,7 @@ class _complaintScreenState extends State<complaintScreen> {
                 leading: const Icon(Icons.photo_library),
                 title: const Text('Gallery'),
                 onTap: () {
-                  getImage1(ImageSource.gallery);
+                  getImage(ImageSource.gallery);
                   Navigator.of(context).pop();
                 },
               ),
@@ -309,7 +222,7 @@ class _complaintScreenState extends State<complaintScreen> {
                 leading: const Icon(Icons.photo_camera),
                 title: const Text('Camera'),
                 onTap: () {
-                  getImage1(ImageSource.camera);
+                  getImage(ImageSource.camera);
                   Navigator.of(context).pop();
                 },
               ),
@@ -320,55 +233,18 @@ class _complaintScreenState extends State<complaintScreen> {
     );
   }
 
-  void _showPicker2({required BuildContext context,}) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return SafeArea(
-          child: Wrap(
-            children: <Widget>[
-              ListTile(
-                leading: const Icon(Icons.photo_library),
-                title: const Text('Gallery'),
-                onTap: () {
-                  getImage2(ImageSource.gallery);
-                  Navigator.of(context).pop();
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.photo_camera),
-                title: const Text('Camera'),
-                onTap: () {
-                  getImage2(ImageSource.camera);
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
 
-  Future getImage1(ImageSource img1,) async {
-    final pickedFile1 = await picker1.pickImage(source: img1);
-    XFile? xfilePick1 = pickedFile1;
-    if (xfilePick1 != null) {
-      galleryFile1 = File(pickedFile1!.path);
+
+  Future getImage(ImageSource img,) async {
+    final pickedFile = await picker.pickImage(source: img);
+    XFile? xfilePick = pickedFile;
+    if (xfilePick != null) {
+      galleryFile = File(pickedFile!.path);
       setState(() {isImgOne=false;});
     } else {
       toasts().redToastLong('Nothing is selected');
     }
   }
-  Future getImage2(ImageSource img2,) async {
-    final pickedFile2 = await picker2.pickImage(source: img2);
-    XFile? xfilePick2 = pickedFile2;
-    if (xfilePick2 != null) {
-      galleryFile2 = File(pickedFile2!.path);
-      setState(() {isImgOne=false;});
-    } else {
-    toasts().redToastLong('Nothing is selected');
-    }
-  }
+
 
 }

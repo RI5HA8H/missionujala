@@ -8,6 +8,7 @@ import 'package:missionujala/Modules/viewLocations.dart';
 import 'package:missionujala/Resource/Colors/app_colors.dart';
 import 'package:missionujala/generated/assets.dart';
 import 'package:missionujala/userProfile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../StringLocalization/titles.dart';
 
@@ -26,6 +27,20 @@ class _bottomNavigationBarState extends State<bottomNavigationBar> {
 
   int currentIndex = 0;
   bool selected = false;
+  String loginType='';
+
+  @override
+  void initState() {
+    getUserName();
+    super.initState();
+  }
+
+  getUserName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      loginType = prefs.getString('loginType')!;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +55,10 @@ class _bottomNavigationBarState extends State<bottomNavigationBar> {
           icon: Image.asset(Assets.iconsHome,color: widget.position==0 ? appcolors.primaryThemeColor : appcolors.primaryColor,),
           title: Text(allTitle.home,style: TextStyle(fontSize: 10, color: widget.position==0 ? appcolors.primaryThemeColor : appcolors.primaryColor,fontWeight: FontWeight.bold),),
         ),
+        loginType=='user' ? CustomNavigationBarItem(
+          icon: Image.asset(Assets.iconsComplaint,color: widget.position==1 ? appcolors.primaryThemeColor : appcolors.primaryColor,),
+          title: Text(allTitle.complaint,style: TextStyle(fontSize: 10,color: widget.position==1 ? appcolors.primaryThemeColor : appcolors.primaryColor, fontWeight: FontWeight.bold),),
+        ) :
         CustomNavigationBarItem(
           icon: Image.asset(Assets.iconsUpdateBottomLocation,color: widget.position==1 ? appcolors.primaryThemeColor : appcolors.primaryColor,),
           title: Text(allTitle.updateLocationModule,style: TextStyle(fontSize: 10,color: widget.position==1 ? appcolors.primaryThemeColor : appcolors.primaryColor, fontWeight: FontWeight.bold),),
@@ -58,7 +77,11 @@ class _bottomNavigationBarState extends State<bottomNavigationBar> {
             Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => viewLocations()), (Route<dynamic> route) => false);
           }
           if(currentIndex==1){
-            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => allUIDScreen()), (Route<dynamic> route) => false);
+            if(loginType=='user'){
+              print('Hello I am User');
+            }else{
+              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => allUIDScreen()), (Route<dynamic> route) => false);
+            }
           }
           if(currentIndex==2){
             Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => userProfile()), (Route<dynamic> route) => false);

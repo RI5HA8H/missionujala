@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:missionujala/Modules/allUIDScreen.dart';
 import 'package:missionujala/Resource/Colors/app_colors.dart';
 import 'package:missionujala/Resource/Utiles/appBar.dart';
@@ -28,18 +29,28 @@ import '../venderLoginScreen.dart';
 
 
 class updateLocation extends StatefulWidget {
- var uIdNo;
- var uIdLat;
- var uIdLong;
+  var uIdNo;
+  var uIdLat;
+  var uIdLong;
 
- updateLocation(this.uIdNo,this.uIdLat,this.uIdLong);
+  var uIdPlace;
+  var uIdVillage;
+  var uIdBlock;
+  var uIdDist;
+  var uIdLVTill;
+  var uIdPhotoPath;
+
+
+  updateLocation(this.uIdNo,this.uIdLat,this.uIdLong,this.uIdPlace,this.uIdVillage,this.uIdBlock,this.uIdDist,this.uIdLVTill,this.uIdPhotoPath);
 
   @override
-  State<updateLocation> createState() => _updateLocationState(uIdNo,uIdLat,uIdLong);
+  State<updateLocation> createState() => _updateLocationState(uIdNo,uIdLat,uIdLong,uIdPlace,uIdVillage,uIdBlock,uIdDist,uIdLVTill,uIdPhotoPath);
 }
 
 class _updateLocationState extends State<updateLocation> {
-  _updateLocationState(uIdNo,uIdLat,uIdLong);
+  _updateLocationState(uIdNo,uIdLat,uIdLong,uIdPlace,uIdVillage,uIdBlock,uIdDist,uIdLVTill,uIdPhotoPath);
+
+  CustomInfoWindowController customInfoWindowController2 = CustomInfoWindowController();
 
   Completer<GoogleMapController> _controller = Completer();
   static  CameraPosition _kGooglePlex = CameraPosition(target: LatLng(26.439602610044293, 82.58186811379103), zoom: 20,);
@@ -72,6 +83,7 @@ class _updateLocationState extends State<updateLocation> {
   @override
   void dispose() {
     _controller.isCompleted;
+    customInfoWindowController2.dispose();
     super.dispose();
   }
 
@@ -166,16 +178,73 @@ class _updateLocationState extends State<updateLocation> {
                 ));
                 setState(() {});
               },
-             ) : GoogleMap(
+            ) : GoogleMap(
               mapType: MapType.normal,
               initialCameraPosition: _kGooglePlex,
               markers: <Marker>[
                 Marker(markerId:MarkerId('1'),
-                    position: LatLng(lat, long),
-                    icon: BitmapDescriptor.fromBytes(markerIcon!),
-                    infoWindow: InfoWindow(
-                      title: 'UID NO : ${widget.uIdNo}',
-                    ))
+                  position: LatLng(lat, long),
+                  icon: BitmapDescriptor.fromBytes(markerIcon!),
+                  onTap: () {
+                    customInfoWindowController2.addInfoWindow!(
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(5),
+                        child: Scaffold(
+                          body: Container(
+                            width: 350,
+                            height: 480,
+                            color: Colors.white,
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 60,
+                                      color: Colors.grey[200],
+                                      child: Image.network('${widget.uIdPhotoPath}',width: 60,height: 80,fit: BoxFit.fill,),
+                                    ),
+                                    SizedBox(width: 5,),
+                                    Container(
+                                      width: 190,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text('UID No.: ${widget.uIdNo}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,),),
+                                          SizedBox(height: 2,),
+                                          Text('${widget.uIdPlace}, ${widget.uIdVillage}, ${widget.uIdBlock}, ${widget.uIdDist}',style: TextStyle(fontSize: 12,color: Colors.black),maxLines: 4,overflow: TextOverflow.ellipsis,),
+                                          SizedBox(height: 5,),
+                                          Text('Service Valid till: ${convertDateFormat(widget.uIdLVTill)}',style: TextStyle(fontSize: 12,color: Colors.black,),),
+                                          SizedBox(height: 2,),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+                              ],
+                            ),
+                          ),
+                          bottomNavigationBar: Padding(
+                            padding: const EdgeInsets.only(bottom: 10,left: 10,right: 10),
+                            child: InkWell(
+                              child: normalButton(name: 'SHOW MORE',height:35,width: 100,bordeRadious: 10,fontSize:10,textColor: Colors.white,bckColor: appcolors.greenTextColor,),
+                              onTap: () async {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      LatLng(double.parse('${lat}'),double.parse('${long}')),
+                    );
+                  },
+                )
               ].toSet(),
               onMapCreated: (GoogleMapController controller) async {
                 //_controller = Completer();
@@ -184,9 +253,22 @@ class _updateLocationState extends State<updateLocation> {
                 controller.animateCamera(CameraUpdate.newCameraPosition(
                     CameraPosition(target: LatLng(lat,long), zoom: 18,)
                 ));
+                customInfoWindowController2.googleMapController = controller;
                 setState(() {});
               },
-            )
+              onTap: (position) {
+                customInfoWindowController2.hideInfoWindow!();
+              },
+              onCameraMove: (position) {
+                customInfoWindowController2.onCameraMove!();
+              },
+            ),
+            CustomInfoWindow(
+              controller: customInfoWindowController2,
+              height: 180,
+              width: 280,
+              offset: 50,
+            ),
           ],
         ),
         bottomNavigationBar: Container(
@@ -282,6 +364,7 @@ class _updateLocationState extends State<updateLocation> {
     );
   }
 
+
   Future<void> getLocation() async {
     var status = await Permission.location.request();
 
@@ -339,6 +422,17 @@ class _updateLocationState extends State<updateLocation> {
     );
     return double.parse(position.longitude.toStringAsFixed(8));
   }
+
+  String convertDateFormat(String inputDate) {
+    // Parse the input date
+    DateTime dateTime = DateFormat("dd-MM-yyyy").parse(inputDate);
+
+    // Format the date in the desired format
+    String formattedDate = DateFormat("dd-MMM-yy").format(dateTime);
+
+    return formattedDate;
+  }
+
 
 
 

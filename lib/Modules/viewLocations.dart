@@ -15,9 +15,11 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:in_app_update/in_app_update.dart';
+import 'package:intl/intl.dart';
 import 'package:missionujala/Modules/updateLocation.dart';
 import 'package:missionujala/Modules/viewLocationFullDetails.dart';
 import 'package:missionujala/Resource/Colors/app_colors.dart';
+import 'package:missionujala/userLoginScreen.dart';
 import 'package:missionujala/venderLoginScreen.dart';
 import 'package:ndialog/ndialog.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -224,7 +226,7 @@ class _viewLocationsState extends State<viewLocations> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     InkWell(
-                      child: normalButton(name: 'My Location',width:MediaQuery.of(context).size.width/2.5,height:40,bordeRadious: 10,fontSize:14,textColor: Colors.white,bckColor: appcolors.primaryColor,),
+                      child: normalButton(name: 'Near by',width:MediaQuery.of(context).size.width/2.5,height:40,bordeRadious: 10,fontSize:14,textColor: Colors.white,bckColor: appcolors.primaryColor,),
                       onTap: () async {
                         setState(() {showFilter=false;});
                         double latitude=await getCurrentLatitude();
@@ -394,8 +396,8 @@ class _viewLocationsState extends State<viewLocations> {
           ),
           CustomInfoWindow(
             controller: customInfoWindowController,
-            height: 150,
-            width: 250,
+            height: 180,
+            width: 280,
             offset: 50,
           ),
         ],
@@ -430,7 +432,7 @@ class _viewLocationsState extends State<viewLocations> {
       context: context,barrierDismissible: false,
       builder: (context) => WillPopScope(
         onWillPop: () async {
-          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => venderLoginScreen()), (Route<dynamic> route) => false);
+          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => userLoginScreen()), (Route<dynamic> route) => false);
           return false;
         },
         child: AlertDialog(
@@ -439,7 +441,7 @@ class _viewLocationsState extends State<viewLocations> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => venderLoginScreen()), (Route<dynamic> route) => false);
+                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => userLoginScreen()), (Route<dynamic> route) => false);
               },
               child: Text('OK',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black),),
             ),
@@ -484,8 +486,8 @@ class _viewLocationsState extends State<viewLocations> {
                   borderRadius: BorderRadius.circular(5),
                   child: Scaffold(
                     body: Container(
-                      width: 300,
-                      height: 460,
+                      width: 350,
+                      height: 480,
                       color: Colors.white,
                       padding: EdgeInsets.all(10),
                       child: Column(
@@ -498,21 +500,22 @@ class _viewLocationsState extends State<viewLocations> {
                             children: [
                               Container(
                                 width: 60,
-                                child: Image.network('${allApiMarker[0]['installedSystemList'][i]['photoPath']}',width: 60,height: 60,fit: BoxFit.fill,),
+                                color: Colors.grey[200],
+                                child: Image.network('${allApiMarker[0]['installedSystemList'][i]['photoPath']}',width: 60,height: 80,fit: BoxFit.fill,),
                               ),
                               SizedBox(width: 5,),
                               Container(
-                                width: 160,
+                                width: 190,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('UID-${allApiMarker[0]['installedSystemList'][i]['uidNo']}',style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold,),),
+                                    Text('UID No.: ${allApiMarker[0]['installedSystemList'][i]['uidNo']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,),),
                                     SizedBox(height: 2,),
-                                    Text('${allApiMarker[0]['installedSystemList'][i]['schemeName']}',style: TextStyle(fontSize: 10,),),
+                                    Text('${allApiMarker[0]['installedSystemList'][i]['placeName']}, ${allApiMarker[0]['installedSystemList'][i]['villageName']}, ${allApiMarker[0]['installedSystemList'][i]['blockName']}, ${allApiMarker[0]['installedSystemList'][i]['districtName']}',style: TextStyle(fontSize: 12,color: Colors.black),maxLines: 4,overflow: TextOverflow.ellipsis,),
+                                    SizedBox(height: 5,),
+                                    Text('Service Valid till: ${convertDateFormat(allApiMarker[0]['installedSystemList'][i]['serviceValidTill'])}',style: TextStyle(fontSize: 12,color: Colors.black,),),
                                     SizedBox(height: 2,),
-                                    Text('${allApiMarker[0]['installedSystemList'][i]['villageName']}, ${allApiMarker[0]['installedSystemList'][i]['blockName']}, ${allApiMarker[0]['installedSystemList'][i]['districtName']}',style: TextStyle(fontSize: 10,),),
-
                                   ],
                                 ),
                               ),
@@ -546,6 +549,9 @@ class _viewLocationsState extends State<viewLocations> {
                             '${allApiMarker[0]['installedSystemList'][i]['longitude']}',
                             '${allApiMarker[0]['installedSystemList'][i]['photoPath']}',
                             '${allApiMarker[0]['installedSystemList'][i]['formatPath1']}',
+                            '${allApiMarker[0]['installedSystemList'][i]['formatPath1Extn']}',
+                            '${allApiMarker[0]['installedSystemList'][i]['schemeName']}',
+                            '${allApiMarker[0]['installedSystemList'][i]['serviceValidTill']}',
                           )));
                           print('uuuuuuuuuuuuuuu-->$updateUid');
 
@@ -577,6 +583,16 @@ class _viewLocationsState extends State<viewLocations> {
     ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
     ui.FrameInfo fi = await codec.getNextFrame();
     return (await fi.image.toByteData(format: ui.ImageByteFormat.png))?.buffer.asUint8List();
+  }
+
+  String convertDateFormat(String inputDate) {
+    // Parse the input date
+    DateTime dateTime = DateFormat("dd-MM-yyyy").parse(inputDate);
+
+    // Format the date in the desired format
+    String formattedDate = DateFormat("dd-MMM-yy").format(dateTime);
+
+    return formattedDate;
   }
 
 
@@ -645,7 +661,7 @@ class _viewLocationsState extends State<viewLocations> {
 
     if (response.statusCode == 200) {
       print(await 'aaaaaaaaa-----${results}');
-       blockTypeItem=results;
+      blockTypeItem=results;
       progressDialog3.dismiss();
       setState(() {});
     }

@@ -16,6 +16,7 @@ class editTextSimple extends StatelessWidget {
     this.hint='',
     this.label='',
     this.readOnly=false,
+    this.etBckgoundColor=Colors.white,
   }) : super(key: key);
 
   TextEditingController controllers;
@@ -29,6 +30,7 @@ class editTextSimple extends StatelessWidget {
   double cHeight;
   double cWidth;
   bool readOnly;
+  Color etBckgoundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,7 @@ class editTextSimple extends StatelessWidget {
       width: cWidth,
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: etBckgoundColor,
           borderRadius: BorderRadius.circular(5.0), // Adjust the radius as needed
         ),
         child: TextFormField(
@@ -47,19 +49,19 @@ class editTextSimple extends StatelessWidget {
           controller: controllers,
           focusNode: focusNode,
           decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(5),
-                borderSide: BorderSide(
-                  color: Color(0xffC5C5C5), // Border color
-                  width: 0.5,         // Border width
-                ),
+            border: OutlineInputBorder(),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: BorderSide(
+                color: Color(0xffC5C5C5), // Border color
+                width: 0.5,         // Border width
               ),
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-               counterText: counterTexts,
-               labelText: label,
-              hintText: hint,
-              hintStyle: TextStyle(fontSize: 12),
+            ),
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            counterText: counterTexts,
+            labelText: label,
+            hintText: hint,
+            hintStyle: TextStyle(fontSize: 12),
           ),
           style: TextStyle(fontSize: fontSize,),
         ),
