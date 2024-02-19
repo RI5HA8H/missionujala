@@ -171,7 +171,6 @@ class _viewLocationsState extends State<viewLocations> {
           //Perform flexible update
           InAppUpdate.startFlexibleUpdate().then((appUpdateResult) {
             if (appUpdateResult == AppUpdateResult.success) {
-              //App Update successful
               InAppUpdate.completeFlexibleUpdate();
             }
           });
