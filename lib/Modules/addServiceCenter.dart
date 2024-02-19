@@ -117,13 +117,14 @@ class _addServiceCenterState extends State<addServiceCenter> {
                 keyboardTypes: TextInputType.text,
                 maxlength: 100,
               ),
+
           
               SizedBox(height: 10,),
               Container(
                 height: 90,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(5.0), // Adjust the radius as needed
+                  borderRadius: BorderRadius.circular(5.0),
                 ),
                 child: TextField(
                   maxLines: 3,
