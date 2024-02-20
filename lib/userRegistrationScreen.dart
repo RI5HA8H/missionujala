@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:missionujala/Modules/viewLocations.dart';
@@ -15,6 +16,7 @@ import 'Resource/StringLocalization/baseUrl.dart';
 import 'Resource/Utiles/editText.dart';
 import 'Resource/Utiles/nProgressDialog.dart';
 import 'Resource/Utiles/normalButton.dart';
+import 'Resource/Utiles/notificationservices.dart';
 import 'Resource/Utiles/simpleEditText.dart';
 import 'Resource/Utiles/toasts.dart';
 import 'homeScreen.dart';
@@ -39,14 +41,28 @@ class _userRegistrationScreenState extends State<userRegistrationScreen> {
   FocusNode nameFocusNode = FocusNode();
   FocusNode mobileFocusNode = FocusNode();
   FocusNode otpFocusNode = FocusNode();
-  var token;
   int apiOTP=0;
+
+  var token;
+  notificationservices notiservices = notificationservices();
 
 
   @override
   void initState() {
     super.initState();
-
+    debugPrint("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+    notiservices.requestNotificationPermissions();
+    notiservices.firebaseinit(context);
+    FirebaseMessaging.onMessage.listen((message) {
+      print("Tittle---${message.notification!.title.toString()}");
+      print("Bodyeee---${message.notification!.body.toString()}");
+      getAutoOTPMatch(message.notification!.body.toString().split(':').last);
+    });
+    notiservices.getifDeviceTokenRefresh();
+    notiservices.getDeviceToken().then((value) {
+      debugPrint("device token --- $value");
+      token=value;
+    });
   }
 
 
@@ -203,7 +219,10 @@ class _userRegistrationScreenState extends State<userRegistrationScreen> {
     request.fields.addAll({
       'UserName': nameController.text.toString(),
       'MobileNo': mobileController.text.toString(),
+      'PNRKey': token.toString(),
     });
+    print(await 'tttttttttttttttttttttttt-----${token}');
+
     var response = await request.send();
     var results = jsonDecode(await response.stream.bytesToString());
 
@@ -232,5 +251,20 @@ class _userRegistrationScreenState extends State<userRegistrationScreen> {
       toasts().redToastLong('Server Error');
       progressDialog.dismiss();
     }
+  }
+
+  void getAutoOTPMatch(String otp){
+    otpController.text=otp;
+
+    mobileFocusNode.unfocus();
+    otpFocusNode.unfocus();
+
+    if(otpController.text.toString()==apiOTP.toString()){
+      toasts().greenToastShort('User Registration Successfull');
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => viewLocations()), (Route<dynamic> route) => false);
+    }else{
+      toasts().redToastLong('OTP does not match');
+    }
+
   }
 }

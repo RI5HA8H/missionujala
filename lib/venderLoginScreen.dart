@@ -20,6 +20,7 @@ import 'Resource/StringLocalization/baseUrl.dart';
 import 'Resource/Utiles/checkInternet.dart';
 import 'Resource/Utiles/editText.dart';
 import 'Resource/Utiles/normalButton.dart';
+import 'Resource/Utiles/notificationservices.dart';
 import 'Resource/Utiles/simpleEditText.dart';
 import 'Resource/Utiles/toasts.dart';
 
@@ -41,6 +42,20 @@ class _venderLoginScreenState extends State<venderLoginScreen> {
   FocusNode userNameFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
   var token;
+  notificationservices notiservices = notificationservices();
+
+  @override
+  void initState() {
+    super.initState();
+    debugPrint("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+    notiservices.requestNotificationPermissions();
+    notiservices.firebaseinit(context);
+    notiservices.getifDeviceTokenRefresh();
+    notiservices.getDeviceToken().then((value) {
+      debugPrint("device token --- $value");
+      token=value;
+    });
+  }
 
 
 
@@ -175,7 +190,9 @@ class _venderLoginScreenState extends State<venderLoginScreen> {
     request.fields.addAll({
       'UserName': userNameController.text.toString(),
       'UserPassword': passwordController.text.toString(),
+      'PNRKey': token.toString(),
     });
+    print(await 'tttttttttttttttttttttttt-----${token}');
     var response = await request.send();
     var results = jsonDecode(await response.stream.bytesToString());
 

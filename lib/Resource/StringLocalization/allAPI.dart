@@ -47,5 +47,7 @@ class allAPI{
 
   String getRadiousLocationURL = 'GEORadius';
 
+  String reportIssueApiURL = 'ReportIssue';
+
 
 }

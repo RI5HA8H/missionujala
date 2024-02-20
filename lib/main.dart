@@ -1,7 +1,10 @@
 import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:missionujala/Resource/Colors/app_colors.dart';
 import 'package:missionujala/splashScreen.dart';
 
@@ -15,11 +18,26 @@ class MyHttpOverrides extends HttpOverrides{
   }
 }
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingbackgroundHandler) ;
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   HttpOverrides.global = new MyHttpOverrides();
+  runApp(const MyApp());
+}
+
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingbackgroundHandler(RemoteMessage message) async{
+  await Firebase.initializeApp();
+  print(message.notification!.title.toString());
+  print(message.notification!.body.toString());
+  print(message.data.toString());
+  print(message.data['badge'].runtimeType);
+  if(await FlutterAppBadger.isAppBadgeSupported()){
+    FlutterAppBadger.updateBadgeCount(int.parse(message.data['badge']));
+  }
 }
 
 class MyApp extends StatelessWidget {

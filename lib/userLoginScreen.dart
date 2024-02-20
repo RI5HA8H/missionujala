@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_update/in_app_update.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -18,6 +19,7 @@ import 'Resource/Utiles/checkInternet.dart';
 import 'Resource/Utiles/editText.dart';
 import 'Resource/Utiles/nProgressDialog.dart';
 import 'Resource/Utiles/normalButton.dart';
+import 'Resource/Utiles/notificationservices.dart';
 import 'Resource/Utiles/simpleEditText.dart';
 import 'Resource/Utiles/toasts.dart';
 import 'package:http/http.dart' as http;
@@ -41,7 +43,6 @@ class _userLoginScreenState extends State<userLoginScreen> {
   TextEditingController otpController = TextEditingController();
   FocusNode mobileFocusNode = FocusNode();
   FocusNode otpFocusNode = FocusNode();
-  var token;
   int apiOTP=0;
 
   StreamSubscription? internetconnection;
@@ -69,6 +70,9 @@ class _userLoginScreenState extends State<userLoginScreen> {
     }
   }
 
+  var token;
+  notificationservices notiservices = notificationservices();
+
 
   @override
   void initState() {
@@ -95,6 +99,20 @@ class _userLoginScreenState extends State<userLoginScreen> {
         });
       }
       super.initState();
+    });
+    debugPrint("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+    notiservices.requestNotificationPermissions();
+    notiservices.firebaseinit(context);
+    FirebaseMessaging.onMessage.listen((message) {
+      print("Tittle---${message.notification!.title.toString()}");
+      print("Bodyeee---${message.notification!.body.toString()}");
+      getAutoOTPMatch(message.notification!.body.toString().split(':').last);
+    });
+
+    notiservices.getifDeviceTokenRefresh();
+    notiservices.getDeviceToken().then((value) {
+      debugPrint("device token --- $value");
+      token=value;
     });
   }
 
@@ -288,7 +306,10 @@ class _userLoginScreenState extends State<userLoginScreen> {
     request.fields.addAll({
       'UserName': 'asas',
       'MobileNo': mobileController.text.toString(),
+      'PNRKey': token.toString(),
     });
+    print(await 'tttttttttttttttttttttttt-----${token}');
+
     var response = await request.send();
     var results = jsonDecode(await response.stream.bytesToString());
 
@@ -317,5 +338,20 @@ class _userLoginScreenState extends State<userLoginScreen> {
       toasts().redToastLong('Server Error');
       progressDialog.dismiss();
     }
+  }
+
+  void getAutoOTPMatch(String otp){
+    otpController.text=otp;
+
+    mobileFocusNode.unfocus();
+    otpFocusNode.unfocus();
+
+    if(otpController.text.toString()==apiOTP.toString()){
+      toasts().greenToastShort('User Login Successfull');
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => viewLocations()), (Route<dynamic> route) => false);
+    }else{
+      toasts().redToastLong('OTP does not match');
+    }
+
   }
 }

@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:missionujala/Modules/allServiceCenter.dart';
 import 'package:missionujala/Modules/allUIDScreen.dart';
 import 'package:missionujala/Modules/viewLocations.dart';
 import 'package:missionujala/Resource/Colors/app_colors.dart';
@@ -141,7 +142,7 @@ class _drawerState extends State<drawer> {
                     ),
                   ),
                   onTap: (){
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => addServiceCenter()));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => allServiceCenter()));
                   },
                 ),
                 ListTile(
