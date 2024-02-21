@@ -4,6 +4,7 @@ import 'package:custom_navigation_bar/custom_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:missionujala/Modules/allUIDScreen.dart';
+import 'package:missionujala/Modules/complainList.dart';
 import 'package:missionujala/Modules/viewLocations.dart';
 import 'package:missionujala/Resource/Colors/app_colors.dart';
 import 'package:missionujala/generated/assets.dart';
@@ -74,11 +75,13 @@ class _bottomNavigationBarState extends State<bottomNavigationBar> {
           currentIndex = index;
           print('iiiiiii->$index');
           if(currentIndex==0){
+
+
             Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => viewLocations()), (Route<dynamic> route) => false);
           }
           if(currentIndex==1){
             if(loginType=='user'){
-              print('Hello I am User');
+              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => complainList()), (Route<dynamic> route) => false);
             }else{
               Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => allUIDScreen()), (Route<dynamic> route) => false);
             }

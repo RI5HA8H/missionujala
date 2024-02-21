@@ -304,7 +304,7 @@ class _userLoginScreenState extends State<userLoginScreen> {
 
     var request = http.MultipartRequest('POST', Uri.parse(urls().base_url + allAPI().userLoginURL));
     request.fields.addAll({
-      'UserName': 'asas',
+      'UserName': '',
       'MobileNo': mobileController.text.toString(),
       'PNRKey': token.toString(),
     });
