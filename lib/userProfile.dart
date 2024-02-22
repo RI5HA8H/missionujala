@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:missionujala/Resource/Colors/app_colors.dart';
+import 'package:missionujala/homeScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Modules/viewLocations.dart';
@@ -54,7 +55,7 @@ class _userProfileState extends State<userProfile> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => viewLocations()), (Route<dynamic> route) => false);
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => homeScreen()), (Route<dynamic> route) => false);
         return false;
       },
       child: Scaffold(

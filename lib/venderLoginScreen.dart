@@ -213,7 +213,7 @@ class _venderLoginScreenState extends State<venderLoginScreen> {
         prefs.setString('loginType', 'vendor');
 
         progressDialog.dismiss();
-        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => viewLocations()), (Route<dynamic> route) => false);
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => homeScreen()), (Route<dynamic> route) => false);
       }else{
         toasts().redToastLong(results['status']);
         progressDialog.dismiss();

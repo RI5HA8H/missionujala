@@ -6,16 +6,24 @@ import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_update/in_app_update.dart';
+import 'package:missionujala/Modules/allServiceCenter.dart';
+import 'package:missionujala/Modules/allUIDScreen.dart';
+import 'package:missionujala/Modules/complainList.dart';
 import 'package:missionujala/Modules/updateLocation.dart';
 import 'package:missionujala/Modules/viewLocations.dart';
 import 'package:missionujala/Resource/Colors/app_colors.dart';
 import 'package:missionujala/generated/assets.dart';
 import 'package:missionujala/userProfile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'Modules/userServiceCenterScreen.dart';
 import 'Resource/StringLocalization/titles.dart';
+import 'Resource/Utiles/appBar.dart';
+import 'Resource/Utiles/bottomNavigationBar.dart';
 import 'Resource/Utiles/checkInternet.dart';
 import 'Resource/Utiles/drawer.dart';
 import 'Resource/Utiles/moduleview.dart';
+import 'Modules/dashBoard.dart';
 
 
 class homeScreen extends StatefulWidget {
@@ -28,7 +36,8 @@ class homeScreen extends StatefulWidget {
 class _homeScreenState extends State<homeScreen> {
 
   bool scroll=false;
-  String userName  = "MargSoft";
+  String userName  = "XYZ";
+  String loginType='';
 
   StreamSubscription? internetconnection;
   bool isoffline = false;
@@ -59,7 +68,7 @@ class _homeScreenState extends State<homeScreen> {
 
   @override
   void initState() {
-    //getUserToken();
+    getUserName();
     CheckUserConnection();
     _checkVersion();
     internetconnection = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
@@ -83,6 +92,14 @@ class _homeScreenState extends State<homeScreen> {
       }
     });
     super.initState();
+  }
+
+  getUserName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      loginType = prefs.getString('loginType')!;
+      userName = prefs.getString('userName')!;
+    });
   }
 
 
@@ -121,37 +138,28 @@ class _homeScreenState extends State<homeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          leadingWidth: 40,
-          title: Text(allTitle.appName,style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.white),),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.person_pin,size: 40,color: Colors.white,),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => userProfile()));
-              },
-            ),
-          ],
-        ),
+        appBar: appBar(),
         drawer: drawer(),
-        body: Container(
-          color: appcolors.screenBckColor,
-          child: Column(
-            children: [
-              Container(
-                color: appcolors.primaryColor,
-                padding: EdgeInsets.fromLTRB(15, 30, 15, 30),
-                alignment: Alignment.centerLeft,
-                child: Text('Welcome, $userName ',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: appcolors.whiteColor),),
-              ),
-              /*Container(
-                child: Image.asset(Assets.imagesHomeBanner),
-              ),*/
-              Expanded(
-                child: Container(
-                  padding:  EdgeInsets.fromLTRB(10, 30, 10, 10),
+        body: SingleChildScrollView(
+          child: Container(
+            color: appcolors.whiteColor,
+            child: Column(
+              children: [
+          
+                Container(
+                  color: appcolors.screenBckColor,
+                  padding: EdgeInsets.fromLTRB(15, 20, 15, 20),
+                  alignment: Alignment.centerLeft,
+                  child: Text('Welcome, $userName ',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: appcolors.blackColor),),
+                ),
+                /*Container(
+                  child: Image.asset(Assets.imagesHomeBanner),
+                ),*/
+                Container(
+                  padding:  EdgeInsets.fromLTRB(10, 10, 10, 10),
                   child: GridView(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 10,
@@ -160,24 +168,52 @@ class _homeScreenState extends State<homeScreen> {
                     ),
                     children: [
                       InkWell(
-                        child: moduleview(title: '${allTitle.viewLocationModule}', path: Assets.iconsViewLocation,),
+                        child: moduleview(title: '${allTitle.viewLocationModule}', path: Assets.iconsBottomStrretLight,),
                         onTap: (){
                           Navigator.of(context).push(MaterialPageRoute(builder: (context) => viewLocations()));
                         },
                       ),
+
                       InkWell(
+                        child: moduleview(title: '${allTitle.complaint}', path: Assets.iconsComplaintIcon,),
+                        onTap: (){
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => complainList()));
+                        },
+                      ),
+
+                      loginType=='user' ? InkWell(
+                        child: moduleview(title: '${allTitle.ServiceCenterModule}', path: Assets.iconsServiceCenterIcon,),
+                        onTap: (){
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => userServiceCenterScreen()));
+                        },
+                      ) : InkWell(
+                        child: moduleview(title: '${allTitle.ServiceCenterModule}', path: Assets.iconsServiceCenterIcon,),
+                        onTap: (){
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => allServiceCenter()));
+                        },
+                      ),
+
+                      loginType=='user' ? Container() : InkWell(
                         child: moduleview(title: '${allTitle.updateLocationModule}', path: Assets.iconsUpdateLocation,),
                         onTap: (){
-                         // Navigator.of(context).push(MaterialPageRoute(builder: (context) => updateLocation()));
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => allUIDScreen()));
+                        },
+                      ),
+
+                      loginType=='user' ? Container() : InkWell(
+                        child: moduleview(title: '${allTitle.dashBoard}', path: Assets.iconsDashboard,),
+                        onTap: (){
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => dashBoard()));
                         },
                       ),
                     ],
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        )
+        ),
+      bottomNavigationBar: bottomNavigationBar(0),
     );
   }
 }

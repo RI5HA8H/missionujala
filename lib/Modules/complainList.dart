@@ -58,11 +58,11 @@ class _complainListState extends State<complainList> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Image.asset('assets/icons/remarkIcon.png',width: 20,height: 20,),
+                          Image.asset('assets/icons/remarkIcon.png',width: 20,height: 20,color: appcolors.primaryColor,),
                           SizedBox(width: 10,),
-                          Image.asset('assets/icons/imgIconn.png',width: 20,height: 20,),
+                          Image.asset('assets/icons/imgIconn.png',width: 20,height: 20,color: appcolors.primaryColor,),
                           SizedBox(width: 10,),
-                          Image.asset('assets/icons/locationIconn.png',width: 20,height: 20,),
+                          Image.asset('assets/icons/locationIconn.png',width: 20,height: 20,color: appcolors.primaryColor,),
                         ],
                       ),
                     ],
@@ -73,7 +73,7 @@ class _complainListState extends State<complainList> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text('UID No.: 20047836589042',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black)),
+                      Text('UID No.: 20047836589042',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: appcolors.primaryColor)),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

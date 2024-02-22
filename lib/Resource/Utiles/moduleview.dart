@@ -21,7 +21,7 @@ class moduleview  extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
         child: Container(
-          color: Colors.white,
+          color: Colors.grey[100],
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -32,7 +32,7 @@ class moduleview  extends StatelessWidget {
                   child: Image.asset(path,height: 40,width: 40,color: appcolors.primaryColor,),
               ),
               SizedBox(height: 5),
-              Text(title, style: TextStyle(fontSize: 14, color:Colors.black,fontWeight: FontWeight.bold),),
+              Text(title, style: TextStyle(fontSize: 12, color:Colors.black,fontWeight: FontWeight.bold),),
               SizedBox(height: 5),
             ],
           ),

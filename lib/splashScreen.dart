@@ -28,7 +28,7 @@ class _splashScreenState extends State<splashScreen> with SingleTickerProviderSt
       String? loginType =prefs.getString('loginType');
       print('hhhhhhhhhhh$loginType');
       if(loginType=='vendor' || loginType=='user'){
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>viewLocations()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>homeScreen()));
       }else
       {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>userLoginScreen()));

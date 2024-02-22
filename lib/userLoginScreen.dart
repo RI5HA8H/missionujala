@@ -240,7 +240,7 @@ class _userLoginScreenState extends State<userLoginScreen> {
                             otpFocusNode.unfocus();
                             if(otpController.text.toString()==apiOTP.toString()){
                               toasts().greenToastShort('User Login Successfull');
-                              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => viewLocations()), (Route<dynamic> route) => false);
+                              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => homeScreen()), (Route<dynamic> route) => false);
                             }else{
                               toasts().redToastLong('OTP does not match');
                             }
@@ -341,14 +341,15 @@ class _userLoginScreenState extends State<userLoginScreen> {
   }
 
   void getAutoOTPMatch(String otp){
-    otpController.text=otp;
+    print('ooooooo->${otp.trim()}');
+    otpController.text=otp.trim();
 
     mobileFocusNode.unfocus();
     otpFocusNode.unfocus();
 
     if(otpController.text.toString()==apiOTP.toString()){
       toasts().greenToastShort('User Login Successfull');
-      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => viewLocations()), (Route<dynamic> route) => false);
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => homeScreen()), (Route<dynamic> route) => false);
     }else{
       toasts().redToastLong('OTP does not match');
     }

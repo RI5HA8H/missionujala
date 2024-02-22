@@ -8,6 +8,7 @@ import 'package:missionujala/Modules/complainList.dart';
 import 'package:missionujala/Modules/viewLocations.dart';
 import 'package:missionujala/Resource/Colors/app_colors.dart';
 import 'package:missionujala/generated/assets.dart';
+import 'package:missionujala/homeScreen.dart';
 import 'package:missionujala/userProfile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -75,19 +76,17 @@ class _bottomNavigationBarState extends State<bottomNavigationBar> {
           currentIndex = index;
           print('iiiiiii->$index');
           if(currentIndex==0){
-
-
-            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => viewLocations()), (Route<dynamic> route) => false);
+            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => homeScreen()), (Route<dynamic> route) => false);
           }
           if(currentIndex==1){
             if(loginType=='user'){
-              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => complainList()), (Route<dynamic> route) => false);
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => complainList()));
             }else{
-              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => allUIDScreen()), (Route<dynamic> route) => false);
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => allUIDScreen()));
             }
           }
           if(currentIndex==2){
-            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => userProfile()), (Route<dynamic> route) => false);
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => userProfile()));
           }
         });
       },

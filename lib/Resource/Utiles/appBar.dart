@@ -15,6 +15,7 @@ class appBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       elevation: 0,
       leadingWidth: 50,
+      shadowColor: Colors.transparent,
       leading: Builder(
         builder: (BuildContext context) {
           return IconButton(

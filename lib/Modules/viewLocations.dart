@@ -62,7 +62,7 @@ class _viewLocationsState extends State<viewLocations> {
   late ProgressDialog progressDialog4;
   String userToken='';
   String companyKey='';
-  bool scroll=false;
+  bool scroll=true;
   bool showFilter=false;
   Position? currentPosition;
   final Set<Marker> markerr={};
@@ -80,69 +80,20 @@ class _viewLocationsState extends State<viewLocations> {
     LatLng(26.820000,80.98999),
   ];
 
-  StreamSubscription? internetconnection;
-  bool isoffline = false;
-  bool ActiveConnection = false;
-  String T = "";
-  Future CheckUserConnection() async {
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        setState(() {
-          ActiveConnection = true;
-          T = "Turn off the data and repress again";
-          print(T);
-        });
-      }
-    } on SocketException catch (_) {
-      setState(() {
-        ActiveConnection = false;
-        setState(() {
-          isoffline = true;
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => checkInternet()));
-        });
-      });
-    }
-  }
 
 
 
   @override
-  void initState()  {
+  void initState(){
     super.initState();
     getLocation();
     getUserToken();
-    CheckUserConnection();
-    _checkVersion();
-    internetconnection = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-      // whenevery connection status is changed.
-      if(result == ConnectivityResult.none){
-        //there is no any connection
-        setState(() {
-          isoffline = true;
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => checkInternet()));
-        });
-      }else if(result == ConnectivityResult.mobile){
-        //connection is mobile data network
-        setState(() {
-          isoffline = false;
-        });
-      }else if(result == ConnectivityResult.wifi){
-        //connection is from wifi
-        setState(() {
-          isoffline = false;
-        });
-      }
-      super.initState();
-    });
-    setState(() {});
   }
 
   @override
   void dispose() {
     markerr.clear();
     customInfoWindowController.dispose();
-    internetconnection!.cancel();
     super.dispose();
   }
 
@@ -156,28 +107,6 @@ class _viewLocationsState extends State<viewLocations> {
     getDistrict();
   }
 
-  void _checkVersion() async {
-
-    InAppUpdate.checkForUpdate().then((updateInfo) {
-      if (updateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
-        if (updateInfo.immediateUpdateAllowed) {
-          // Perform immediate update
-          InAppUpdate.performImmediateUpdate().then((appUpdateResult) {
-            if (appUpdateResult == AppUpdateResult.success) {
-              //App Update successful
-            }
-          });
-        } else if (updateInfo.flexibleUpdateAllowed) {
-          //Perform flexible update
-          InAppUpdate.startFlexibleUpdate().then((appUpdateResult) {
-            if (appUpdateResult == AppUpdateResult.success) {
-              InAppUpdate.completeFlexibleUpdate();
-            }
-          });
-        }
-      }
-    });
-  }
 
 
 
@@ -312,7 +241,7 @@ class _viewLocationsState extends State<viewLocations> {
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton2(
                             isExpanded: true,
-                            hint: Text('Select Block',style: TextStyle(fontSize: 12,),),
+                            hint: Text('Select Area',style: TextStyle(fontSize: 12,),),
                             iconStyleData: IconStyleData(
                               icon: Padding(
                                 padding: const EdgeInsets.only(right: 16),
@@ -401,7 +330,7 @@ class _viewLocationsState extends State<viewLocations> {
           ),
         ],
       ),
-      bottomNavigationBar: bottomNavigationBar(0),
+      //bottomNavigationBar: bottomNavigationBar(0),
     );
   }
 
@@ -596,7 +525,6 @@ class _viewLocationsState extends State<viewLocations> {
 
 
   Future<void> getRadiousLatlong(double lati,double longi) async {
-    setState(() {scroll=true;});
     lat=lati;
     long=longi;
     markerr.clear();
