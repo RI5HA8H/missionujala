@@ -8,6 +8,7 @@ class allTitle {
   static const String nearByModule = 'Near by';
   static const String updateLocationModule = 'Add GPS Coordinates';
   static const String addServiceCenterModule = 'Add Service Center';
+  static const String updateServiceCenterModule = 'Update Service Center';
   static const String ServiceCenterModule = 'Service Center';
   static const String viewLocationFullDetails = 'Installed System Details';
   static const String userComplaint = 'Report Issue';

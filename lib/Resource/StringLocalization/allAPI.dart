@@ -18,13 +18,9 @@ class allAPI{
   String villageByDBPO = 'GetVillagebyPODB';
 
 
-
-
   String disctrictURL = 'GetDistrictMaster';
 
   String blockURL = 'GetBlockMaster';
-
-
 
 
   String getUidByDistrictBlockURL = 'GetDetailByBlockDistrict';
@@ -32,6 +28,11 @@ class allAPI{
   String installedAllListURL = 'GetInstalledSystemDetail';
 
   String getUidDetailesURL = 'GetDetailByUID';
+
+  String getServiceCenterListURL = 'ServiceCenterList';
+
+
+
 
 
 
@@ -48,6 +49,12 @@ class allAPI{
   String getRadiousLocationURL = 'GEORadius';
 
   String reportIssueApiURL = 'ReportIssue';
+
+  String getComplaintURL = 'ComplaintList';
+
+  String updateComplaintStatusURL = 'UpdateComplaintStatus';
+
+  String addUpdateServiceCenter = 'ServiceCenter';
 
 
 }
