@@ -2,11 +2,13 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:missionujala/Resource/Colors/app_colors.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import '../Resource/StringLocalization/allAPI.dart';
@@ -38,6 +40,7 @@ class _complaintScreenState extends State<complaintScreen> {
   _complaintScreenState(uIdNo,uIdPlace,uIdVillage,uIdBlock,uIdDist,);
 
   bool scroll=false;
+  String userToken='';
   bool scrollLatLong=false;
   FocusNode titleFocusNode = FocusNode();
   FocusNode descriptionFocusNode = FocusNode();
@@ -52,7 +55,9 @@ class _complaintScreenState extends State<complaintScreen> {
   File? galleryFile;
   final picker = ImagePicker();
   String userId='';
-  var isLight=true;
+  String isLight='true';
+  String isBattery='true';
+  String isPanel='true';
 
 
   @override
@@ -66,6 +71,7 @@ class _complaintScreenState extends State<complaintScreen> {
   getUserId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userId = prefs.getString('userKey')!;
+    userToken = prefs.getString('userToken')!;
     print('uuu--${userId}');
 
   }
@@ -85,35 +91,129 @@ class _complaintScreenState extends State<complaintScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 10,),
-
-                Text('Is Light Working ?',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.black54),),
 
                 SizedBox(height: 10,),
+                Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 5,bottom: 2),
+                        child: Text('Is Light Working ?',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.black),),
+                      ),
+                      Container(
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: RadioListTile<String>(
+                                title: const Text('Yes'),
+                                value: "true",
+                                groupValue: isLight,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isLight = value!;
+                                  });
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              child: RadioListTile<String>(
+                                title: const Text('No'),
+                                value: "false",
+                                groupValue: isLight,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isLight = value!;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),),
+                    ]),
 
-                ToggleSwitch(
-                  minWidth: 100.0,
-                  cornerRadius: 20.0,
-                  activeBgColors: [[Colors.green[800]!], [Colors.red[800]!]],
-                  activeFgColor: Colors.white,
-                  inactiveBgColor: Colors.grey,
-                  inactiveFgColor: Colors.white,
-                  initialLabelIndex: 0,
-                  totalSwitches: 2,
-                  labels: ['Yes', 'No'],
-                  radiusStyle: true,
-                  onToggle: (index) {
-                    if(index==0){
-                      isLight=true;
-                    }else{
-                      isLight=true;
-                    }
-                    print('switched to: $index');
-                    print('switched to: $isLight');
-                  },
-                ),
+                SizedBox(height: 10,),
+                Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 5,bottom: 2),
+                        child: Text('Is battery being, OK?',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.black),),
+                      ),
+                      Container(
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: RadioListTile<String>(
+                                title: const Text('Yes'),
+                                value: "true",
+                                groupValue: isBattery,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isBattery = value!;
+                                  });
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              child: RadioListTile<String>(
+                                title: const Text('No'),
+                                value: "false",
+                                groupValue: isBattery,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isBattery = value!;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),),
+                    ]),
 
-                SizedBox(height: 30,),
+                SizedBox(height: 10,),
+                Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 5,bottom: 2),
+                        child: Text('Is panel being, OK?',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.black),),
+                      ),
+                      Container(
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: RadioListTile<String>(
+                                title: const Text('Yes'),
+                                value: "true",
+                                groupValue: isPanel,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isPanel = value!;
+                                  });
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              child: RadioListTile<String>(
+                                title: const Text('No'),
+                                value: "false",
+                                groupValue: isPanel,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isPanel = value!;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),),
+                    ]),
+
+
+                SizedBox(height: 20,),
 
                 editTextSimple(
                   controllers: titleController,
@@ -201,9 +301,9 @@ class _complaintScreenState extends State<complaintScreen> {
                   ),
                   child:Padding(
                     padding: const EdgeInsets.all(10),
-                    child: InkWell(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(5),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(5),
+                      child: GestureDetector(
                         child: Container(
                           width: double.infinity,
                           color: Colors.grey[100],
@@ -211,19 +311,73 @@ class _complaintScreenState extends State<complaintScreen> {
                             alignment: Alignment.bottomRight,
                             children: [
                               Center(child: Image.file(galleryFile!)),
-                              Positioned(
-                                  child: Icon(Icons.change_circle_outlined,size: 30,color: appcolors.primaryColor,)
+                              GestureDetector(
+                                child: Positioned(
+                                  child: Icon(Icons.change_circle_outlined,size: 30,color: appcolors.primaryColor,),
+                                ),
+                                onTap: (){
+                                  titleFocusNode.unfocus();
+                                  addressFocusNode.unfocus();
+                                  descriptionFocusNode.unfocus();
+                                  _showPicker(context: context);
+                                },
                               ),
                             ],
                           ),
                         ),
+                        onTap: (){
+                          if(galleryFile!=null){
+                            Alert(
+                              context: context,
+                              style: AlertStyle(
+                                  descStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),
+                                  descPadding: EdgeInsets.all(5)
+                              ),
+                              image: Padding(
+                                padding: const EdgeInsets.only(top: 10),
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(5),
+                                    child: ExtendedImage.file(
+                                      galleryFile!,
+                                      fit: BoxFit.contain,
+                                      //enableLoadState: false,
+                                      mode: ExtendedImageMode.gesture,
+                                      initGestureConfigHandler: (state) {
+                                        return GestureConfig(
+                                          minScale: 0.9,
+                                          animationMinScale: 0.7,
+                                          maxScale: 3.0,
+                                          animationMaxScale: 3.5,
+                                          speed: 1.0,
+                                          inertialSpeed: 100.0,
+                                          initialScale: 1.0,
+                                          inPageView: false,
+                                          initialAlignment: InitialAlignment.center,
+                                        );
+                                      },
+                                    )
+                                ),
+                              ),
+                              buttons: [
+                                DialogButton(
+                                  gradient: LinearGradient(colors: [
+                                    Color.fromRGBO(116, 116, 191, 1.0),
+                                    Color.fromRGBO(52, 138, 199, 1.0)]),
+                                  child: Text("OK", style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white, fontSize: 16),),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                )
+                              ],
+                            ).show();
+                          }else{
+                            titleFocusNode.unfocus();
+                            addressFocusNode.unfocus();
+                            descriptionFocusNode.unfocus();
+                            _showPicker(context: context);
+                          }
+                        },
                       ),
-                      onTap: (){
-                        titleFocusNode.unfocus();
-                        addressFocusNode.unfocus();
-                        descriptionFocusNode.unfocus();
-                        _showPicker(context: context);
-                      },
                     ),
                   ),
                 ),
@@ -329,25 +483,33 @@ class _complaintScreenState extends State<complaintScreen> {
   Future<void> sendReportIssueAPI(String lat,String long) async {
    setState(() {scroll=true;});
 
-    var request = http.MultipartRequest('POST', Uri.parse(urls().base_url + allAPI().reportIssueApiURL));
+   var headers = {
+     'Authorization': 'Bearer $userToken'
+   };
+
+
+   var request = http.MultipartRequest('POST', Uri.parse(urls().base_url + allAPI().reportIssueApiURL));
     request.fields.addAll({
       'UIDNo': '${widget.uIdNo}',
       'Remarks': '${descriptionController.text}',
       'Latitude': '$lat',
       'Longitude': '$long',
       'CreatedBy': '$userId',
-      'Status': 'Pending',
-      'IsSSLWorking': '$isLight'
+      'Status': 'Progress',
+      'IsSSLWorking': '$isLight',
+      'IsBatteryWorking': '$isLight',
+      'IsPannelOk': '$isLight',
     });
 
    galleryFile == null ?  print('gggggg---${galleryFile.toString()}') : request.files.add(await http.MultipartFile.fromPath('FilePhoto','${await compressImage(galleryFile!)}'),);
 
+    request.headers.addAll(headers);
     var response = await request.send();
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
       print(await 'aaaaaaaaa-----${results}');
-      toasts().greenToastShort('${results['status']}');
+      toasts().greenToastShort('${results['statusMsg']}');
       descriptionController.clear();
       galleryFile=null;
       setState(() {scroll=false;});

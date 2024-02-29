@@ -5,18 +5,22 @@ import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:in_app_update/in_app_update.dart';
-import 'package:missionujala/Modules/allServiceCenter.dart';
+import 'package:missionujala/Modules/userComplaintList.dart';
+import 'package:missionujala/Modules/vendorServiceCenterList.dart';
 import 'package:missionujala/Modules/allUIDScreen.dart';
-import 'package:missionujala/Modules/complainList.dart';
+import 'package:missionujala/Modules/vendorComplainList.dart';
 import 'package:missionujala/Modules/updateLocation.dart';
 import 'package:missionujala/Modules/viewLocations.dart';
 import 'package:missionujala/Resource/Colors/app_colors.dart';
 import 'package:missionujala/generated/assets.dart';
+import 'package:missionujala/userLoginScreen.dart';
 import 'package:missionujala/userProfile.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'Modules/userServiceCenterScreen.dart';
+import 'Modules/userServiceCenterList.dart';
 import 'Resource/StringLocalization/titles.dart';
 import 'Resource/Utiles/appBar.dart';
 import 'Resource/Utiles/bottomNavigationBar.dart';
@@ -38,6 +42,7 @@ class _homeScreenState extends State<homeScreen> {
   bool scroll=false;
   String userName  = "XYZ";
   String loginType='';
+  Position? currentPosition;
 
   StreamSubscription? internetconnection;
   bool isoffline = false;
@@ -71,6 +76,7 @@ class _homeScreenState extends State<homeScreen> {
     getUserName();
     CheckUserConnection();
     _checkVersion();
+    getLocation();
     internetconnection = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       // whenevery connection status is changed.
       if(result == ConnectivityResult.none){
@@ -174,22 +180,27 @@ class _homeScreenState extends State<homeScreen> {
                         },
                       ),
 
-                      InkWell(
+                      loginType=='user' ? InkWell(
                         child: moduleview(title: '${allTitle.complaint}', path: Assets.iconsComplaintIcon,),
                         onTap: (){
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => complainList()));
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => userComplaintList()));
+                        },
+                      ) : InkWell(
+                        child: moduleview(title: '${allTitle.complaint}', path: Assets.iconsComplaintIcon,),
+                        onTap: (){
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => vendorComplainList()));
                         },
                       ),
 
                       loginType=='user' ? InkWell(
                         child: moduleview(title: '${allTitle.ServiceCenterModule}', path: Assets.iconsServiceCenterIcon,),
                         onTap: (){
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => userServiceCenterScreen()));
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => userServiceCenterList()));
                         },
                       ) : InkWell(
                         child: moduleview(title: '${allTitle.ServiceCenterModule}', path: Assets.iconsServiceCenterIcon,),
                         onTap: (){
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => allServiceCenter()));
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => vendorServiceCenterList()));
                         },
                       ),
 
@@ -200,12 +211,12 @@ class _homeScreenState extends State<homeScreen> {
                         },
                       ),
 
-                      loginType=='user' ? Container() : InkWell(
+                     /* loginType=='user' ? Container() : InkWell(
                         child: moduleview(title: '${allTitle.dashBoard}', path: Assets.iconsDashboard,),
                         onTap: (){
                           Navigator.of(context).push(MaterialPageRoute(builder: (context) => dashBoard()));
                         },
-                      ),
+                      ),*/
 
 
                     ],
@@ -216,6 +227,50 @@ class _homeScreenState extends State<homeScreen> {
           ),
         ),
       bottomNavigationBar: bottomNavigationBar(0),
+    );
+  }
+
+  Future<void> getLocation() async {
+    var status = await Permission.location.request();
+
+    if (status == PermissionStatus.granted) {
+      // Permission granted, get the current location
+      try {
+        Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high,
+        );
+        setState(() {
+          currentPosition = position;
+        });
+      } catch (e) {
+        showPermissionDeniedDialog();
+      }
+    } else if (status == PermissionStatus.denied) {
+      showPermissionDeniedDialog();
+    }
+  }
+
+  void showPermissionDeniedDialog() {
+    showDialog(
+      context: context,barrierDismissible: false,
+      builder: (context) => WillPopScope(
+        onWillPop: () async {
+          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => userLoginScreen()), (Route<dynamic> route) => false);
+          return false;
+        },
+        child: AlertDialog(
+          title: Text('Location Permission Denied',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black),),
+          content: Text('Please enable location services. The feature will not be accessible otherwise.',style: TextStyle(fontSize: 12,color: Colors.black),),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => userLoginScreen()), (Route<dynamic> route) => false);
+              },
+              child: Text('OK',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black),),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

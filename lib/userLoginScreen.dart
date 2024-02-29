@@ -103,11 +103,6 @@ class _userLoginScreenState extends State<userLoginScreen> {
     debugPrint("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
     notiservices.requestNotificationPermissions();
     notiservices.firebaseinit(context);
-    FirebaseMessaging.onMessage.listen((message) {
-      print("Tittle---${message.notification!.title.toString()}");
-      print("Bodyeee---${message.notification!.body.toString()}");
-      getAutoOTPMatch(message.notification!.body.toString().split(':').last);
-    });
 
     notiservices.getifDeviceTokenRefresh();
     notiservices.getDeviceToken().then((value) {
@@ -324,9 +319,10 @@ class _userLoginScreenState extends State<userLoginScreen> {
         prefs.setString('userType', '${results['uType']}');
         prefs.setString('userDistrictKey', '${results['districtKey']}');
         prefs.setString('userCompanyKey', '${results['companyKey']}');
+        prefs.setString('userToken', results['userToken']);
         prefs.setString('loginType', 'user');
         apiOTP=int.parse('${results['otp']}');
-        toasts().greenToastShort('OTP - ${results['otp']}');
+        print('aaaaaaaaaaaaa-->$apiOTP');
         progressDialog.dismiss();
 
       }else{
@@ -340,19 +336,5 @@ class _userLoginScreenState extends State<userLoginScreen> {
     }
   }
 
-  void getAutoOTPMatch(String otp){
-    print('ooooooo->${otp.trim()}');
-    otpController.text=otp.trim();
 
-    mobileFocusNode.unfocus();
-    otpFocusNode.unfocus();
-
-    if(otpController.text.toString()==apiOTP.toString()){
-      toasts().greenToastShort('User Login Successfull');
-      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => homeScreen()), (Route<dynamic> route) => false);
-    }else{
-      toasts().redToastLong('OTP does not match');
-    }
-
-  }
 }

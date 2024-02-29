@@ -21,14 +21,14 @@ import '../Resource/Utiles/toasts.dart';
 import '../generated/assets.dart';
 import '../userProfile.dart';
 
-class complainList extends StatefulWidget {
-  const complainList({super.key});
+class vendorComplainList extends StatefulWidget {
+  const vendorComplainList({super.key});
 
   @override
-  State<complainList> createState() => _complainListState();
+  State<vendorComplainList> createState() => _vendorComplainListState();
 }
 
-class _complainListState extends State<complainList> {
+class _vendorComplainListState extends State<vendorComplainList> {
 
   Completer<GoogleMapController> _controller = Completer();
   static  CameraPosition _kGooglePlex = CameraPosition(target: LatLng(26.439602610044293, 82.58186811379103), zoom: 20,);
@@ -37,11 +37,11 @@ class _complainListState extends State<complainList> {
   TextEditingController vendorRemarkController = TextEditingController();
 
   bool scroll=false;
-  String userToken='';
-  String companyKey='';
+  String vendorToken='';
+  String vendorCompanyKey='';
   String vendorId='';
 
-  var complaintList=[];
+  var vendorComplaintList=[];
 
 
 
@@ -55,8 +55,8 @@ class _complainListState extends State<complainList> {
   getUserToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      userToken = prefs.getString('vendorToken')!;
-      companyKey = prefs.getString('vendorCompanyKey')!;
+      vendorToken = prefs.getString('vendorToken')!;
+      vendorCompanyKey = prefs.getString('vendorCompanyKey')!;
       vendorId = prefs.getString('vendorKey')!;
     });
     complainListFunction();
@@ -107,8 +107,8 @@ class _complainListState extends State<complainList> {
             indicatorSize: TabBarIndicatorSize.tab,
             labelStyle: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),
             tabs: [
-              Tab(text: 'Progress'),
-              Tab(text: 'Resolve'),
+              Tab(text: 'Inprocess'),
+              Tab(text: 'Resolved'),
               Tab(text: 'Archived'),
             ],
           ),
@@ -124,11 +124,11 @@ class _complainListState extends State<complainList> {
               child: TabBarView(
                 children: [
                   ListView.builder(
-                    itemCount: complaintList.length,
+                    itemCount: vendorComplaintList.length,
                     itemBuilder: (BuildContext context, int index) => getPendingComplaintContainer(index, context),
                   ),
                   ListView.builder(
-                    itemCount: complaintList.length,
+                    itemCount: vendorComplaintList.length,
                     itemBuilder: (BuildContext context, int index) => getResolveComplaintContainer(index, context),
                   ),
                  Center(
@@ -146,7 +146,7 @@ class _complainListState extends State<complainList> {
   }
 
   Widget getPendingComplaintContainer(int index,var snapshot) {
-    if(complaintList[index]['status']=='Progress'){
+    if(vendorComplaintList[index]['status']=='Progress'){
       return Container(
         child: Column(
           children: [
@@ -161,13 +161,13 @@ class _complainListState extends State<complainList> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text('#MURI2024XXXX00${complaintList[index]['reportIssueKey']}',style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold,color: Colors.black)),
+                        Text('#MURI2024XXXX00${vendorComplaintList[index]['reportIssueKey']}',style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold,color: Colors.black)),
 
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            GestureDetector(
+                            vendorComplaintList[index]['isAcknowledge']==true ? GestureDetector(
                                 child: Image.asset('assets/icons/remarkIcon.png',width: 20,height: 20,color: appcolors.primaryColor,),
                               onTap: (){
                                 Alert(
@@ -244,19 +244,19 @@ class _complainListState extends State<complainList> {
                                         }else{
                                           Navigator.pop(context);
                                           setState(() {scroll = true;});
-                                          updateResolvedFunction('${complaintList[index]['reportIssueKey']}',vendorRemarkController.text);
+                                          updateResolvedFunction('${vendorComplaintList[index]['reportIssueKey']}',vendorRemarkController.text);
                                         }
                                       },
                                     ),
                                   ],
                                 ).show();
                               },
-                            ),
+                            ) : Container(),
                             SizedBox(width: 10,),
                             GestureDetector(
                               child: Image.asset('assets/icons/imgIconn.png',width: 20,height: 20,color: appcolors.primaryColor,),
                               onTap: () async {
-                                if(complaintList[index]['photo']==''){
+                                if(vendorComplaintList[index]['photo']==''){
                                   toasts().redToastLong('Image Not Found');
                                 }else{
                                   Alert(
@@ -269,7 +269,7 @@ class _complainListState extends State<complainList> {
                                       padding: const EdgeInsets.only(top: 10),
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(5),
-                                        child: Image.network('${complaintList[index]['photo']}',),
+                                        child: Image.network('${vendorComplaintList[index]['photo']}',),
                                       ),
                                     ),
                                     buttons: [
@@ -291,7 +291,7 @@ class _complainListState extends State<complainList> {
                             GestureDetector(
                                 child: Image.asset('assets/icons/locationIconn.png',width: 20,height: 20,color: appcolors.primaryColor,),
                               onTap: () async {
-                                if(complaintList[index]['latitude']==''){
+                                if(vendorComplaintList[index]['latitude']==''){
                                   toasts().redToastLong('Latlong Not Found');
                                 }else{
                                   showDialog<void>(
@@ -311,14 +311,14 @@ class _complainListState extends State<complainList> {
                                                 mapType: MapType.normal,
                                                 markers: <Marker>[
                                                   Marker(markerId:MarkerId('1'),
-                                                    position: LatLng(complaintList[index]['latitude'], complaintList[index]['latitude']),
+                                                    position: LatLng(vendorComplaintList[index]['latitude'], vendorComplaintList[index]['longitude']),
                                                     icon: BitmapDescriptor.defaultMarker,
                                                   )
                                                 ].toSet(),
                                                 initialCameraPosition: _kGooglePlex,
                                                 onMapCreated: (GoogleMapController controller) async {
                                                   controller.animateCamera(CameraUpdate.newCameraPosition(
-                                                      CameraPosition(target: LatLng(complaintList[index]['latitude'], complaintList[index]['latitude']), zoom: 15,)
+                                                      CameraPosition(target: LatLng(vendorComplaintList[index]['latitude'], vendorComplaintList[index]['longitude']), zoom: 15,)
                                                   ));
                                                 },
 
@@ -341,6 +341,114 @@ class _complainListState extends State<complainList> {
                                 }
                               },
                             ),
+                            SizedBox(width: 10,),
+                            vendorComplaintList[index]['vendorFeedBackList'].length!=0 && vendorComplaintList[index]['userFeedBackList'].length!=0 ? GestureDetector(
+                              child: Image.asset('assets/icons/comment.png',width: 20,height: 20,color: appcolors.primaryColor,),
+                              onTap: (){
+                                Alert(
+                                  context: context,
+                                  style: AlertStyle(
+                                    descStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),
+                                    descPadding: EdgeInsets.all(5),
+                                    descTextAlign: TextAlign.start,
+                                    isOverlayTapDismiss: false,
+                                  ),
+                                  closeFunction: (){
+                                    Navigator.of(context).pop();
+                                  },
+                                  desc: 'All Conversation',
+                                  content: Container(
+                                    height: 200,
+                                    color: Colors.white,
+                                    padding: EdgeInsets.all(10),
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        children: [
+                                          vendorComplaintList[index]['vendorFeedBackList'].length==0 ? Container() : ListView.builder(
+                                            shrinkWrap: true,
+                                            physics: NeverScrollableScrollPhysics(),
+                                            itemCount: vendorComplaintList[index]['vendorFeedBackList'].length,
+                                            itemBuilder: (BuildContext context, int indexs){
+                                              return Container(
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    /*Row(
+                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Image.asset('assets/images/electrician.png',width: 20,height: 20,),
+                                                        SizedBox(width: 5,),
+                                                        Text('${userComplaintList[index]['userRemarks'][indexs]['userStatus']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: appcolors.primaryColor)),
+                                                      ],
+                                                    ),*/
+                                                    Text('${vendorComplaintList[index]['vendorFeedBackList'][indexs]['vendorFeedBacks']}',style: TextStyle(fontSize: 12,color: Colors.black)),
+
+                                                    SizedBox(height: 2,),
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                      children: [
+                                                        Container(),
+                                                        Text('${formatDate(vendorComplaintList[index]['vendorFeedBackList'][indexs]['createdOn'])}',style: TextStyle(fontSize: 6,fontWeight: FontWeight.bold,color: Colors.grey)),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                          vendorComplaintList[index]['userFeedBackList'].length==0 ? Container() : ListView.builder(
+                                            shrinkWrap: true,
+                                            physics: NeverScrollableScrollPhysics(),
+                                            itemCount: vendorComplaintList[index]['userFeedBackList'].length,
+                                            itemBuilder: (BuildContext context, int indexs){
+                                              return Container(
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    /* Row(
+                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Image.asset('assets/images/feedbackUser.png',width: 20,height: 20,),
+                                                        SizedBox(width: 5,),
+                                                        Text('${userComplaintList[index]['userRemarks'][indexs]['userStatus']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: appcolors.primaryColor)),
+                                                      ],
+                                                    ),*/
+                                                    Text('${vendorComplaintList[index]['userFeedBackList'][indexs]['userFeedBacks']}',style: TextStyle(fontSize: 12,color: Colors.black)),
+
+                                                    SizedBox(height: 2,),
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                      children: [
+                                                        Container(),
+                                                        Text('${formatDate(vendorComplaintList[index]['userFeedBackList'][indexs]['createdOn'])}',style: TextStyle(fontSize: 6,fontWeight: FontWeight.bold,color: Colors.grey)),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            },                                        ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  buttons: [
+                                    DialogButton(
+                                      color: Color.fromRGBO(0, 179, 134, 1.0),
+                                      child: Text("OK", style: TextStyle(color: Colors.white, fontSize: 16),),
+                                      onPressed: () async {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ],
+                                ).show();
+                              },
+                            ) : Container(),
                           ],
                         ),
                       ],
@@ -351,13 +459,13 @@ class _complainListState extends State<complainList> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text('UID No.: ${complaintList[index]['uidNo']}',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: appcolors.primaryColor)),
+                        Text('UID No.: ${vendorComplaintList[index]['uidNo']}',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: appcolors.primaryColor)),
 
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text('${complaintList[index]['status']}',style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold,color: Colors.black)),
+                            Text('${vendorComplaintList[index]['status']}',style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold,color: Colors.black)),
                             Container(),
                           ],
                         ),
@@ -365,7 +473,7 @@ class _complainListState extends State<complainList> {
                     ),
 
                     SizedBox(height: 5,),
-                    Text('CR By - ${complaintList[index]['userName']}',style: TextStyle(fontSize: 12,color: Colors.black54)),
+                    Text('CR By - ${vendorComplaintList[index]['userName']}',style: TextStyle(fontSize: 12,color: Colors.black54)),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -373,9 +481,40 @@ class _complainListState extends State<complainList> {
                       children: [
                         Icon(Icons.call,size: 20,color: appcolors.primaryColor,),
                         SizedBox(width: 10,),
-                        Text('${complaintList[index]['userMobileNo']}',style: TextStyle(fontSize: 12,color: Colors.black54)),
+                        Text('${vendorComplaintList[index]['userMobileNo']}',style: TextStyle(fontSize: 12,color: Colors.black54)),
                       ],
                     ),
+
+
+                    vendorComplaintList[index]['isAcknowledge']==false ? GestureDetector(
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        child: normalButton(name: 'Acknowlege',bckColor: appcolors.buttonColor,textColor: Colors.white,height: 40,bordeRadious: 25,),
+                      ),
+                      onTap: (){
+                        Alert(
+                          context: context,
+                          style: AlertStyle(
+                            descStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
+                            descPadding: EdgeInsets.all(5),
+                            descTextAlign: TextAlign.center,
+                            isOverlayTapDismiss: false,
+                          ),
+                          desc: 'Are you accept this complaint?',
+                          buttons: [
+                            DialogButton(
+                              color: Color.fromRGBO(0, 179, 134, 1.0),
+                              child: Text("Accepted", style: TextStyle(color: Colors.white, fontSize: 16),),
+                              onPressed: () async {
+                                  Navigator.pop(context);
+                                  setState(() {scroll = true;});
+                                  acknowledgeFunction('${vendorComplaintList[index]['reportIssueKey']}');
+                              },
+                            ),
+                          ],
+                        ).show();
+                      },
+                    ) : Container(),
 
 
                     SizedBox(height: 2,),
@@ -384,7 +523,7 @@ class _complainListState extends State<complainList> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(),
-                        Text('${formatDate(complaintList[index]['createdOn'])}',style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold,color: Colors.grey)),
+                        Text('${formatDate(vendorComplaintList[index]['createdOn'])}',style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold,color: Colors.grey)),
                       ],
                     ),
 
@@ -412,7 +551,7 @@ class _complainListState extends State<complainList> {
   }
 
   Widget getResolveComplaintContainer(int index,var snapshot) {
-    if(complaintList[index]['status']=='Resolve'){
+    if(vendorComplaintList[index]['status']=='Resolved'){
       return Container(
         child: Column(
           children: [
@@ -427,7 +566,7 @@ class _complainListState extends State<complainList> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text('#MURI2024XXXX00${complaintList[index]['reportIssueKey']}',style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold,color: Colors.black)),
+                        Text('#MURI2024XXXX00${vendorComplaintList[index]['reportIssueKey']}',style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold,color: Colors.black)),
 
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -443,7 +582,7 @@ class _complainListState extends State<complainList> {
                             GestureDetector(
                               child: Image.asset('assets/icons/imgIconn.png',width: 20,height: 20,color: appcolors.primaryColor,),
                               onTap: () async {
-                                if(complaintList[index]['photo']==''){
+                                if(vendorComplaintList[index]['photo']==''){
                                   toasts().redToastLong('Image Not Found');
                                 }else{
                                   Alert(
@@ -456,7 +595,7 @@ class _complainListState extends State<complainList> {
                                       padding: const EdgeInsets.only(top: 10),
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(5),
-                                        child: Image.network('${complaintList[index]['photo']}',),
+                                        child: Image.network('${vendorComplaintList[index]['photo']}',),
                                       ),
                                     ),
                                     buttons: [
@@ -478,7 +617,7 @@ class _complainListState extends State<complainList> {
                             GestureDetector(
                               child: Image.asset('assets/icons/locationIconn.png',width: 20,height: 20,color: appcolors.primaryColor,),
                               onTap: () async {
-                                if(complaintList[index]['latitude']==''){
+                                if(vendorComplaintList[index]['latitude']==''){
                                   toasts().redToastLong('Latlong Not Found');
                                 }else{
                                   showDialog<void>(
@@ -498,14 +637,14 @@ class _complainListState extends State<complainList> {
                                               mapType: MapType.normal,
                                               markers: <Marker>[
                                                 Marker(markerId:MarkerId('1'),
-                                                  position: LatLng(complaintList[index]['latitude'], complaintList[index]['latitude']),
+                                                  position: LatLng(vendorComplaintList[index]['latitude'], vendorComplaintList[index]['longitude']),
                                                   icon: BitmapDescriptor.defaultMarker,
                                                 )
                                               ].toSet(),
                                               initialCameraPosition: _kGooglePlex,
                                               onMapCreated: (GoogleMapController controller) async {
                                                 controller.animateCamera(CameraUpdate.newCameraPosition(
-                                                    CameraPosition(target: LatLng(complaintList[index]['latitude'], complaintList[index]['latitude']), zoom: 15,)
+                                                    CameraPosition(target: LatLng(vendorComplaintList[index]['latitude'], vendorComplaintList[index]['longitude']), zoom: 15,)
                                                 ));
                                               },
 
@@ -528,6 +667,114 @@ class _complainListState extends State<complainList> {
                                 }
                               },
                             ),
+                            SizedBox(width: 10,),
+                            GestureDetector(
+                              child: Image.asset('assets/icons/comment.png',width: 20,height: 20,color: appcolors.primaryColor,),
+                              onTap: (){
+                                Alert(
+                                  context: context,
+                                  style: AlertStyle(
+                                    descStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),
+                                    descPadding: EdgeInsets.all(5),
+                                    descTextAlign: TextAlign.start,
+                                    isOverlayTapDismiss: false,
+                                  ),
+                                  closeFunction: (){
+                                    Navigator.of(context).pop();
+                                  },
+                                  desc: 'All Conversation',
+                                  content: Container(
+                                    height: 200,
+                                    color: Colors.white,
+                                    padding: EdgeInsets.all(10),
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        children: [
+                                          vendorComplaintList[index]['vendorFeedBackList'].length==0 ? Container() : ListView.builder(
+                                            shrinkWrap: true,
+                                            physics: NeverScrollableScrollPhysics(),
+                                            itemCount: vendorComplaintList[index]['vendorFeedBackList'].length,
+                                            itemBuilder: (BuildContext context, int indexs){
+                                              return Container(
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    /*Row(
+                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Image.asset('assets/images/electrician.png',width: 20,height: 20,),
+                                                        SizedBox(width: 5,),
+                                                        Text('${userComplaintList[index]['userRemarks'][indexs]['userStatus']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: appcolors.primaryColor)),
+                                                      ],
+                                                    ),*/
+                                                    Text('${vendorComplaintList[index]['vendorFeedBackList'][indexs]['vendorFeedBacks']}',style: TextStyle(fontSize: 12,color: Colors.black)),
+
+                                                    SizedBox(height: 2,),
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                      children: [
+                                                        Container(),
+                                                        Text('${formatDate(vendorComplaintList[index]['vendorFeedBackList'][indexs]['createdOn'])}',style: TextStyle(fontSize: 6,fontWeight: FontWeight.bold,color: Colors.grey)),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                          vendorComplaintList[index]['userFeedBackList'].length==0 ? Container() : ListView.builder(
+                                            shrinkWrap: true,
+                                            physics: NeverScrollableScrollPhysics(),
+                                            itemCount: vendorComplaintList[index]['userFeedBackList'].length,
+                                            itemBuilder: (BuildContext context, int indexs){
+                                              return Container(
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    /* Row(
+                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Image.asset('assets/images/feedbackUser.png',width: 20,height: 20,),
+                                                        SizedBox(width: 5,),
+                                                        Text('${userComplaintList[index]['userRemarks'][indexs]['userStatus']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: appcolors.primaryColor)),
+                                                      ],
+                                                    ),*/
+                                                    Text('${vendorComplaintList[index]['userFeedBackList'][indexs]['userFeedBacks']}',style: TextStyle(fontSize: 12,color: Colors.black)),
+
+                                                    SizedBox(height: 2,),
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                      children: [
+                                                        Container(),
+                                                        Text('${formatDate(vendorComplaintList[index]['userFeedBackList'][indexs]['createdOn'])}',style: TextStyle(fontSize: 6,fontWeight: FontWeight.bold,color: Colors.grey)),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            },                                        ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  buttons: [
+                                    DialogButton(
+                                      color: Color.fromRGBO(0, 179, 134, 1.0),
+                                      child: Text("OK", style: TextStyle(color: Colors.white, fontSize: 16),),
+                                      onPressed: () async {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ],
+                                ).show();
+                              },
+                            ),
                           ],
                         ),
                       ],
@@ -538,13 +785,13 @@ class _complainListState extends State<complainList> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text('UID No.: ${complaintList[index]['uidNo']}',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: appcolors.primaryColor)),
+                        Text('UID No.: ${vendorComplaintList[index]['uidNo']}',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: appcolors.primaryColor)),
 
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text('${complaintList[index]['status']}',style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold,color: Colors.black)),
+                            Text('${vendorComplaintList[index]['status']}',style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold,color: Colors.black)),
                             Container(),
                           ],
                         ),
@@ -552,7 +799,7 @@ class _complainListState extends State<complainList> {
                     ),
 
                     SizedBox(height: 5,),
-                    Text('CR By - ${complaintList[index]['userName']}',style: TextStyle(fontSize: 12,color: Colors.black54)),
+                    Text('CR By - ${vendorComplaintList[index]['userName']}',style: TextStyle(fontSize: 12,color: Colors.black54)),
 
                     SizedBox(height: 5,),
                     Row(
@@ -561,7 +808,7 @@ class _complainListState extends State<complainList> {
                       children: [
                         Icon(Icons.call,size: 20,color: appcolors.primaryColor,),
                         SizedBox(width: 10,),
-                        Text('${complaintList[index]['userMobileNo']}',style: TextStyle(fontSize: 12,color: Colors.black54)),
+                        Text('${vendorComplaintList[index]['userMobileNo']}',style: TextStyle(fontSize: 12,color: Colors.black54)),
                       ],
                     ),
 
@@ -573,7 +820,7 @@ class _complainListState extends State<complainList> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(),
-                        Text('${formatDate(complaintList[index]['createdOn'])}',style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold,color: Colors.grey)),
+                        Text('${formatDate(vendorComplaintList[index]['createdOn'])}',style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold,color: Colors.grey)),
                       ],
                     ),
 
@@ -602,7 +849,7 @@ class _complainListState extends State<complainList> {
 
   String formatDate(String dateString) {
     final inputFormat = DateFormat("yyyy-MM-ddTHH:mm:ss");
-    final outputFormat = DateFormat("dd MMM yyyy");
+    final outputFormat = DateFormat("hh:mm a, dd MMM yyyy");
 
     final date = inputFormat.parse(dateString);
     return outputFormat.format(date);
@@ -611,18 +858,14 @@ class _complainListState extends State<complainList> {
   Future<void> complainListFunction() async {
     setState(() {scroll = true;});
 
-    var headers = {
-      'Authorization': 'Bearer $userToken'
-    };
+    var request = http.Request('GET', Uri.parse(urls().base_url + allAPI().getVendorComplaintListURL+'/$vendorCompanyKey/$vendorId'));
 
-    var request = http.Request('POST', Uri.parse(urls().base_url + allAPI().getComplaintURL+'/0/1'));
-    print('uuuuu${urls().base_url + allAPI().getComplaintURL+'/$companyKey/$vendorId'}');
-    request.headers.addAll(headers);
     var response = await request.send();
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      complaintList=results;
+      print('rrrr->$results');
+      vendorComplaintList=results;
 
       setState(() {scroll = false;});
     }
@@ -633,15 +876,41 @@ class _complainListState extends State<complainList> {
   }
 
 
+  Future<void> acknowledgeFunction(String reportIssueKeyId,) async {
+
+
+    var request = http.MultipartRequest('POST', Uri.parse(urls().base_url + allAPI().vedorAcknowledgeActive+'/$vendorId/$reportIssueKeyId'));
+
+
+    var response = await request.send();
+    var results = jsonDecode(await response.stream.bytesToString());
+
+    if (response.statusCode == 200) {
+      print(await 'aaaaaaaaa-----${results}');
+      if(results['statusCode']=='MU501'){
+        toasts().greenToastShort(results['statusMsg']);
+        vendorRemarkController.clear();
+        complainListFunction();
+        //Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => homeScreen()), (Route<dynamic> route) => false);
+      }else{
+        toasts().redToastLong('Please try again');
+        setState(() {scroll = false;});
+      }
+    }
+    else {
+      toasts().redToastLong('Server Error');
+      setState(() {scroll = false;});
+    }
+  }
 
   Future<void> updateResolvedFunction(String vendorId, String vendorRemark) async {
 
     var headers = {
       'Accept': 'application/json',
-      'Authorization': 'Bearer $userToken'
+      'Authorization': 'Bearer $vendorToken'
     };
 
-    var request = http.MultipartRequest('POST', Uri.parse(urls().base_url + allAPI().updateComplaintStatusURL+'/$vendorId/Resolve/$vendorRemark'));
+    var request = http.MultipartRequest('POST', Uri.parse(urls().base_url + allAPI().updateComplaintStatusURL+'/$vendorId/Resolved/$vendorRemark'));
 
 
     request.headers.addAll(headers);
@@ -652,7 +921,6 @@ class _complainListState extends State<complainList> {
       print(await 'aaaaaaaaa-----${results}');
       if(results['statusCode']=='MU501'){
         toasts().greenToastShort(results['statusMsg']);
-        setState(() {scroll = false;});
         vendorRemarkController.clear();
         complainListFunction();
         //Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => homeScreen()), (Route<dynamic> route) => false);

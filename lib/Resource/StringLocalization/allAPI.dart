@@ -32,6 +32,11 @@ class allAPI{
   String getServiceCenterListURL = 'ServiceCenterList';
 
 
+  String getUserComplaintListURL = 'UserComplaintList';
+
+  String getVendorComplaintListURL = 'VendorComplaintList';
+
+
 
 
 
@@ -50,11 +55,13 @@ class allAPI{
 
   String reportIssueApiURL = 'ReportIssue';
 
-  String getComplaintURL = 'ComplaintList';
-
   String updateComplaintStatusURL = 'UpdateComplaintStatus';
 
   String addUpdateServiceCenter = 'ServiceCenter';
+
+  String userVerifyComplaintStatus = 'VerifyComplaintStatus';
+
+  String vedorAcknowledgeActive = 'Acknowledge';
 
 
 }

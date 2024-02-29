@@ -3,13 +3,18 @@ class Assets {
   Assets._();
 
   static const String fontsPoppinsRegular = 'assets/fonts/Poppins-Regular.ttf';
+  static const String iconsBottomNotificationIcon = 'assets/icons/bottomNotificationIcon.png';
   static const String iconsBottomProfile = 'assets/icons/bottomProfile.png';
   static const String iconsBottomStrretLight = 'assets/icons/bottomStrretLight.png';
   static const String iconsBrowser = 'assets/icons/browser.png';
+  static const String iconsComment = 'assets/icons/comment.png';
   static const String iconsComplaint = 'assets/icons/complaint.png';
   static const String iconsComplaintIcon = 'assets/icons/complaintIcon.png';
+  static const String iconsCustomerReview = 'assets/icons/customer-review.png';
   static const String iconsDashboard = 'assets/icons/dashboard.png';
+  static const String iconsFeedback = 'assets/icons/feedback.png';
   static const String iconsHome = 'assets/icons/home.png';
+  static const String iconsHomeDrawer = 'assets/icons/homeDrawer.png';
   static const String iconsImgIcon = 'assets/icons/imgIcon.png';
   static const String iconsImgIconn = 'assets/icons/imgIconn.png';
   static const String iconsIngICON = 'assets/icons/ingICON.png';
@@ -30,6 +35,8 @@ class Assets {
   static const String iconsViewLocation = 'assets/icons/viewLocation.png';
   static const String iconsWifi = 'assets/icons/wifi.png';
   static const String imagesDepartmentLogo = 'assets/images/departmentLogo.png';
+  static const String imagesElectrician = 'assets/images/electrician.png';
+  static const String imagesFeedbackUser = 'assets/images/feedbackUser.png';
   static const String imagesHomeBanner1 = 'assets/images/homeBanner1.png';
   static const String imagesLoginFooter = 'assets/images/loginFooter.png';
   static const String imagesMuAppbarLogo = 'assets/images/muAppbarLogo.png';

@@ -17,7 +17,7 @@ import '../Resource/Utiles/normalButton.dart';
 import '../Resource/Utiles/toasts.dart';
 import 'package:http/http.dart' as http;
 
-import 'allServiceCenter.dart';
+import 'vendorServiceCenterList.dart';
 
 
 
@@ -111,7 +111,7 @@ class _updateServiceCenterState extends State<updateServiceCenter> {
     return WillPopScope(
       onWillPop: () async {
         if(isUpdate){
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => allServiceCenter()));
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => vendorServiceCenterList()));
         }else{
           Navigator.pop(context);
         }

@@ -1,21 +1,21 @@
 
 
 
+
+
 import 'package:flutter/material.dart';
 
 import '../Resource/Utiles/appBar.dart';
 import '../Resource/Utiles/drawer.dart';
 
-
-
-class userServiceCenterScreen extends StatefulWidget {
-  const userServiceCenterScreen({super.key});
+class vendorNotificationScreen extends StatefulWidget {
+  const vendorNotificationScreen({super.key});
 
   @override
-  State<userServiceCenterScreen> createState() => _userServiceCenterScreenState();
+  State<vendorNotificationScreen> createState() => _vendorNotificationScreenState();
 }
 
-class _userServiceCenterScreenState extends State<userServiceCenterScreen> {
+class _vendorNotificationScreenState extends State<vendorNotificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

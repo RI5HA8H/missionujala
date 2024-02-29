@@ -2,11 +2,15 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:missionujala/Modules/allServiceCenter.dart';
+import 'package:missionujala/Modules/userComplaintList.dart';
+import 'package:missionujala/Modules/userServiceCenterList.dart';
+import 'package:missionujala/Modules/vendorComplainList.dart';
+import 'package:missionujala/Modules/vendorServiceCenterList.dart';
 import 'package:missionujala/Modules/allUIDScreen.dart';
 import 'package:missionujala/Modules/viewLocations.dart';
 import 'package:missionujala/Resource/Colors/app_colors.dart';
 import 'package:missionujala/generated/assets.dart';
+import 'package:missionujala/homeScreen.dart';
 import 'package:missionujala/userLoginScreen.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -88,16 +92,16 @@ class _drawerState extends State<drawer> {
                   child: ListTile(
                     dense: true,
                     visualDensity: VisualDensity(vertical: 3),
-                    title: Text('${allTitle.profile}',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16,color: appcolors.primaryColor,)),
+                    title: Text('${allTitle.home}',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16,color: appcolors.primaryColor,)),
                     leading:ImageIcon(
-                      AssetImage(Assets.iconsProfile),
+                      AssetImage(Assets.iconsHomeDrawer),
                       color: appcolors.primaryColor,
                       size: 24,
                     ),
                   ),
 
                   onTap: (){
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => userProfile()));
+                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => homeScreen()), (Route<dynamic> route) => false);
                   },
                 ),
                 InkWell(
@@ -130,7 +134,7 @@ class _drawerState extends State<drawer> {
                     Navigator.of(context).push(MaterialPageRoute(builder: (context) => allUIDScreen()));
                   },
                 ),
-                loginType=='user' ? Container() : InkWell(
+                loginType=='user' ? InkWell(
                   child: ListTile(
                     dense: true,
                     visualDensity: VisualDensity(vertical: 3),
@@ -142,18 +146,68 @@ class _drawerState extends State<drawer> {
                     ),
                   ),
                   onTap: (){
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => allServiceCenter()));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => userServiceCenterList()));
+                  },
+                ) : InkWell(
+                  child: ListTile(
+                    dense: true,
+                    visualDensity: VisualDensity(vertical: 3),
+                    title: Text('${allTitle.ServiceCenterModule}',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16,color: appcolors.primaryColor,)),
+                    leading:ImageIcon(
+                      AssetImage(Assets.iconsServiceCenterIcon),
+                      color: appcolors.primaryColor,
+                      size:24,
+                    ),
+                  ),
+                  onTap: (){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => vendorServiceCenterList()));
                   },
                 ),
-                ListTile(
-                  dense: true,
-                  visualDensity: VisualDensity(vertical: 3),
-                  title: Text('${allTitle.setting}',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16,color: appcolors.primaryColor,)),
-                  leading:ImageIcon(
-                    AssetImage(Assets.iconsSetting),
-                    color: appcolors.primaryColor,
-                    size:24,
+
+                loginType=='user' ? InkWell(
+                  child: ListTile(
+                    dense: true,
+                    visualDensity: VisualDensity(vertical: 3),
+                    title: Text('${allTitle.complaint}',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16,color: appcolors.primaryColor,)),
+                    leading:ImageIcon(
+                      AssetImage(Assets.iconsComplaintIcon),
+                      color: appcolors.primaryColor,
+                      size:24,
+                    ),
                   ),
+                  onTap: (){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => userComplaintList()));
+                  },
+                ) : InkWell(
+                  child: ListTile(
+                    dense: true,
+                    visualDensity: VisualDensity(vertical: 3),
+                    title: Text('${allTitle.complaint}',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16,color: appcolors.primaryColor,)),
+                    leading:ImageIcon(
+                      AssetImage(Assets.iconsComplaintIcon),
+                      color: appcolors.primaryColor,
+                      size:24,
+                    ),
+                  ),
+                  onTap: (){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => vendorComplainList()));
+                  },
+                ),
+                InkWell(
+                  child: ListTile(
+                    dense: true,
+                    visualDensity: VisualDensity(vertical: 3),
+                    title: Text('${allTitle.profile}',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16,color: appcolors.primaryColor,)),
+                    leading:ImageIcon(
+                      AssetImage(Assets.iconsProfile),
+                      color: appcolors.primaryColor,
+                      size: 24,
+                    ),
+                  ),
+
+                  onTap: (){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => userProfile()));
+                  },
                 ),
                 InkWell(
                   child: ListTile(

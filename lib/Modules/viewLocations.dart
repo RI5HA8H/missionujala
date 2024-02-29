@@ -98,13 +98,10 @@ class _viewLocationsState extends State<viewLocations> {
   }
 
   getUserToken() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    userToken = prefs.getString('vendorToken')!;
-    companyKey = prefs.getString('vendorCompanyKey')!;
+    getDistrict();
     double latitude=await getCurrentLatitude();
     double longitude=await getCurrentLongitude();
     getRadiousLatlong(latitude,longitude);
-    getDistrict();
   }
 
 
@@ -208,6 +205,9 @@ class _viewLocationsState extends State<viewLocations> {
                                 color: Colors.white,
                               ),
                             ),
+                            menuItemStyleData: MenuItemStyleData(
+                              height: 30,
+                            ),
                             items: districtTypeItem.map((item11) {
                               return DropdownMenuItem(
                                 value: item11['districtKey'],
@@ -261,6 +261,9 @@ class _viewLocationsState extends State<viewLocations> {
                                 borderRadius: BorderRadius.circular(5),
                                 color: Colors.white,
                               ),
+                            ),
+                            menuItemStyleData: MenuItemStyleData(
+                              height: 30,
                             ),
                             items: blockTypeItem.map((item12) {
                               return DropdownMenuItem(
@@ -525,6 +528,7 @@ class _viewLocationsState extends State<viewLocations> {
 
 
   Future<void> getRadiousLatlong(double lati,double longi) async {
+    setState(() {scroll=true;});
     lat=lati;
     long=longi;
     markerr.clear();
@@ -577,12 +581,9 @@ class _viewLocationsState extends State<viewLocations> {
     progressDialog3=nDialog.nProgressDialog(context);
     progressDialog3.show();
 
-    var headers = {
-      'Authorization': 'Bearer $userToken'
-    };
 
-    var request = http.Request('GET', Uri.parse(urls().base_url + allAPI().blockURL+'/$districtDropdownValue/$companyKey'));
-    request.headers.addAll(headers);
+    var request = http.Request('GET', Uri.parse(urls().base_url + allAPI().blockURL+'/$districtDropdownValue'));
+
     var response = await request.send();
     var results = jsonDecode(await response.stream.bytesToString());
 
@@ -603,13 +604,10 @@ class _viewLocationsState extends State<viewLocations> {
     setState(() {scroll=true;});
     markerr.clear();
 
-    var headers = {
-      'Authorization': 'Bearer $userToken'
-    };
-
     var request = http.Request('GET', Uri.parse(urls().base_url + allAPI().getUidByDistrictBlockURL+'/$districtDropdownValue/$blockDropdownValue'));
     print(await 'aaaaaaaaa-----${urls().base_url + allAPI().getUidByDistrictBlockURL+'/$districtDropdownValue/$blockDropdownValue'}');
-    request.headers.addAll(headers);
+
+
     var response = await request.send();
     var results = jsonDecode(await response.stream.bytesToString());
 

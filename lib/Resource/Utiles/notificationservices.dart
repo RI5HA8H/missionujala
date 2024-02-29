@@ -72,6 +72,9 @@ class notificationservices {
     Random.secure().nextInt(100000).toString(),
         "High Importance Notification",
       importance: Importance.max,
+        enableLights: true,
+        enableVibration: true,
+        playSound: true,
         showBadge: true,
     );
 
@@ -79,9 +82,12 @@ class notificationservices {
         channel.id.toString(),
         channel.name.toString(),
       channelDescription: "Your Channel Description",
-      importance: Importance.high,
+      importance: Importance.max,
       icon: "@mipmap/ic_launcher",
-      priority: Priority.high,
+      priority: Priority.max,
+      playSound: true,
+      enableLights: true,
+      enableVibration: true,
       ticker: "ticker"
     );
 
@@ -101,7 +107,8 @@ class notificationservices {
           0,
           message.notification!.title.toString(),
           message.notification!.body.toString(),
-          notificationDetails);
+          notificationDetails
+      );
     });
 
   }

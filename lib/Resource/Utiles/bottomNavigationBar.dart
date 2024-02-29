@@ -4,7 +4,9 @@ import 'package:custom_navigation_bar/custom_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:missionujala/Modules/allUIDScreen.dart';
-import 'package:missionujala/Modules/complainList.dart';
+import 'package:missionujala/Modules/userNotificationScreen.dart';
+import 'package:missionujala/Modules/vendorComplainList.dart';
+import 'package:missionujala/Modules/vendorNotificationScreen.dart';
 import 'package:missionujala/Modules/viewLocations.dart';
 import 'package:missionujala/Resource/Colors/app_colors.dart';
 import 'package:missionujala/generated/assets.dart';
@@ -12,6 +14,7 @@ import 'package:missionujala/homeScreen.dart';
 import 'package:missionujala/userProfile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../Modules/userComplaintList.dart';
 import '../StringLocalization/titles.dart';
 
 
@@ -60,14 +63,18 @@ class _bottomNavigationBarState extends State<bottomNavigationBar> {
         loginType=='user' ? CustomNavigationBarItem(
           icon: Image.asset(Assets.iconsComplaint,color: widget.position==1 ? appcolors.primaryThemeColor : appcolors.primaryColor,),
           title: Text(allTitle.complaint,style: TextStyle(fontSize: 10,color: widget.position==1 ? appcolors.primaryThemeColor : appcolors.primaryColor, fontWeight: FontWeight.bold),),
-        ) :
+        ) : CustomNavigationBarItem(
+          icon: Image.asset(Assets.iconsComplaint,color: widget.position==1 ? appcolors.primaryThemeColor : appcolors.primaryColor,),
+          title: Text(allTitle.complaint,style: TextStyle(fontSize: 10,color: widget.position==1 ? appcolors.primaryThemeColor : appcolors.primaryColor, fontWeight: FontWeight.bold),),
+        ),
+
         CustomNavigationBarItem(
-          icon: Image.asset(Assets.iconsUpdateBottomLocation,color: widget.position==1 ? appcolors.primaryThemeColor : appcolors.primaryColor,),
-          title: Text(allTitle.updateLocationModule,style: TextStyle(fontSize: 10,color: widget.position==1 ? appcolors.primaryThemeColor : appcolors.primaryColor, fontWeight: FontWeight.bold),),
+          icon: Image.asset(Assets.iconsBottomNotificationIcon,color: widget.position==2 ? appcolors.primaryThemeColor : appcolors.primaryColor,),
+          title: Text(allTitle.notification,style: TextStyle(fontSize: 10,color: widget.position==2 ? appcolors.primaryThemeColor : appcolors.primaryColor, fontWeight: FontWeight.bold),),
         ),
         CustomNavigationBarItem(
-          icon: Image.asset(Assets.iconsBottomProfile,color: widget.position==2 ? appcolors.primaryThemeColor : appcolors.primaryColor,),
-          title: Text(allTitle.profile,style: TextStyle(fontSize: 10, color:widget.position==2 ? appcolors.primaryThemeColor : appcolors.primaryColor,fontWeight: FontWeight.bold),),
+          icon: Image.asset(Assets.iconsBottomProfile,color: widget.position==3 ? appcolors.primaryThemeColor : appcolors.primaryColor,),
+          title: Text(allTitle.profile,style: TextStyle(fontSize: 10, color:widget.position==3 ? appcolors.primaryThemeColor : appcolors.primaryColor,fontWeight: FontWeight.bold),),
         ),
       ],
       currentIndex: widget.position!,
@@ -80,12 +87,20 @@ class _bottomNavigationBarState extends State<bottomNavigationBar> {
           }
           if(currentIndex==1){
             if(loginType=='user'){
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => complainList()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => userComplaintList()));
             }else{
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => allUIDScreen()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => vendorComplainList()));
             }
           }
           if(currentIndex==2){
+            if(loginType=='user'){
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => userNotificationScreen()));
+            }else{
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => vendorNotificationScreen()));
+            }
+          }
+
+          if(currentIndex==3){
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => userProfile()));
           }
         });

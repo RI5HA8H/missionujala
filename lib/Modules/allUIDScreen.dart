@@ -138,6 +138,9 @@ class _allUIDScreenState extends State<allUIDScreen> {
                                     color: Colors.white,
                                   ),
                                 ),
+                                menuItemStyleData: MenuItemStyleData(
+                                  height: 40,
+                                ),
                                 items: financialTypeItem.map((item1) {
                                   return DropdownMenuItem(
                                     value: item1['finYear'],
@@ -203,6 +206,9 @@ class _allUIDScreenState extends State<allUIDScreen> {
                                     color: Colors.white,
                                   ),
                                 ),
+                                menuItemStyleData: MenuItemStyleData(
+                                  height: 40,
+                                ),
                                 items: schemsTypeItem.map((item2) {
                                   return DropdownMenuItem(
                                     value: item2['schemeKey'],
@@ -265,6 +271,9 @@ class _allUIDScreenState extends State<allUIDScreen> {
                                     borderRadius: BorderRadius.circular(5),
                                     color: Colors.white,
                                   ),
+                                ),
+                                menuItemStyleData: MenuItemStyleData(
+                                  height: 40,
                                 ),
                                 items: purchaseTypeItem.map((item3) {
                                   return DropdownMenuItem(
@@ -329,6 +338,9 @@ class _allUIDScreenState extends State<allUIDScreen> {
                                     color: Colors.white,
                                   ),
                                 ),
+                                menuItemStyleData: MenuItemStyleData(
+                                  height: 40,
+                                ),
                                 items: districtsTypeItem.map((item4) {
                                   return DropdownMenuItem(
                                     value: item4['districtKey'],
@@ -388,6 +400,9 @@ class _allUIDScreenState extends State<allUIDScreen> {
                                     color: Colors.white,
                                   ),
                                 ),
+                                menuItemStyleData: MenuItemStyleData(
+                                  height: 40,
+                                ),
                                 items: blocksTypeItem.map((item5) {
                                   return DropdownMenuItem(
                                     value: item5['blockKey'],
@@ -444,6 +459,9 @@ class _allUIDScreenState extends State<allUIDScreen> {
                                     borderRadius: BorderRadius.circular(5),
                                     color: Colors.white,
                                   ),
+                                ),
+                                menuItemStyleData: MenuItemStyleData(
+                                  height: 40,
                                 ),
                                 items: villagesTypeItem.map((item6) {
                                   return DropdownMenuItem(
@@ -525,7 +543,7 @@ class _allUIDScreenState extends State<allUIDScreen> {
             ),
           ),
         ),
-        bottomNavigationBar: bottomNavigationBar(1),
+       // bottomNavigationBar: bottomNavigationBar(1),
       ),
     );
   }

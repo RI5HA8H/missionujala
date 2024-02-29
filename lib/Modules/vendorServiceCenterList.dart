@@ -20,14 +20,14 @@ import '../Resource/Utiles/toasts.dart';
 
 
 
-class allServiceCenter extends StatefulWidget {
-  const allServiceCenter({super.key});
+class vendorServiceCenterList extends StatefulWidget {
+  const vendorServiceCenterList({super.key});
 
   @override
-  State<allServiceCenter> createState() => _allServiceCenterState();
+  State<vendorServiceCenterList> createState() => _vendorServiceCenterListState();
 }
 
-class _allServiceCenterState extends State<allServiceCenter> {
+class _vendorServiceCenterListState extends State<vendorServiceCenterList> {
 
   Completer<GoogleMapController> _controller = Completer();
   static  CameraPosition _kGooglePlex = CameraPosition(target: LatLng(26.439602610044293, 82.58186811379103), zoom: 20,);
@@ -120,7 +120,7 @@ class _allServiceCenterState extends State<allServiceCenter> {
               
                   Container(
                     width: double.infinity,
-                      child: Text("${serviceCenterTypeItem[index]['scName']} (${serviceCenterTypeItem[index]['districtkey']})",style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: appcolors.primaryColor),
+                      child: Text("${serviceCenterTypeItem[index]['scName']} (${serviceCenterTypeItem[index]['districtName']})",style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: appcolors.primaryColor),
                       maxLines: 2,overflow: TextOverflow.ellipsis,),
                   ),
 

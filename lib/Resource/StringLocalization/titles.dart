@@ -19,6 +19,7 @@ class allTitle {
   static const String setting = 'Settings';
   static const String complaint = 'Complaint';
   static const String home = 'Home';
+  static const String notification = 'Notification';
   static const String xyz = '';
 
 
