@@ -15,6 +15,7 @@ class appcolors{
   static const Color primaryThemeColor = Color(0xff60D17F);
   static const Color greenTextColor = Color(0xff21a008);
   static const Color editTextBckColor = Color(0xfff6f8fa);
+  static const Color moduleBckColor = Color(0xffebf0f7);
 
 
   static const Color shimmerbkColor = Color(0xffe6e7e8);

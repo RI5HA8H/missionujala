@@ -37,6 +37,11 @@ class allAPI{
   String getVendorComplaintListURL = 'VendorComplaintList';
 
 
+  String getUserNotificationListURL = 'UserNotificationlog';
+
+  String getVendorNotificationListURL = 'VendorNotificationlog';
+
+
 
 
 

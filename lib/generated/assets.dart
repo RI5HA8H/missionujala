@@ -28,6 +28,7 @@ class Assets {
   static const String iconsProfile = 'assets/icons/profile.png';
   static const String iconsRemarkIcon = 'assets/icons/remarkIcon.png';
   static const String iconsServiceCenterIcon = 'assets/icons/serviceCenterIcon.png';
+  static const String iconsServiceCenterMarkerIcon = 'assets/icons/serviceCenterMarkerIcon.png';
   static const String iconsSetting = 'assets/icons/setting.png';
   static const String iconsStrretLight = 'assets/icons/strretLight.png';
   static const String iconsUpdateBottomLocation = 'assets/icons/updateBottomLocation.png';

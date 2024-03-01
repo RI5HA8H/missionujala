@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:missionujala/Modules/addServiceCenter.dart';
@@ -40,6 +41,10 @@ class _vendorServiceCenterListState extends State<vendorServiceCenterList> {
   double lat= 1.1;
   double long= 1.1;
 
+  var districtTypeItem = [];
+  var districtDropdownValue;
+
+  var allServiceCenterItem = [];
   var serviceCenterTypeItem = [];
   var serviceCenterDropdownValue;
 
@@ -54,6 +59,7 @@ class _vendorServiceCenterListState extends State<vendorServiceCenterList> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userToken = prefs.getString('vendorToken')!;
     vendorId = prefs.getString('vendorKey')!;
+    getDistrict();
     getServiceCenterList();
   }
 
@@ -69,37 +75,109 @@ class _vendorServiceCenterListState extends State<vendorServiceCenterList> {
         drawer: drawer(),
         body: Container(
           color: appcolors.screenBckColor,
-          padding: EdgeInsets.fromLTRB(20, 20, 20, 5),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              GestureDetector(
-                child: normalButton(name: allTitle.addServiceCenterModule,height:45,bordeRadious: 25,fontSize:14,textColor: Colors.white,bckColor: appcolors.primaryColor,),
-                onTap: (){
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => addServiceCenter()));
-                },
-              ),
-
-              SizedBox(height: 20,),
-              Expanded(
-                child: Container(
-                  color: Colors.white,
-                  child: Column(
-                    children: [
-
-                      Expanded(
-                        child: scroll ? Center(child: CircularProgressIndicator()) : ListView.builder(
-                            itemCount: serviceCenterTypeItem.length,
-                            itemBuilder: (BuildContext context, int index) => getRow(index, context)
+          padding: EdgeInsets.fromLTRB(10, 20, 10, 5),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  height: 45,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(25),
+                    border: Border.all(
+                      color: Color(0xffC5C5C5),
+                      width: 0.5,
+                    ),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(25),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton2(
+                        isExpanded: true,
+                        hint: Text('Select District',style: TextStyle(fontSize: 12,),),
+                        iconStyleData: IconStyleData(
+                          icon: Padding(
+                            padding: const EdgeInsets.only(right: 20),
+                            child: Icon(Icons.search),
+                          ),
                         ),
+                        dropdownStyleData: DropdownStyleData(
+                          elevation: 1,
+                          maxHeight: MediaQuery.of(context).size.height/2,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Colors.grey[50],
+                          ),
+                        ),
+                        buttonStyleData: ButtonStyleData(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Colors.white,
+                          ),
+                        ),
+                        menuItemStyleData: MenuItemStyleData(
+                          height: 30,
+                        ),
+                        items: districtTypeItem.map((item11) {
+                          return DropdownMenuItem(
+                            value: item11['districtKey'],
+                            child: Container(width: MediaQuery.of(context).size.width/2,child: Text(item11['districtName'],style: TextStyle(fontSize: 12),maxLines: 1,overflow: TextOverflow.ellipsis,)),
+                          );
+                        }).toList(),
+                        onChanged: (newVal11) {
+                          setState(() {
+                            districtDropdownValue = newVal11;
+                            print('llllllllll----$districtDropdownValue');
+                            var newDistrictWiseServiceCenterList=[];
+                            for(int i=0;i<allServiceCenterItem.length;i++){
+                              if(allServiceCenterItem[i]['districtkey']==districtDropdownValue){
+                                newDistrictWiseServiceCenterList.add(allServiceCenterItem[i]);
+                              }
+                            }
+                            serviceCenterTypeItem=newDistrictWiseServiceCenterList;
+
+                          });
+                        },
+                        value: districtDropdownValue,
                       ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+            
+                SizedBox(height: 20,),
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Container(
+                      color: Colors.white,
+                      child: Column(
+                        children: [
+                          SizedBox(height: 10,),
+                          Expanded(
+                            child: scroll ? Center(child: CircularProgressIndicator()) : ListView.builder(
+                                itemCount: serviceCenterTypeItem.length,
+                                itemBuilder: (BuildContext context, int index) => getRow(index, context)
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          child:Icon(Icons.add,color: Colors.white,),
+          backgroundColor: appcolors.primaryColor,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+          onPressed: (){
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => addServiceCenter()));
+          },
         ),
       ),
     );
@@ -112,7 +190,7 @@ class _vendorServiceCenterListState extends State<vendorServiceCenterList> {
         children: [
           ListTile(
             title: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -242,13 +320,32 @@ class _vendorServiceCenterListState extends State<vendorServiceCenterList> {
           Container(
             padding: EdgeInsets.only(left: 5,right: 5),
             child: Divider(
-              thickness: 1,
-              color: Colors.grey,
+              thickness: 0.5,
+              color: Colors.grey[300],
             ),
           ),
         ],
       ),
     );
+  }
+
+  Future<void> getDistrict() async {
+    setState(() {scroll=true;});
+
+    var request = http.Request('GET', Uri.parse(urls().base_url + allAPI().disctrictURL));
+
+    var response = await request.send();
+    var results = jsonDecode(await response.stream.bytesToString());
+
+    if (response.statusCode == 200) {
+      print(await 'aaaaaaaaa-----${results}');
+      districtTypeItem=results;
+      setState(() {scroll=false;});
+    }
+    else {
+      toasts().redToastLong('Server Error');
+      setState(() {scroll=false;});
+    }
   }
 
 
@@ -262,6 +359,7 @@ class _vendorServiceCenterListState extends State<vendorServiceCenterList> {
     if (response.statusCode == 200) {
       print(await 'aaaaaaaaa-----${results}');
       serviceCenterTypeItem=results;
+      allServiceCenterItem=results;
       setState(() {scroll=false;});
     }
     else {

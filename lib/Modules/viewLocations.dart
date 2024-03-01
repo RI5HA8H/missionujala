@@ -71,6 +71,7 @@ class _viewLocationsState extends State<viewLocations> {
   double long= 80.91999;
   var districtTypeItem = [];
   var blockTypeItem = [];
+  var allServiceCenterItem = [];
   var districtDropdownValue;
   var blockDropdownValue;
 
@@ -99,6 +100,7 @@ class _viewLocationsState extends State<viewLocations> {
 
   getUserToken() async {
     getDistrict();
+    getServiceCenterList();
     double latitude=await getCurrentLatitude();
     double longitude=await getCurrentLongitude();
     getRadiousLatlong(latitude,longitude);
@@ -399,6 +401,7 @@ class _viewLocationsState extends State<viewLocations> {
 
   showMarkers() async {
     final Uint8List? markerIcon = await getBytesFromAsset('assets/icons/markerIcon.png', 150);
+    final Uint8List? scmarkerIcon = await getBytesFromAsset('assets/icons/serviceCenterMarkerIcon.png', 150);
 
     for(int i=0;i<allApiMarker[0]['installedSystemList'].length;i++)
     {
@@ -502,6 +505,83 @@ class _viewLocationsState extends State<viewLocations> {
               );
             },
             icon: BitmapDescriptor.fromBytes(markerIcon!),
+          ),
+        );
+      }
+    }
+
+    for(int i=0;i<allServiceCenterItem.length;i++)
+    {
+      print('ssssssssss${i}');
+      if(allServiceCenterItem[i]['latitude'].toString()!='null'){
+        print('hhhhhhhh${i}');
+        lat=double.parse('${allServiceCenterItem[i]['latitude']}');
+        long=double.parse('${allServiceCenterItem[i]['longitude']}');
+        markerr.add(
+          Marker(markerId:MarkerId(i.toString()),
+            position: LatLng(double.parse('${allServiceCenterItem[i]['latitude']}'),double.parse('${allServiceCenterItem[i]['longitude']}')),
+            onTap: () {
+              print('${allServiceCenterItem[i]['latitude']}');
+              customInfoWindowController.addInfoWindow!(
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: Scaffold(
+                    body: Container(
+                      width: 350,
+                      height: 480,
+                      color: Colors.white,
+                      padding: EdgeInsets.all(10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: 60,
+                                color: Colors.grey[200],
+                                child: Image.network('https://i.pinimg.com/736x/44/27/2d/44272df32b1b832c9ea8f596fb4d76b2.jpg',width: 60,height: 80,fit: BoxFit.fill,),
+                              ),
+                              SizedBox(width: 5,),
+                              Container(
+                                width: 190,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('${allServiceCenterItem[i]['scName']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,),),
+                                    SizedBox(height: 2,),
+                                    Text('${allServiceCenterItem[i]['districtName']}',style: TextStyle(fontSize: 12,color: Colors.black),maxLines: 4,overflow: TextOverflow.ellipsis,),
+                                    SizedBox(height: 5,),
+                                    Text('${allServiceCenterItem[i]['scContactNo']}',style: TextStyle(fontSize: 12,color: Colors.black,),),
+                                    SizedBox(height: 2,),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+
+                        ],
+                      ),
+                    ),
+                    bottomNavigationBar: Padding(
+                      padding: const EdgeInsets.only(bottom: 10,left: 10,right: 10),
+                      child: InkWell(
+                        child: normalButton(name: 'Call Now',height:35,width: 100,bordeRadious: 10,fontSize:10,textColor: Colors.white,bckColor: appcolors.greenTextColor,),
+                        onTap: () async {
+
+
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                LatLng(double.parse('${allServiceCenterItem[i]['latitude']}'),double.parse('${allServiceCenterItem[i]['longitude']}')),
+              );
+            },
+            icon: BitmapDescriptor.fromBytes(scmarkerIcon!),
           ),
         );
       }
@@ -623,6 +703,23 @@ class _viewLocationsState extends State<viewLocations> {
     }
   }
 
+  Future<void> getServiceCenterList() async {
+    setState(() {scroll=true;});
+    var request = http.Request('GET', Uri.parse(urls().base_url + allAPI().getServiceCenterListURL));
+
+    var response = await request.send();
+    var results = jsonDecode(await response.stream.bytesToString());
+
+    if (response.statusCode == 200) {
+      print(await 'aaaaaaaaa-----${results}');
+      allServiceCenterItem=results;
+      setState(() {scroll=false;});
+    }
+    else {
+      toasts().redToastLong('Server Error');
+      setState(() {scroll=false;});
+    }
+  }
 
 }
 
