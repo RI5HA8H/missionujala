@@ -90,7 +90,7 @@ class _allUIDScreenState extends State<allUIDScreen> {
               return <Widget>[
                 // SliverAppBar is the header that remains visible while scrolling
                 SliverAppBar(
-                  expandedHeight: MediaQuery.of(context).size.height*0.6,
+                  expandedHeight: MediaQuery.of(context).size.height*0.55,
                   floating: false,
                   elevation: 0,
                   forceElevated: true,
@@ -171,7 +171,7 @@ class _allUIDScreenState extends State<allUIDScreen> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 10,),
+                          SizedBox(height: 5,),
                           Container(
                             height: 45,
                             decoration: BoxDecoration(
@@ -237,7 +237,7 @@ class _allUIDScreenState extends State<allUIDScreen> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 10,),
+                          SizedBox(height: 5,),
                           Container(
                             height: 45,
                             decoration: BoxDecoration(
@@ -303,7 +303,7 @@ class _allUIDScreenState extends State<allUIDScreen> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 10,),
+                          SizedBox(height: 5,),
                           Container(
                             height: 45,
                             decoration: BoxDecoration(
@@ -365,7 +365,7 @@ class _allUIDScreenState extends State<allUIDScreen> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 10,),
+                          SizedBox(height: 5,),
                           Container(
                             height: 45,
                             decoration: BoxDecoration(
@@ -425,7 +425,7 @@ class _allUIDScreenState extends State<allUIDScreen> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 10,),
+                          SizedBox(height: 5,),
                           Container(
                             height: 45,
                             decoration: BoxDecoration(
@@ -479,13 +479,13 @@ class _allUIDScreenState extends State<allUIDScreen> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 10,),
+                          SizedBox(height: 5,),
                           InkWell(
-                            child: normalButton(name: 'Search',height:45,bordeRadious: 20,fontSize:14,textColor: Colors.white,bckColor: appcolors.greenTextColor,),
+                            child: normalButton(name: 'Search',height:45,bordeRadious: 25,fontSize:14,textColor: Colors.white,bckColor: appcolors.greenTextColor,),
                             onTap: (){
                               setState(() {
                                 if(financialDropdownValue==null || schemsDropdownValue==null || purchaseDropdownValue==null || districtsDropdownValue==null ){
-                                  toasts().redToastLong('Proper fill the datails');
+                                  toasts().redToastLong('Proper select the datails');
                                 }else{
                                   getInstalledList();
                                 }
@@ -499,7 +499,14 @@ class _allUIDScreenState extends State<allUIDScreen> {
                     ),
                   ),
                 ),
-                SliverPersistentHeader(
+                installedSystemList.isEmpty ? SliverPersistentHeader(
+                    pinned: true,
+                    delegate:MySliverPersistentHeaderDelegate(
+                      minHeight: 0,
+                      maxHeight: 0,
+                      child: Container()
+                    ),
+                ) : SliverPersistentHeader(
                   pinned: true,
                   delegate: MySliverPersistentHeaderDelegate(
                     minHeight: 50.0,

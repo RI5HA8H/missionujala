@@ -111,7 +111,7 @@ class _userProfileState extends State<userProfile> {
             ],
           ),
         ),
-        bottomNavigationBar: bottomNavigationBar(2),
+        bottomNavigationBar: bottomNavigationBar(3),
       ),
     );
   }

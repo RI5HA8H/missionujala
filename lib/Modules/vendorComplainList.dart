@@ -15,6 +15,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Resource/StringLocalization/allAPI.dart';
 import '../Resource/StringLocalization/baseUrl.dart';
+import '../Resource/Utiles/bottomNavigationBar.dart';
 import '../Resource/Utiles/editText.dart';
 import '../Resource/Utiles/normalButton.dart';
 import '../Resource/Utiles/toasts.dart';
@@ -141,6 +142,7 @@ class _vendorComplainListState extends State<vendorComplainList> {
             ),
           ),
         ),
+        bottomNavigationBar: bottomNavigationBar(1),
       ),
     );
   }
@@ -351,6 +353,7 @@ class _vendorComplainListState extends State<vendorComplainList> {
                                     descStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),
                                     descPadding: EdgeInsets.all(5),
                                     descTextAlign: TextAlign.start,
+                                    buttonAreaPadding: EdgeInsets.all(10),
                                     isOverlayTapDismiss: false,
                                   ),
                                   closeFunction: (){
@@ -370,31 +373,48 @@ class _vendorComplainListState extends State<vendorComplainList> {
                                             itemCount: vendorComplaintList[index]['vendorFeedBackList'].length,
                                             itemBuilder: (BuildContext context, int indexs){
                                               return Container(
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    /*Row(
+                                                margin: EdgeInsets.only(top: 5,right: 20),
+                                                child: ClipRRect(
+                                                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(15.0),topRight: Radius.circular(20.0),bottomRight: Radius.circular(20)),
+                                                  child: Container(
+                                                    color: Colors.red[100],
+                                                    padding: EdgeInsets.fromLTRB(5, 5, 10, 2),
+                                                    child: Column(
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
-                                                        Image.asset('assets/images/electrician.png',width: 20,height: 20,),
-                                                        SizedBox(width: 5,),
-                                                        Text('${userComplaintList[index]['userRemarks'][indexs]['userStatus']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: appcolors.primaryColor)),
-                                                      ],
-                                                    ),*/
-                                                    Text('${vendorComplaintList[index]['vendorFeedBackList'][indexs]['vendorFeedBacks']}',style: TextStyle(fontSize: 12,color: Colors.black)),
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.start,
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Icon(Icons.check_circle,size: 20,color: appcolors.primaryColor,),
+                                                            SizedBox(width: 5,),
+                                                            Container(
+                                                              width: MediaQuery.of(context).size.width*0.425,
+                                                              child: Column(
+                                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: [
+                                                                  Text('${vendorComplaintList[index]['vendorFeedBackList'][indexs]['vendorStatus']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: appcolors.primaryColor)),
+                                                                  Text('${vendorComplaintList[index]['vendorFeedBackList'][indexs]['vendorFeedBacks']}',style: TextStyle(fontSize: 12,color: Colors.black)),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
 
-                                                    SizedBox(height: 2,),
-                                                    Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                                      children: [
-                                                        Container(),
-                                                        Text('${formatDate(vendorComplaintList[index]['vendorFeedBackList'][indexs]['createdOn'])}',style: TextStyle(fontSize: 6,fontWeight: FontWeight.bold,color: Colors.grey)),
+                                                        SizedBox(height: 2,),
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          children: [
+                                                            Container(),
+                                                            Text('${formatDate(vendorComplaintList[index]['vendorFeedBackList'][indexs]['createdOn'])}',style: TextStyle(fontSize: 8,color: Colors.black38)),
+                                                          ],
+                                                        ),
                                                       ],
                                                     ),
-                                                  ],
+                                                  ),
                                                 ),
                                               );
                                             },
@@ -405,31 +425,48 @@ class _vendorComplainListState extends State<vendorComplainList> {
                                             itemCount: vendorComplaintList[index]['userFeedBackList'].length,
                                             itemBuilder: (BuildContext context, int indexs){
                                               return Container(
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    /* Row(
+                                                margin: EdgeInsets.only(top: 5,left: 20),
+                                                child: ClipRRect(
+                                                  borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(20.0),topLeft: Radius.circular(20),topRight: Radius.circular(15)),
+                                                  child: Container(
+                                                    color: Colors.green[100],
+                                                    padding: EdgeInsets.fromLTRB(10, 5, 5, 2),
+                                                    child: Column(
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
-                                                        Image.asset('assets/images/feedbackUser.png',width: 20,height: 20,),
-                                                        SizedBox(width: 5,),
-                                                        Text('${userComplaintList[index]['userRemarks'][indexs]['userStatus']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: appcolors.primaryColor)),
-                                                      ],
-                                                    ),*/
-                                                    Text('${vendorComplaintList[index]['userFeedBackList'][indexs]['userFeedBacks']}',style: TextStyle(fontSize: 12,color: Colors.black)),
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.start,
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            vendorComplaintList[index]['userFeedBackList'][indexs]['userStatus']=='Resolved' ? Icon(Icons.sentiment_satisfied_alt,size: 20,color: appcolors.primaryColor,) : Icon(Icons.sentiment_dissatisfied_outlined,size: 20,color: appcolors.primaryColor,),
+                                                            SizedBox(width: 5,),
+                                                            Container(
+                                                              width: MediaQuery.of(context).size.width*0.425,
+                                                              child: Column(
+                                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: [
+                                                                  Text('${vendorComplaintList[index]['userFeedBackList'][indexs]['userStatus']=='Resolved' ? 'Satisfied' : 'Not Satisfied'}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: appcolors.primaryColor)),
+                                                                  Text('${vendorComplaintList[index]['userFeedBackList'][indexs]['userFeedBacks']}',style: TextStyle(fontSize: 12,color: Colors.black)),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
 
-                                                    SizedBox(height: 2,),
-                                                    Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                                      children: [
-                                                        Container(),
-                                                        Text('${formatDate(vendorComplaintList[index]['userFeedBackList'][indexs]['createdOn'])}',style: TextStyle(fontSize: 6,fontWeight: FontWeight.bold,color: Colors.grey)),
+                                                        SizedBox(height: 2,),
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          children: [
+                                                            Container(),
+                                                            Text('${formatDate(vendorComplaintList[index]['userFeedBackList'][indexs]['createdOn'])}',style: TextStyle(fontSize:8,color: Colors.black38)),
+                                                          ],
+                                                        ),
                                                       ],
                                                     ),
-                                                  ],
+                                                  ),
                                                 ),
                                               );
                                             },                                        ),
@@ -472,14 +509,23 @@ class _vendorComplainListState extends State<vendorComplainList> {
                       ],
                     ),
 
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset(Assets.iconsUserIcon,width: 20,height: 20,),
+                        SizedBox(width: 10,),
+                        Text('${vendorComplaintList[index]['userName']}',style: TextStyle(fontSize: 12,color: Colors.black54)),
+                      ],
+                    ),
+
                     SizedBox(height: 5,),
-                    Text('CR By - ${vendorComplaintList[index]['userName']}',style: TextStyle(fontSize: 12,color: Colors.black54)),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Icon(Icons.call,size: 20,color: appcolors.primaryColor,),
+                        Image.asset(Assets.iconsCallCirculerIcon,width: 20,height: 20,),
                         SizedBox(width: 10,),
                         Text('${vendorComplaintList[index]['userMobileNo']}',style: TextStyle(fontSize: 12,color: Colors.black54)),
                       ],
@@ -488,8 +534,8 @@ class _vendorComplainListState extends State<vendorComplainList> {
 
                     vendorComplaintList[index]['isAcknowledge']==false ? GestureDetector(
                       child: Container(
-                        padding: EdgeInsets.all(10),
-                        child: normalButton(name: 'Acknowlege',bckColor: appcolors.buttonColor,textColor: Colors.white,height: 40,bordeRadious: 25,),
+                        padding: EdgeInsets.only(top: 15,bottom: 10),
+                        child: normalButton(name: 'Acknowlege',bckColor: Colors.redAccent,textColor: Colors.white,height: 40,bordeRadious: 25,),
                       ),
                       onTap: (){
                         Alert(
@@ -677,6 +723,7 @@ class _vendorComplainListState extends State<vendorComplainList> {
                                     descStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),
                                     descPadding: EdgeInsets.all(5),
                                     descTextAlign: TextAlign.start,
+                                    buttonAreaPadding: EdgeInsets.all(10),
                                     isOverlayTapDismiss: false,
                                   ),
                                   closeFunction: (){
@@ -696,31 +743,48 @@ class _vendorComplainListState extends State<vendorComplainList> {
                                             itemCount: vendorComplaintList[index]['vendorFeedBackList'].length,
                                             itemBuilder: (BuildContext context, int indexs){
                                               return Container(
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    /*Row(
+                                                margin: EdgeInsets.only(top: 5,right: 20),
+                                                child: ClipRRect(
+                                                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(15.0),topRight: Radius.circular(20.0),bottomRight: Radius.circular(20)),
+                                                  child: Container(
+                                                    color: Colors.red[100],
+                                                    padding: EdgeInsets.fromLTRB(5, 5, 10, 2),
+                                                    child: Column(
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
-                                                        Image.asset('assets/images/electrician.png',width: 20,height: 20,),
-                                                        SizedBox(width: 5,),
-                                                        Text('${userComplaintList[index]['userRemarks'][indexs]['userStatus']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: appcolors.primaryColor)),
-                                                      ],
-                                                    ),*/
-                                                    Text('${vendorComplaintList[index]['vendorFeedBackList'][indexs]['vendorFeedBacks']}',style: TextStyle(fontSize: 12,color: Colors.black)),
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.start,
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Icon(Icons.check_circle,size: 20,color: appcolors.primaryColor,),
+                                                            SizedBox(width: 5,),
+                                                            Container(
+                                                              width: MediaQuery.of(context).size.width*0.425,
+                                                              child: Column(
+                                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: [
+                                                                  Text('${vendorComplaintList[index]['vendorFeedBackList'][indexs]['vendorStatus']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: appcolors.primaryColor)),
+                                                                  Text('${vendorComplaintList[index]['vendorFeedBackList'][indexs]['vendorFeedBacks']}',style: TextStyle(fontSize: 12,color: Colors.black)),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
 
-                                                    SizedBox(height: 2,),
-                                                    Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                                      children: [
-                                                        Container(),
-                                                        Text('${formatDate(vendorComplaintList[index]['vendorFeedBackList'][indexs]['createdOn'])}',style: TextStyle(fontSize: 6,fontWeight: FontWeight.bold,color: Colors.grey)),
+                                                        SizedBox(height: 2,),
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          children: [
+                                                            Container(),
+                                                            Text('${formatDate(vendorComplaintList[index]['vendorFeedBackList'][indexs]['createdOn'])}',style: TextStyle(fontSize: 8,color: Colors.black38)),
+                                                          ],
+                                                        ),
                                                       ],
                                                     ),
-                                                  ],
+                                                  ),
                                                 ),
                                               );
                                             },
@@ -731,31 +795,48 @@ class _vendorComplainListState extends State<vendorComplainList> {
                                             itemCount: vendorComplaintList[index]['userFeedBackList'].length,
                                             itemBuilder: (BuildContext context, int indexs){
                                               return Container(
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    /* Row(
+                                                margin: EdgeInsets.only(top: 5,left: 20),
+                                                child: ClipRRect(
+                                                  borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(20.0),topLeft: Radius.circular(20),topRight: Radius.circular(15)),
+                                                  child: Container(
+                                                    color: Colors.green[100],
+                                                    padding: EdgeInsets.fromLTRB(10, 5, 5, 2),
+                                                    child: Column(
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
-                                                        Image.asset('assets/images/feedbackUser.png',width: 20,height: 20,),
-                                                        SizedBox(width: 5,),
-                                                        Text('${userComplaintList[index]['userRemarks'][indexs]['userStatus']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: appcolors.primaryColor)),
-                                                      ],
-                                                    ),*/
-                                                    Text('${vendorComplaintList[index]['userFeedBackList'][indexs]['userFeedBacks']}',style: TextStyle(fontSize: 12,color: Colors.black)),
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.start,
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            vendorComplaintList[index]['userFeedBackList'][indexs]['userStatus']=='Resolved' ? Icon(Icons.sentiment_satisfied_alt,size: 20,color: appcolors.primaryColor,) : Icon(Icons.sentiment_dissatisfied_outlined,size: 20,color: appcolors.primaryColor,),
+                                                            SizedBox(width: 5,),
+                                                            Container(
+                                                              width: MediaQuery.of(context).size.width*0.425,
+                                                              child: Column(
+                                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: [
+                                                                  Text('${vendorComplaintList[index]['userFeedBackList'][indexs]['userStatus']=='Resolved' ? 'Satisfied' : 'Not Satisfied'}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: appcolors.primaryColor)),
+                                                                  Text('${vendorComplaintList[index]['userFeedBackList'][indexs]['userFeedBacks']}',style: TextStyle(fontSize: 12,color: Colors.black)),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
 
-                                                    SizedBox(height: 2,),
-                                                    Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                                      children: [
-                                                        Container(),
-                                                        Text('${formatDate(vendorComplaintList[index]['userFeedBackList'][indexs]['createdOn'])}',style: TextStyle(fontSize: 6,fontWeight: FontWeight.bold,color: Colors.grey)),
+                                                        SizedBox(height: 2,),
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          children: [
+                                                            Container(),
+                                                            Text('${formatDate(vendorComplaintList[index]['userFeedBackList'][indexs]['createdOn'])}',style: TextStyle(fontSize:8,color: Colors.black38)),
+                                                          ],
+                                                        ),
                                                       ],
                                                     ),
-                                                  ],
+                                                  ),
                                                 ),
                                               );
                                             },                                        ),
@@ -798,15 +879,22 @@ class _vendorComplainListState extends State<vendorComplainList> {
                       ],
                     ),
 
-                    SizedBox(height: 5,),
-                    Text('CR By - ${vendorComplaintList[index]['userName']}',style: TextStyle(fontSize: 12,color: Colors.black54)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset(Assets.iconsUserIcon,width: 20,height: 20,),
+                        SizedBox(width: 10,),
+                        Text('${vendorComplaintList[index]['userName']}',style: TextStyle(fontSize: 12,color: Colors.black54)),
+                      ],
+                    ),
 
                     SizedBox(height: 5,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Icon(Icons.call,size: 20,color: appcolors.primaryColor,),
+                        Image.asset(Assets.iconsCallCirculerIcon,width: 20,height: 20,),
                         SizedBox(width: 10,),
                         Text('${vendorComplaintList[index]['userMobileNo']}',style: TextStyle(fontSize: 12,color: Colors.black54)),
                       ],

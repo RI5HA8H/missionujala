@@ -9,6 +9,7 @@ import 'package:missionujala/Resource/Utiles/drawer.dart';
 import 'package:http/http.dart' as http;
 import '../Resource/StringLocalization/allAPI.dart';
 import '../Resource/StringLocalization/baseUrl.dart';
+import '../Resource/Utiles/bottomNavigationBar.dart';
 import '../Resource/Utiles/toasts.dart';
 
 
@@ -71,6 +72,7 @@ class _vendorNotificationScreenState extends State<vendorNotificationScreen> {
           ),
         ),
       ),
+      bottomNavigationBar: bottomNavigationBar(2),
     );
   }
 

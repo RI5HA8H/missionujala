@@ -19,6 +19,7 @@ import '../Resource/Utiles/appBar.dart';
 import '../Resource/Utiles/drawer.dart';
 import '../Resource/Utiles/normalButton.dart';
 import '../Resource/Utiles/toasts.dart';
+import '../generated/assets.dart';
 
 
 
@@ -200,13 +201,13 @@ class _userServiceCenterListState extends State<userServiceCenterList> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(Icons.call,size: 20,color: appcolors.primaryColor,),
+                          Image.asset(Assets.iconsCallCirculerIcon,width: 20,height: 20,),
                           SizedBox(width: 10,),
                           Text("${serviceCenterTypeItem[index]['scContactNo']}",style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold,color: appcolors.blackColor)),
                         ],
                       ),
                       GestureDetector(
-                        child: Icon(Icons.location_on_outlined,size: 25,color: appcolors.primaryColor,),
+                        child:  Image.asset(Assets.iconsLocationViewIcon,width: 25,height: 25,),
                         onTap: (){
                           lat=serviceCenterTypeItem[index]['latitude'];
                           long=serviceCenterTypeItem[index]['longitude'];
@@ -266,7 +267,7 @@ class _userServiceCenterListState extends State<userServiceCenterList> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(Icons.email,size: 20,color: appcolors.primaryColor,),
+                      Image.asset(Assets.iconsEmailCirculerIcon,width: 20,height: 20,),
                       SizedBox(width: 10,),
                       Text("${serviceCenterTypeItem[index]['scEmailId']}",style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold,color: appcolors.blackColor)),
                     ],

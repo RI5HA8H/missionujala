@@ -26,6 +26,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shape_maker/shape_maker.dart';
 import 'package:shape_maker/shape_maker_painter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../Resource/StringLocalization/allAPI.dart';
 import '../Resource/StringLocalization/baseUrl.dart';
 import '../Resource/StringLocalization/titles.dart';
@@ -62,8 +63,10 @@ class _viewLocationsState extends State<viewLocations> {
   late ProgressDialog progressDialog4;
   String userToken='';
   String companyKey='';
-  bool scroll=true;
+  bool scroll1=true;
+  bool scroll2=true;
   bool showFilter=false;
+  bool showFilterButtonColor=false;
   Position? currentPosition;
   final Set<Marker> markerr={};
   var allApiMarker=[];
@@ -142,162 +145,206 @@ class _viewLocationsState extends State<viewLocations> {
           ),
         ],
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(showFilter ? MediaQuery.of(context).size.height/3 : MediaQuery.of(context).size.height/12),
+          preferredSize: Size.fromHeight(showFilterButtonColor ? MediaQuery.of(context).size.height/2.8 : MediaQuery.of(context).size.height/9),
           child: Container(
-            color: Colors.transparent,
-            padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+            padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
             child:Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      child: normalButton(name: 'Near by',width:MediaQuery.of(context).size.width/2.5,height:40,bordeRadious: 10,fontSize:14,textColor: Colors.white,bckColor: appcolors.primaryColor,),
-                      onTap: () async {
-                        setState(() {showFilter=false;});
-                        double latitude=await getCurrentLatitude();
-                        double longitude=await getCurrentLongitude();
-                        getRadiousLatlong(latitude,longitude);
-                      },
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: Container(
+                    color: Colors.white,
+                    padding: EdgeInsets.fromLTRB(10, 10, 10, 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Stack(
+                          alignment: Alignment.topCenter,
+                          children: [
+                           showFilter ? Container() : RotatedBox(
+                              quarterTurns: 2,
+                              child: ShapeMaker(
+                                width: 100,
+                                height: 42,
+                                shapeType: ShapeType.triangle,
+                                bgColor: appcolors.greenTextColor,
+                              ),
+                            ),
+                            Positioned(
+                              child: InkWell(
+                                child: normalButton(name: 'Near by',width:MediaQuery.of(context).size.width/2.5,height:35,bordeRadious: 5,fontSize:14,textColor: showFilter ? Colors.black : Colors.white,bckColor: showFilter ? appcolors.whiteColor : appcolors.greenTextColor,),
+                                onTap: () async {
+                                  setState(() {showFilter=false;showFilterButtonColor=false;});
+                                  double latitude=await getCurrentLatitude();
+                                  double longitude=await getCurrentLongitude();
+                                  getRadiousLatlong(latitude,longitude);
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        Stack(
+                          alignment: Alignment.topCenter,
+                          children: [
+                            showFilter ? RotatedBox(
+                              quarterTurns: 2,
+                              child: ShapeMaker(
+                                width: 100,
+                                height: 42,
+                                shapeType: ShapeType.triangle,
+                                bgColor: appcolors.greenTextColor,
+                              ),
+                            ) : Container(),
+                            Positioned(
+                              child: InkWell(
+                                child: normalButton(name: 'Choose Location',width:MediaQuery.of(context).size.width/2.5,height:35,bordeRadious: 5,fontSize:14,textColor: showFilter ? Colors.white : Colors.black,bckColor: showFilter ? appcolors.greenTextColor : Colors.white,),
+                                onTap: (){
+                                  setState(() {showFilter=true;showFilterButtonColor=true;});
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                    InkWell(
-                      child: normalButton(name: 'Choose Location',width:MediaQuery.of(context).size.width/2.5,height:40,bordeRadious: 10,fontSize:14,textColor: Colors.white,bckColor: appcolors.primaryColor,),
-                      onTap: (){
-                        setState(() {showFilter=true;});
-                      },
-                    ),
-                  ],
+                  ),
                 ),
-                showFilter ? Container(
-                  child: Column(
-                    children: [
-                      SizedBox(height: 15,),
-                      Container(
-                        height: 45,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(
-                            color: Color(0xffC5C5C5),
-                            width: 0.5,
+                SizedBox(height: 5,),
+                showFilterButtonColor ? ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: Container(
+                    color: Colors.white,
+                    padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                    child: Column(
+                      children: [
+                        SizedBox(height: 5,),
+                        Container(
+                          height: 45,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(
+                              color: Color(0xffC5C5C5),
+                              width: 0.5,
+                            ),
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton2(
+                              isExpanded: true,
+                              hint: Text('Select District',style: TextStyle(fontSize: 12,),),
+                              iconStyleData: IconStyleData(
+                                icon: Padding(
+                                  padding: const EdgeInsets.only(right: 16),
+                                  child: Icon(Icons.keyboard_arrow_down),
+                                ),
+                              ),
+                              dropdownStyleData: DropdownStyleData(
+                                elevation: 1,
+                                maxHeight: MediaQuery.of(context).size.height/2,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.grey[50],
+                                ),
+                              ),
+                              buttonStyleData: ButtonStyleData(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.white,
+                                ),
+                              ),
+                              menuItemStyleData: MenuItemStyleData(
+                                height: 30,
+                              ),
+                              items: districtTypeItem.map((item11) {
+                                return DropdownMenuItem(
+                                  value: item11['districtKey'],
+                                  child: Container(width: MediaQuery.of(context).size.width/2,child: Text(item11['districtName'],style: TextStyle(fontSize: 12),maxLines: 1,overflow: TextOverflow.ellipsis,)),
+                                );
+                              }).toList(),
+                              onChanged: (newVal11) {
+                                setState(() {
+                                  districtDropdownValue = newVal11;
+                                  print('llllllllll----$districtDropdownValue');
+                                  blockTypeItem.isEmpty;
+                                  blockDropdownValue=null;
+                                  getBlock();
+                                });
+                              },
+                              value: districtDropdownValue,
+                            ),
                           ),
                         ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton2(
-                            isExpanded: true,
-                            hint: Text('Select District',style: TextStyle(fontSize: 12,),),
-                            iconStyleData: IconStyleData(
-                              icon: Padding(
-                                padding: const EdgeInsets.only(right: 16),
-                                child: Icon(Icons.keyboard_arrow_down),
+                        SizedBox(height: 5,),
+                        Container(
+                          height: 45,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(
+                              color: Color(0xffC5C5C5),
+                              width: 0.5,
+                            ),
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton2(
+                              isExpanded: true,
+                              hint: Text('Select Area',style: TextStyle(fontSize: 12,),),
+                              iconStyleData: IconStyleData(
+                                icon: Padding(
+                                  padding: const EdgeInsets.only(right: 16),
+                                  child: Icon(Icons.keyboard_arrow_down),
+                                ),
                               ),
-                            ),
-                            dropdownStyleData: DropdownStyleData(
-                              elevation: 1,
-                              maxHeight: MediaQuery.of(context).size.height/2,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.grey[50],
+                              dropdownStyleData: DropdownStyleData(
+                                elevation: 1,
+                                maxHeight: MediaQuery.of(context).size.height/2,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.grey[50],
+                                ),
                               ),
-                            ),
-                            buttonStyleData: ButtonStyleData(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.white,
+                              buttonStyleData: ButtonStyleData(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.white,
+                                ),
                               ),
+                              menuItemStyleData: MenuItemStyleData(
+                                height: 30,
+                              ),
+                              items: blockTypeItem.map((item12) {
+                                return DropdownMenuItem(
+                                  value: item12['blockKey'],
+                                  child: Container(width: MediaQuery.of(context).size.width/2,child: Text(item12['blockName'],style: TextStyle(fontSize: 12),maxLines: 1,overflow: TextOverflow.ellipsis,)),
+                                );
+                              }).toList(),
+                              onChanged: (newVal12) {
+                                setState(() {
+                                  blockDropdownValue = newVal12;
+                                  print('llllllllll----$blockDropdownValue');
+                                });
+                              },
+                              value: blockDropdownValue,
                             ),
-                            menuItemStyleData: MenuItemStyleData(
-                              height: 30,
-                            ),
-                            items: districtTypeItem.map((item11) {
-                              return DropdownMenuItem(
-                                value: item11['districtKey'],
-                                child: Container(width: MediaQuery.of(context).size.width/2,child: Text(item11['districtName'],style: TextStyle(fontSize: 12),maxLines: 1,overflow: TextOverflow.ellipsis,)),
-                              );
-                            }).toList(),
-                            onChanged: (newVal11) {
-                              setState(() {
-                                districtDropdownValue = newVal11;
-                                print('llllllllll----$districtDropdownValue');
-                                blockTypeItem.isEmpty;
-                                blockDropdownValue=null;
-                                getBlock();
-                              });
-                            },
-                            value: districtDropdownValue,
                           ),
                         ),
-                      ),
-                      SizedBox(height: 10,),
-                      Container(
-                        height: 45,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(
-                            color: Color(0xffC5C5C5),
-                            width: 0.5,
-                          ),
+                        SizedBox(height: 10,),
+                        InkWell(
+                          child: normalButton(name: 'Search',height:45,bordeRadious: 25,fontSize:14,textColor: Colors.white,bckColor: appcolors.greenTextColor,),
+                          onTap: () async {
+                            if(districtDropdownValue==null || blockDropdownValue==null){
+                              toasts().redToastShort('Proper fill the details');
+                            }else{
+                              setState(() {showFilterButtonColor=false;});
+                              lat= 26.830000;
+                              long= 80.91999;
+                              getUidByDistrictBlock();
+                            }
+                          },
                         ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton2(
-                            isExpanded: true,
-                            hint: Text('Select Area',style: TextStyle(fontSize: 12,),),
-                            iconStyleData: IconStyleData(
-                              icon: Padding(
-                                padding: const EdgeInsets.only(right: 16),
-                                child: Icon(Icons.keyboard_arrow_down),
-                              ),
-                            ),
-                            dropdownStyleData: DropdownStyleData(
-                              elevation: 1,
-                              maxHeight: MediaQuery.of(context).size.height/2,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.grey[50],
-                              ),
-                            ),
-                            buttonStyleData: ButtonStyleData(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.white,
-                              ),
-                            ),
-                            menuItemStyleData: MenuItemStyleData(
-                              height: 30,
-                            ),
-                            items: blockTypeItem.map((item12) {
-                              return DropdownMenuItem(
-                                value: item12['blockKey'],
-                                child: Container(width: MediaQuery.of(context).size.width/2,child: Text(item12['blockName'],style: TextStyle(fontSize: 12),maxLines: 1,overflow: TextOverflow.ellipsis,)),
-                              );
-                            }).toList(),
-                            onChanged: (newVal12) {
-                              setState(() {
-                                blockDropdownValue = newVal12;
-                                print('llllllllll----$blockDropdownValue');
-                              });
-                            },
-                            value: blockDropdownValue,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10,),
-                      InkWell(
-                        child: normalButton(name: 'Search',height:45,bordeRadious: 20,fontSize:14,textColor: Colors.white,bckColor: appcolors.greenTextColor,),
-                        onTap: () async {
-                          if(districtDropdownValue==null || blockDropdownValue==null){
-                            toasts().redToastShort('Proper fill the details');
-                          }else{
-                            setState(() {showFilter=false;});
-                            lat= 26.830000;
-                            long= 80.91999;
-                            getUidByDistrictBlock();
-                          }
-                        },
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ) : Container(),
 
@@ -307,7 +354,7 @@ class _viewLocationsState extends State<viewLocations> {
         ),
       ),
       drawer: drawer(),
-      body:scroll ? Center(child: CircularProgressIndicator()) : Stack(
+      body:scroll1 || scroll2 ? Center(child: CircularProgressIndicator()) : Stack(
         children: [
           GoogleMap(
             mapType: MapType.normal,
@@ -515,8 +562,8 @@ class _viewLocationsState extends State<viewLocations> {
       print('ssssssssss${i}');
       if(allServiceCenterItem[i]['latitude'].toString()!='null'){
         print('hhhhhhhh${i}');
-        lat=double.parse('${allServiceCenterItem[i]['latitude']}');
-        long=double.parse('${allServiceCenterItem[i]['longitude']}');
+        //lat=double.parse('${allServiceCenterItem[i]['latitude']}');
+        //long=double.parse('${allServiceCenterItem[i]['longitude']}');
         markerr.add(
           Marker(markerId:MarkerId(i.toString()),
             position: LatLng(double.parse('${allServiceCenterItem[i]['latitude']}'),double.parse('${allServiceCenterItem[i]['longitude']}')),
@@ -542,7 +589,7 @@ class _viewLocationsState extends State<viewLocations> {
                               Container(
                                 width: 60,
                                 color: Colors.grey[200],
-                                child: Image.network('https://i.pinimg.com/736x/44/27/2d/44272df32b1b832c9ea8f596fb4d76b2.jpg',width: 60,height: 80,fit: BoxFit.fill,),
+                                child: Image.network('https://i.pinimg.com/736x/44/27/2d/44272df32b1b832c9ea8f596fb4d76b2.jpg',width: 60,height: 60,fit: BoxFit.fill,),
                               ),
                               SizedBox(width: 5,),
                               Container(
@@ -571,8 +618,12 @@ class _viewLocationsState extends State<viewLocations> {
                       child: InkWell(
                         child: normalButton(name: 'Call Now',height:35,width: 100,bordeRadious: 10,fontSize:10,textColor: Colors.white,bckColor: appcolors.greenTextColor,),
                         onTap: () async {
-
-
+                          final call = Uri.parse('tel:+91 ${allServiceCenterItem[i]['scContactNo']}');
+                          if (await canLaunchUrl(call)) {
+                            launchUrl(call);
+                          } else {
+                            throw 'Could not launch $call';
+                          }
                         },
                       ),
                     ),
@@ -608,7 +659,7 @@ class _viewLocationsState extends State<viewLocations> {
 
 
   Future<void> getRadiousLatlong(double lati,double longi) async {
-    setState(() {scroll=true;});
+    setState(() {scroll1=true;});
     lat=lati;
     long=longi;
     markerr.clear();
@@ -628,12 +679,12 @@ class _viewLocationsState extends State<viewLocations> {
       allApiMarker=results;
       print('llllllllll--->${results.length}');
       showMarkers();
-      setState(() {scroll=false;});
+      setState(() {scroll1=false;});
 
     }
     else {
       toasts().redToastLong('Server Error');
-      setState(() {scroll=false;});
+      setState(() {scroll1=false;});
     }
   }
 
@@ -681,7 +732,7 @@ class _viewLocationsState extends State<viewLocations> {
 
 
   Future<void> getUidByDistrictBlock() async {
-    setState(() {scroll=true;});
+    setState(() {scroll1=true;});
     markerr.clear();
 
     var request = http.Request('GET', Uri.parse(urls().base_url + allAPI().getUidByDistrictBlockURL+'/$districtDropdownValue/$blockDropdownValue'));
@@ -695,16 +746,16 @@ class _viewLocationsState extends State<viewLocations> {
       print(await 'aaaaaaaaa-----${results}');
       allApiMarker=results;
       showMarkers();
-      setState(() {scroll=false;});
+      setState(() {scroll1=false;});
     }
     else {
       toasts().redToastLong('Server Error');
-      setState(() {scroll=false;});
+      setState(() {scroll1=false;});
     }
   }
 
   Future<void> getServiceCenterList() async {
-    setState(() {scroll=true;});
+    setState(() {scroll2=true;});
     var request = http.Request('GET', Uri.parse(urls().base_url + allAPI().getServiceCenterListURL));
 
     var response = await request.send();
@@ -713,11 +764,11 @@ class _viewLocationsState extends State<viewLocations> {
     if (response.statusCode == 200) {
       print(await 'aaaaaaaaa-----${results}');
       allServiceCenterItem=results;
-      setState(() {scroll=false;});
+      setState(() {scroll2=false;});
     }
     else {
       toasts().redToastLong('Server Error');
-      setState(() {scroll=false;});
+      setState(() {scroll2=false;});
     }
   }
 

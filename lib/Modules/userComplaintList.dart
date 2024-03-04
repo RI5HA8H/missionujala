@@ -18,6 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import '../Resource/StringLocalization/allAPI.dart';
 import '../Resource/StringLocalization/baseUrl.dart';
+import '../Resource/Utiles/bottomNavigationBar.dart';
 import '../Resource/Utiles/editText.dart';
 import '../Resource/Utiles/normalButton.dart';
 import '../Resource/Utiles/toasts.dart';
@@ -148,6 +149,7 @@ class _userComplaintListState extends State<userComplaintList> {
             ),
           ),
         ),
+        bottomNavigationBar: bottomNavigationBar(1),
       ),
     );
   }
@@ -272,6 +274,7 @@ class _userComplaintListState extends State<userComplaintList> {
                                     descStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),
                                     descPadding: EdgeInsets.all(5),
                                     descTextAlign: TextAlign.start,
+                                    buttonAreaPadding: EdgeInsets.all(10),
                                     isOverlayTapDismiss: false,
                                   ),
                                   closeFunction: (){
@@ -291,31 +294,50 @@ class _userComplaintListState extends State<userComplaintList> {
                                             itemCount: userComplaintList[index]['vendorRemarks'].length,
                                             itemBuilder: (BuildContext context, int indexs){
                                               return Container(
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    /*Row(
+                                                margin: EdgeInsets.only(top: 5,right: 20),
+                                                child: ClipRRect(
+                                                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(15.0),topRight: Radius.circular(20.0),bottomRight: Radius.circular(20)),
+                                                  child: Container(
+                                                    color: Colors.red[100],
+                                                    padding: EdgeInsets.fromLTRB(5, 5, 10, 2),
+                                                    child: Column(
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
-                                                        Image.asset('assets/images/electrician.png',width: 20,height: 20,),
-                                                        SizedBox(width: 5,),
-                                                        Text('${userComplaintList[index]['userRemarks'][indexs]['userStatus']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: appcolors.primaryColor)),
-                                                      ],
-                                                    ),*/
-                                                    Text('${userComplaintList[index]['vendorRemarks'][indexs]['vendorFeedBacks']}',style: TextStyle(fontSize: 12,color: Colors.black)),
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.start,
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Icon(Icons.check_circle,size: 20,color: appcolors.primaryColor,),
+                                                            SizedBox(width: 5,),
+                                                            Container(
+                                                              width: MediaQuery.of(context).size.width*0.425,
+                                                              child: Column(
+                                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: [
+                                                                  Text('${userComplaintList[index]['vendorRemarks'][indexs]['vendorStatus']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: appcolors.primaryColor)),
+                                                                  //SizedBox(height: 2,),
+                                                                  Text('${userComplaintList[index]['vendorRemarks'][indexs]['vendorFeedBacks']}',style: TextStyle(fontSize: 12,color: Colors.black)),
 
-                                                    SizedBox(height: 2,),
-                                                    Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                                      children: [
-                                                        Container(),
-                                                        Text('${formatDate(userComplaintList[index]['vendorRemarks'][indexs]['createdOn'])}',style: TextStyle(fontSize: 6,fontWeight: FontWeight.bold,color: Colors.grey)),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+
+                                                        SizedBox(height: 2,),
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          children: [
+                                                            Container(),
+                                                            Text('${formatDate(userComplaintList[index]['vendorRemarks'][indexs]['createdOn'])}',style: TextStyle(fontSize: 8,color: Colors.black38)),
+                                                          ],
+                                                        ),
                                                       ],
                                                     ),
-                                                  ],
+                                                  ),
                                                 ),
                                               );
                                             },
@@ -326,31 +348,49 @@ class _userComplaintListState extends State<userComplaintList> {
                                             itemCount: userComplaintList[index]['userRemarks'].length,
                                             itemBuilder: (BuildContext context, int indexs){
                                               return Container(
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    /* Row(
+                                                margin: EdgeInsets.only(top: 5,left: 20),
+                                                child: ClipRRect(
+                                                  borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(20.0),topLeft: Radius.circular(20),topRight: Radius.circular(15)),
+                                                  child: Container(
+                                                    color: Colors.green[100],
+                                                    padding: EdgeInsets.fromLTRB(10, 5, 5, 2),
+                                                    child: Column(
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
-                                                        Image.asset('assets/images/feedbackUser.png',width: 20,height: 20,),
-                                                        SizedBox(width: 5,),
-                                                        Text('${userComplaintList[index]['userRemarks'][indexs]['userStatus']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: appcolors.primaryColor)),
-                                                      ],
-                                                    ),*/
-                                                    Text('${userComplaintList[index]['userRemarks'][indexs]['userFeedBacks']}',style: TextStyle(fontSize: 12,color: Colors.black)),
+                                                         Row(
+                                                          mainAxisAlignment: MainAxisAlignment.start,
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            userComplaintList[index]['userRemarks'][indexs]['userStatus']=='Resolved' ? Icon(Icons.sentiment_satisfied_alt,size: 20,color: appcolors.primaryColor,) : Icon(Icons.sentiment_dissatisfied_outlined,size: 20,color: appcolors.primaryColor,),
+                                                            SizedBox(width: 5,),
+                                                            Container(
+                                                              width: MediaQuery.of(context).size.width*0.425,
+                                                              child: Column(
+                                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: [
+                                                                  Text('${userComplaintList[index]['userRemarks'][indexs]['userStatus']=='Resolved' ? 'Satisfied' : 'Not Satisfied'}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: appcolors.primaryColor)),
+                                                                  //SizedBox(height: 2,),
+                                                                  Text('${userComplaintList[index]['userRemarks'][indexs]['userFeedBacks']}',style: TextStyle(fontSize: 12,color: Colors.black)),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
 
-                                                    SizedBox(height: 2,),
-                                                    Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                                      children: [
-                                                        Container(),
-                                                        Text('${formatDate(userComplaintList[index]['userRemarks'][indexs]['createdOn'])}',style: TextStyle(fontSize: 6,fontWeight: FontWeight.bold,color: Colors.grey)),
+                                                        SizedBox(height: 2,),
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          children: [
+                                                            Container(),
+                                                            Text('${formatDate(userComplaintList[index]['userRemarks'][indexs]['createdOn'])}',style: TextStyle(fontSize: 8,color: Colors.black38)),
+                                                          ],
+                                                        ),
                                                       ],
                                                     ),
-                                                  ],
+                                                  ),
                                                 ),
                                               );
                                             },                                        ),
@@ -401,7 +441,7 @@ class _userComplaintListState extends State<userComplaintList> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Icon(Icons.call,size: 20,color: appcolors.primaryColor,),
+                        Image.asset(Assets.iconsCallCirculerIcon,width: 20,height: 20,),
                         SizedBox(width: 10,),
                         Text('${userComplaintList[index]['vendorMobileNo']}',style: TextStyle(fontSize: 12,color: Colors.black54)),
                       ],
@@ -465,7 +505,7 @@ class _userComplaintListState extends State<userComplaintList> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             GestureDetector(
-                              child: Image.asset('assets/icons/customer-review.png',width: 20,height: 20,color: appcolors.primaryColor,),
+                              child: Image.asset(Assets.iconsFeedbacksIcon,width: 20,height: 20,color: appcolors.primaryColor,),
                               onTap: (){
                                 Alert(
                                   context: context,
@@ -499,8 +539,8 @@ class _userComplaintListState extends State<userComplaintList> {
                                              inactiveBgColor: Colors.grey[500],
                                              inactiveFgColor: Colors.white,
                                              totalSwitches: 2,
-                                             iconSize: 20,
-                                             labels: ['Satisfied', 'UnSatisfied'],
+                                             iconSize: 30,
+                                             //labels: ['Satisfied', 'UnSatisfied'],
                                              icons: [Icons.sentiment_satisfied_alt, Icons.sentiment_dissatisfied_outlined],
                                              activeBgColors: [[Colors.green], [Colors.red]],
                                              onToggle: (index) {
@@ -666,6 +706,7 @@ class _userComplaintListState extends State<userComplaintList> {
                                     descStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),
                                     descPadding: EdgeInsets.all(5),
                                     descTextAlign: TextAlign.start,
+                                    buttonAreaPadding: EdgeInsets.all(10),
                                     isOverlayTapDismiss: false,
                                   ),
                                   closeFunction: (){
@@ -685,31 +726,48 @@ class _userComplaintListState extends State<userComplaintList> {
                                             itemCount: userComplaintList[index]['vendorRemarks'].length,
                                             itemBuilder: (BuildContext context, int indexs){
                                               return Container(
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    /*Row(
+                                                margin: EdgeInsets.only(top: 5,right: 20),
+                                                child: ClipRRect(
+                                                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(15.0),topRight: Radius.circular(20.0),bottomRight: Radius.circular(20)),
+                                                  child: Container(
+                                                    color: Colors.red[100],
+                                                    padding: EdgeInsets.fromLTRB(5, 5, 10, 2),
+                                                    child: Column(
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
-                                                        Image.asset('assets/images/electrician.png',width: 20,height: 20,),
-                                                        SizedBox(width: 5,),
-                                                        Text('${userComplaintList[index]['userRemarks'][indexs]['userStatus']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: appcolors.primaryColor)),
-                                                      ],
-                                                    ),*/
-                                                    Text('${userComplaintList[index]['vendorRemarks'][indexs]['vendorFeedBacks']}',style: TextStyle(fontSize: 12,color: Colors.black)),
-                                      
-                                                    SizedBox(height: 2,),
-                                                    Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                                      children: [
-                                                        Container(),
-                                                        Text('${formatDate(userComplaintList[index]['vendorRemarks'][indexs]['createdOn'])}',style: TextStyle(fontSize: 6,fontWeight: FontWeight.bold,color: Colors.grey)),
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.start,
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Icon(Icons.check_circle,size: 20,color: appcolors.primaryColor,),
+                                                            SizedBox(width: 5,),
+                                                            Container(
+                                                              width: MediaQuery.of(context).size.width*0.425,
+                                                              child: Column(
+                                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: [
+                                                                  Text('${userComplaintList[index]['vendorRemarks'][indexs]['vendorStatus']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: appcolors.primaryColor)),
+                                                                  Text('${userComplaintList[index]['vendorRemarks'][indexs]['vendorFeedBacks']}',style: TextStyle(fontSize: 12,color: Colors.black)),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+
+                                                        SizedBox(height: 2,),
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          children: [
+                                                            Container(),
+                                                            Text('${formatDate(userComplaintList[index]['vendorRemarks'][indexs]['createdOn'])}',style: TextStyle(fontSize: 8,color: Colors.black38)),
+                                                          ],
+                                                        ),
                                                       ],
                                                     ),
-                                                  ],
+                                                  ),
                                                 ),
                                               );
                                             },
@@ -720,31 +778,48 @@ class _userComplaintListState extends State<userComplaintList> {
                                             itemCount: userComplaintList[index]['userRemarks'].length,
                                             itemBuilder: (BuildContext context, int indexs){
                                               return Container(
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                   /* Row(
+                                                margin: EdgeInsets.only(top: 5,left: 20),
+                                                child: ClipRRect(
+                                                  borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(20.0),topLeft: Radius.circular(20),topRight: Radius.circular(15)),
+                                                  child: Container(
+                                                    color: Colors.green[100],
+                                                    padding: EdgeInsets.fromLTRB(10, 5, 5, 2),
+                                                    child: Column(
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
-                                                        Image.asset('assets/images/feedbackUser.png',width: 20,height: 20,),
-                                                        SizedBox(width: 5,),
-                                                        Text('${userComplaintList[index]['userRemarks'][indexs]['userStatus']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: appcolors.primaryColor)),
-                                                      ],
-                                                    ),*/
-                                                    Text('${userComplaintList[index]['userRemarks'][indexs]['userFeedBacks']}',style: TextStyle(fontSize: 12,color: Colors.black)),
-                                      
-                                                    SizedBox(height: 2,),
-                                                    Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                                      children: [
-                                                        Container(),
-                                                        Text('${formatDate(userComplaintList[index]['userRemarks'][indexs]['createdOn'])}',style: TextStyle(fontSize: 6,fontWeight: FontWeight.bold,color: Colors.grey)),
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.start,
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            userComplaintList[index]['userRemarks'][indexs]['userStatus']=='Resolved' ? Icon(Icons.sentiment_satisfied_alt,size: 20,color: appcolors.primaryColor,) : Icon(Icons.sentiment_dissatisfied_outlined,size: 20,color: appcolors.primaryColor,),
+                                                            SizedBox(width: 5,),
+                                                            Container(
+                                                              width: MediaQuery.of(context).size.width*0.425,
+                                                              child: Column(
+                                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: [
+                                                                  Text('${userComplaintList[index]['userRemarks'][indexs]['userStatus']=='Resolved' ? 'Satisfied' : 'Not Satisfied'}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: appcolors.primaryColor)),
+                                                                  Text('${userComplaintList[index]['userRemarks'][indexs]['userFeedBacks']}',style: TextStyle(fontSize: 12,color: Colors.black)),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+
+                                                        SizedBox(height: 2,),
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          children: [
+                                                            Container(),
+                                                            Text('${formatDate(userComplaintList[index]['userRemarks'][indexs]['createdOn'])}',style: TextStyle(fontSize:8,color: Colors.black38)),
+                                                          ],
+                                                        ),
                                                       ],
                                                     ),
-                                                  ],
+                                                  ),
                                                 ),
                                               );
                                             },                                        ),
@@ -795,7 +870,7 @@ class _userComplaintListState extends State<userComplaintList> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Icon(Icons.call,size: 20,color: appcolors.primaryColor,),
+                        Image.asset(Assets.iconsCallCirculerIcon,width: 20,height: 20,),
                         SizedBox(width: 10,),
                         Text('${userComplaintList[index]['vendorMobileNo']}',style: TextStyle(fontSize: 12,color: Colors.black54)),
                       ],

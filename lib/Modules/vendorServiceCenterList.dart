@@ -18,6 +18,7 @@ import '../Resource/Utiles/appBar.dart';
 import '../Resource/Utiles/drawer.dart';
 import '../Resource/Utiles/normalButton.dart';
 import '../Resource/Utiles/toasts.dart';
+import '../generated/assets.dart';
 
 
 
@@ -212,7 +213,7 @@ class _vendorServiceCenterListState extends State<vendorServiceCenterList> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(Icons.call,size: 20,color: appcolors.primaryColor,),
+                          Image.asset(Assets.iconsCallCirculerIcon,width: 20,height: 20,),
                           SizedBox(width: 10,),
                           Text("${serviceCenterTypeItem[index]['scContactNo']}",style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold,color: appcolors.blackColor)),
                         ],
@@ -222,7 +223,7 @@ class _vendorServiceCenterListState extends State<vendorServiceCenterList> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           GestureDetector(
-                              child: Icon(Icons.edit_note,size: 25,color: appcolors.primaryColor,),
+                              child: Image.asset(Assets.iconsEditIcon,width: 20,height: 20,),
                             onTap: (){
                               Navigator.of(context).push(MaterialPageRoute(builder: (context) => updateServiceCenter(
                                 serviceCenterTypeItem[index]['scKey'].toString(),
@@ -240,7 +241,7 @@ class _vendorServiceCenterListState extends State<vendorServiceCenterList> {
                           ),
                           SizedBox(width: 20,),
                           GestureDetector(
-                              child: Icon(Icons.location_on_outlined,size: 25,color: appcolors.primaryColor,),
+                              child: Image.asset(Assets.iconsLocationViewIcon,width: 25,height: 25,),
                             onTap: (){
                                 lat=serviceCenterTypeItem[index]['latitude'];
                                 long=serviceCenterTypeItem[index]['longitude'];
@@ -302,7 +303,7 @@ class _vendorServiceCenterListState extends State<vendorServiceCenterList> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(Icons.email,size: 20,color: appcolors.primaryColor,),
+                      Image.asset(Assets.iconsEmailCirculerIcon,width: 20,height: 20,),
                       SizedBox(width: 10,),
                       Text("${serviceCenterTypeItem[index]['scEmailId']}",style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold,color: appcolors.blackColor)),
                     ],

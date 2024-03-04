@@ -192,6 +192,7 @@ class _homeScreenState extends State<homeScreen> {
                         },
                       ),
 
+
                       loginType=='user' ? InkWell(
                         child: moduleview(title: '${allTitle.ServiceCenterModule}', path: Assets.iconsServiceCenterIcon,),
                         onTap: (){
