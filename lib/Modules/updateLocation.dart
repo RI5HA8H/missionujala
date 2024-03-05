@@ -56,6 +56,7 @@ class _updateLocationState extends State<updateLocation> {
   static  CameraPosition _kGooglePlex = CameraPosition(target: LatLng(26.439602610044293, 82.58186811379103), zoom: 20,);
 
   bool scroll=false;
+  bool buttonView=false;
   bool latlonfUpdated=false;
   String userToken='';
   bool scrollLatLong=false;
@@ -178,6 +179,16 @@ class _updateLocationState extends State<updateLocation> {
                 ));
                 setState(() {});
               },
+              onTap: (position) {
+                buttonView=true;
+                lat= position.latitude;
+                long= position.longitude;
+                print('${lat}, ${long}');
+                setState(() {});
+                customInfoWindowController2.hideInfoWindow!();
+              },
+              myLocationEnabled: true, // Enable showing the user's location
+              myLocationButtonEnabled: true, // Enable the "My Location" button
             ) : GoogleMap(
               mapType: MapType.normal,
               initialCameraPosition: _kGooglePlex,
@@ -257,11 +268,18 @@ class _updateLocationState extends State<updateLocation> {
                 setState(() {});
               },
               onTap: (position) {
+                buttonView=true;
+                lat= position.latitude;
+                long= position.longitude;
+                print('${lat}, ${long}');
+                setState(() {});
                 customInfoWindowController2.hideInfoWindow!();
               },
               onCameraMove: (position) {
                 customInfoWindowController2.onCameraMove!();
               },
+              myLocationEnabled: true, // Enable showing the user's location
+              myLocationButtonEnabled: true, // Enable the "My Location" button
             ),
             CustomInfoWindow(
               controller: customInfoWindowController2,
@@ -272,89 +290,22 @@ class _updateLocationState extends State<updateLocation> {
           ],
         ),
         bottomNavigationBar: Container(
-          height: MediaQuery.of(context).size.height/4.5,
+          height: MediaQuery.of(context).size.height/6,
           color: appcolors.screenBckColor,
           padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
           child:Column(
             children: [
-
+              Text('कृपया map पर touch कर light/system की location चिंहित करें',style: TextStyle(fontSize: 14,color: Colors.black),),
               SizedBox(height: 10,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 50,
-                    width: MediaQuery.of(context).size.width*0.4,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(5.0), // Adjust the radius as needed
-                    ),
-                    child: TextFormField(
-                      readOnly: true,
-                      controller: latController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide(
-                            color: Color(0xffC5C5C5), // Border color
-                            width: 0.5,         // Border width
-                          ),
-                        ),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        hintText: 'Latitude',
-                        hintStyle: TextStyle(fontSize: 12),
-                      ),
-                      style: TextStyle(fontSize: 12,),
-                    ),
-                  ),
-                  Container(
-                    height: 50,
-                    width: MediaQuery.of(context).size.width*0.4,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(5.0), // Adjust the radius as needed
-                    ),
-                    child: TextFormField(
-                      readOnly: true,
-                      controller: longController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide(
-                            color: Color(0xffC5C5C5), // Border color
-                            width: 0.5,         // Border width
-                          ),
-                        ),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        hintText: 'Longitude',
-                        hintStyle: TextStyle(fontSize: 12),
-                      ),
-                      style: TextStyle(fontSize: 12,),
-                    ),
-                  ),
-                  /*Container(
-                    child: GestureDetector(
-                        child: normalButton(name: 'Get LatLong',bckColor: Colors.orangeAccent,height: 50,width: MediaQuery.of(context).size.width*0.25,bordeRadious: 10,fontSize: 10,scroll: scrollLatLong,),
-                        onTap: () async {
-                          setState(() {scrollLatLong=true;});
-                          double lat= await getCurrentLatitude();
-                          double long=await getCurrentLongitude();
-                          latController.text='$lat';
-                          longController.text='$long';
-                          setState(() {isLatLong=true;scrollLatLong=false;});
-                        }
-                    ),
-                  ),*/
-                ],
-              ) ,
-              SizedBox(height: 20,),
               InkWell(
-                child: normalButton(name: 'Update Current Location',height:45,bordeRadious: 10,fontSize:14,textColor: Colors.white,bckColor: appcolors.primaryColor,),
+                child: normalButton(name: 'Save',height:40,bordeRadious: 10,fontSize:14,textColor: Colors.white,bckColor: buttonView ? appcolors.primaryColor : Colors.grey,),
                 onTap: (){
-                  updateLatlong();
+                  if(buttonView){
+                    updateLatlong();
+                  }else{
+                    toasts().redToastLong('Please Select Location');
+                  }
+
                 },
               ),
             ],
@@ -439,8 +390,8 @@ class _updateLocationState extends State<updateLocation> {
   Future<void> updateLatlong() async {
     setState(() {scroll = true;});
 
-    String cLat='${await getCurrentLatitude()}';
-    String cLong='${await getCurrentLongitude()}';
+   // String cLat='${await getCurrentLatitude()}';
+  //  String cLong='${await getCurrentLongitude()}';
 
 
     var headers = {
@@ -449,8 +400,8 @@ class _updateLocationState extends State<updateLocation> {
 
     var request = http.MultipartRequest('POST', Uri.parse(urls().base_url + allAPI().updateLocationURL));
     request.fields.addAll({
-      'AMCVisitLatitude': cLat.toString(),
-      'AMCVisitLongitude': cLong.toString(),
+      'AMCVisitLatitude': lat.toString(),
+      'AMCVisitLongitude': long.toString(),
       'UIDNo':'${widget.uIdNo}',
     });
     request.headers.addAll(headers);
@@ -483,7 +434,7 @@ class _updateLocationState extends State<updateLocation> {
 
     if (response.statusCode == 200) {
       print(await 'aaaaaaaaa-----${results}');
-      toasts().greenToastShort('Current Lantlong Updated');
+      toasts().greenToastShort('Geo coordinates updated successfully');
       lat=results['installedSystemList'][0]['latitude'];
       long=results['installedSystemList'][0]['longitude']!;
 

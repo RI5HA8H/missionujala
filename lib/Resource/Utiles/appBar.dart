@@ -36,7 +36,7 @@ class appBar extends StatelessWidget implements PreferredSizeWidget {
           },
         ),
         IconButton(
-          icon: Image.asset(Assets.imagesProfileLogo,width: 50,height: 50,),
+          icon: Icon(Icons.account_circle,size: 35,color: appcolors.greenTextColor,),
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => userProfile()));
           },

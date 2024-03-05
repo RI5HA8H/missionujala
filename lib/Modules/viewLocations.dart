@@ -73,10 +73,8 @@ class _viewLocationsState extends State<viewLocations> {
   double lat= 26.830000;
   double long= 80.91999;
   var districtTypeItem = [];
-  var blockTypeItem = [];
   var allServiceCenterItem = [];
   var districtDropdownValue;
-  var blockDropdownValue;
 
   List<LatLng> latlng=[
     LatLng(26.830000,80.91999),
@@ -103,7 +101,7 @@ class _viewLocationsState extends State<viewLocations> {
 
   getUserToken() async {
     getDistrict();
-    getServiceCenterList();
+    //getServiceCenterList();
     double latitude=await getCurrentLatitude();
     double longitude=await getCurrentLongitude();
     getRadiousLatlong(latitude,longitude);
@@ -114,278 +112,383 @@ class _viewLocationsState extends State<viewLocations> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        leadingWidth: 50,
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
-              icon: Image.asset(Assets.iconsMenuIcon,color: appcolors.primaryColor,width: 50,height: 50,),
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          leadingWidth: 50,
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: Image.asset(Assets.iconsMenuIcon,color: appcolors.primaryColor,width: 50,height: 50,),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              );
+            },
+          ),
+          title: Image.asset(Assets.imagesMuAppbarLogo,height: 50,),
+          actions: [
+            IconButton(
+              icon: Image.asset(Assets.imagesDepartmentLogo,width: 50,height: 50,),
               onPressed: () {
-                Scaffold.of(context).openDrawer();
+                //Navigator.of(context).push(MaterialPageRoute(builder: (context) => userProfile()));
               },
-              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-            );
-          },
-        ),
-        title: Image.asset(Assets.imagesMuAppbarLogo,height: 50,),
-        actions: [
-          IconButton(
-            icon: Image.asset(Assets.imagesDepartmentLogo,width: 50,height: 50,),
-            onPressed: () {
-              //Navigator.of(context).push(MaterialPageRoute(builder: (context) => userProfile()));
-            },
-          ),
-          IconButton(
-            icon: Image.asset(Assets.imagesProfileLogo,width: 50,height: 50,),
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => userProfile()));
-            },
-          ),
-        ],
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(showFilterButtonColor ? MediaQuery.of(context).size.height/2.8 : MediaQuery.of(context).size.height/9),
-          child: Container(
-            padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-            child:Column(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(5),
-                  child: Container(
-                    color: Colors.white,
-                    padding: EdgeInsets.fromLTRB(10, 10, 10, 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Stack(
-                          alignment: Alignment.topCenter,
-                          children: [
-                           showFilter ? Container() : RotatedBox(
-                              quarterTurns: 2,
-                              child: ShapeMaker(
-                                width: 100,
-                                height: 42,
-                                shapeType: ShapeType.triangle,
-                                bgColor: appcolors.greenTextColor,
+            ),
+            IconButton(
+              icon: Image.asset(Assets.imagesProfileLogo,width: 50,height: 50,),
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => userProfile()));
+              },
+            ),
+          ],
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(showFilterButtonColor ? MediaQuery.of(context).size.height/3.6 : MediaQuery.of(context).size.height/5.5),
+            child: Container(
+              //padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+              child:Column(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(5),
+                    child: Container(
+                      color: Colors.white,
+                      padding: EdgeInsets.fromLTRB(10, 10, 10, 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Stack(
+                            alignment: Alignment.topCenter,
+                            children: [
+                             showFilter ? Container() : RotatedBox(
+                                quarterTurns: 2,
+                                child: ShapeMaker(
+                                  width: 100,
+                                  height: 42,
+                                  shapeType: ShapeType.triangle,
+                                  bgColor: appcolors.greenTextColor,
+                                ),
+                              ),
+                              Positioned(
+                                child: InkWell(
+                                  child: normalButton(name: 'Near by',width:MediaQuery.of(context).size.width/2.5,height:35,bordeRadious: 5,fontSize:14,textColor: showFilter ? Colors.black : Colors.white,bckColor: showFilter ? appcolors.whiteColor : appcolors.greenTextColor,),
+                                  onTap: () async {
+                                    districtDropdownValue=null;
+                                    setState(() {showFilter=false;showFilterButtonColor=false;});
+                                    double latitude=await getCurrentLatitude();
+                                    double longitude=await getCurrentLongitude();
+                                    getRadiousLatlong(latitude,longitude);
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          Stack(
+                            alignment: Alignment.topCenter,
+                            children: [
+                              showFilter ? RotatedBox(
+                                quarterTurns: 2,
+                                child: ShapeMaker(
+                                  width: 100,
+                                  height: 42,
+                                  shapeType: ShapeType.triangle,
+                                  bgColor: appcolors.greenTextColor,
+                                ),
+                              ) : Container(),
+                              Positioned(
+                                child: InkWell(
+                                  child: normalButton(name: 'Choose Location',width:MediaQuery.of(context).size.width/2.5,height:35,bordeRadious: 5,fontSize:14,textColor: showFilter ? Colors.white : Colors.black,bckColor: showFilter ? appcolors.greenTextColor : Colors.white,),
+                                  onTap: (){
+                                    setState(() {showFilter=true;showFilterButtonColor=true;});
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 5,),
+                  showFilterButtonColor ? ClipRRect(
+                    borderRadius: BorderRadius.circular(5),
+                    child: Container(
+                      color: Colors.white,
+                      padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                      child: Column(
+                        children: [
+                          SizedBox(height: 5,),
+                          Container(
+                            height: 45,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(
+                                color: Color(0xffC5C5C5),
+                                width: 0.5,
                               ),
                             ),
-                            Positioned(
-                              child: InkWell(
-                                child: normalButton(name: 'Near by',width:MediaQuery.of(context).size.width/2.5,height:35,bordeRadious: 5,fontSize:14,textColor: showFilter ? Colors.black : Colors.white,bckColor: showFilter ? appcolors.whiteColor : appcolors.greenTextColor,),
-                                onTap: () async {
-                                  setState(() {showFilter=false;showFilterButtonColor=false;});
-                                  double latitude=await getCurrentLatitude();
-                                  double longitude=await getCurrentLongitude();
-                                  getRadiousLatlong(latitude,longitude);
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton2(
+                                isExpanded: true,
+                                hint: Text('Select District',style: TextStyle(fontSize: 12,),),
+                                iconStyleData: IconStyleData(
+                                  icon: Padding(
+                                    padding: const EdgeInsets.only(right: 16),
+                                    child: Icon(Icons.keyboard_arrow_down),
+                                  ),
+                                ),
+                                dropdownStyleData: DropdownStyleData(
+                                  elevation: 1,
+                                  maxHeight: MediaQuery.of(context).size.height/2,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.grey[50],
+                                  ),
+                                ),
+                                buttonStyleData: ButtonStyleData(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                menuItemStyleData: MenuItemStyleData(
+                                  height: 30,
+                                ),
+                                items: districtTypeItem.map((item11) {
+                                  return DropdownMenuItem(
+                                    value: item11['districtKey'],
+                                    child: Container(width: MediaQuery.of(context).size.width/2,child: Text(item11['districtName'],style: TextStyle(fontSize: 12),maxLines: 1,overflow: TextOverflow.ellipsis,)),
+                                  );
+                                }).toList(),
+                                onChanged: (newVal11) {
+                                  setState(() {
+                                    districtDropdownValue = newVal11;
+                                    print('llllllllll----$districtDropdownValue');
+                                    setState(() {showFilterButtonColor=false;});
+                                    getUidByDistrictBlock();
+                                  });
                                 },
+                                value: districtDropdownValue,
                               ),
                             ),
-                          ],
-                        ),
-                        Stack(
-                          alignment: Alignment.topCenter,
-                          children: [
-                            showFilter ? RotatedBox(
-                              quarterTurns: 2,
-                              child: ShapeMaker(
-                                width: 100,
-                                height: 42,
-                                shapeType: ShapeType.triangle,
-                                bgColor: appcolors.greenTextColor,
+                          ),
+                          SizedBox(height: 5,),
+                         /* Container(
+                            height: 45,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(
+                                color: Color(0xffC5C5C5),
+                                width: 0.5,
                               ),
-                            ) : Container(),
-                            Positioned(
-                              child: InkWell(
-                                child: normalButton(name: 'Choose Location',width:MediaQuery.of(context).size.width/2.5,height:35,bordeRadious: 5,fontSize:14,textColor: showFilter ? Colors.white : Colors.black,bckColor: showFilter ? appcolors.greenTextColor : Colors.white,),
-                                onTap: (){
-                                  setState(() {showFilter=true;showFilterButtonColor=true;});
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton2(
+                                isExpanded: true,
+                                hint: Text('Select Area',style: TextStyle(fontSize: 12,),),
+                                iconStyleData: IconStyleData(
+                                  icon: Padding(
+                                    padding: const EdgeInsets.only(right: 16),
+                                    child: Icon(Icons.keyboard_arrow_down),
+                                  ),
+                                ),
+                                dropdownStyleData: DropdownStyleData(
+                                  elevation: 1,
+                                  maxHeight: MediaQuery.of(context).size.height/2,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.grey[50],
+                                  ),
+                                ),
+                                buttonStyleData: ButtonStyleData(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                menuItemStyleData: MenuItemStyleData(
+                                  height: 30,
+                                ),
+                                items: blockTypeItem.map((item12) {
+                                  return DropdownMenuItem(
+                                    value: item12['blockKey'],
+                                    child: Container(width: MediaQuery.of(context).size.width/2,child: Text(item12['blockName'],style: TextStyle(fontSize: 12),maxLines: 1,overflow: TextOverflow.ellipsis,)),
+                                  );
+                                }).toList(),
+                                onChanged: (newVal12) {
+                                  setState(() {
+                                    blockDropdownValue = newVal12;
+                                    print('llllllllll----$blockDropdownValue');
+                                  });
                                 },
+                                value: blockDropdownValue,
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                          SizedBox(height: 10,),
+                          InkWell(
+                            child: normalButton(name: 'Search',height:45,bordeRadious: 25,fontSize:14,textColor: Colors.white,bckColor: appcolors.greenTextColor,),
+                            onTap: () async {
+                              if(districtDropdownValue==null || blockDropdownValue==null){
+                                toasts().redToastShort('Proper fill the details');
+                              }else{
+                                setState(() {showFilterButtonColor=false;});
+                                lat= 26.830000;
+                                long= 80.91999;
+                                getUidByDistrictBlock();
+                              }
+                            },
+                          ),*/
+                        ],
+                      ),
+                    ),
+                  ) : Container(),
+                  SizedBox(height: 5,),
+                  Container(
+                    color: appcolors.whiteColor,
+                    child: TabBar(
+                      labelColor: appcolors.primaryColor,
+                      indicatorSize: TabBarIndicatorSize.tab,
+                      labelStyle: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),
+                      tabs: [
+                        Tab(text: 'View Map'),
+                        Tab(text: 'View List'),
                       ],
                     ),
                   ),
-                ),
-                SizedBox(height: 5,),
-                showFilterButtonColor ? ClipRRect(
-                  borderRadius: BorderRadius.circular(5),
-                  child: Container(
-                    color: Colors.white,
-                    padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                    child: Column(
-                      children: [
-                        SizedBox(height: 5,),
-                        Container(
-                          height: 45,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(
-                              color: Color(0xffC5C5C5),
-                              width: 0.5,
-                            ),
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton2(
-                              isExpanded: true,
-                              hint: Text('Select District',style: TextStyle(fontSize: 12,),),
-                              iconStyleData: IconStyleData(
-                                icon: Padding(
-                                  padding: const EdgeInsets.only(right: 16),
-                                  child: Icon(Icons.keyboard_arrow_down),
-                                ),
-                              ),
-                              dropdownStyleData: DropdownStyleData(
-                                elevation: 1,
-                                maxHeight: MediaQuery.of(context).size.height/2,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.grey[50],
-                                ),
-                              ),
-                              buttonStyleData: ButtonStyleData(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.white,
-                                ),
-                              ),
-                              menuItemStyleData: MenuItemStyleData(
-                                height: 30,
-                              ),
-                              items: districtTypeItem.map((item11) {
-                                return DropdownMenuItem(
-                                  value: item11['districtKey'],
-                                  child: Container(width: MediaQuery.of(context).size.width/2,child: Text(item11['districtName'],style: TextStyle(fontSize: 12),maxLines: 1,overflow: TextOverflow.ellipsis,)),
-                                );
-                              }).toList(),
-                              onChanged: (newVal11) {
-                                setState(() {
-                                  districtDropdownValue = newVal11;
-                                  print('llllllllll----$districtDropdownValue');
-                                  blockTypeItem.isEmpty;
-                                  blockDropdownValue=null;
-                                  getBlock();
-                                });
-                              },
-                              value: districtDropdownValue,
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 5,),
-                        Container(
-                          height: 45,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(
-                              color: Color(0xffC5C5C5),
-                              width: 0.5,
-                            ),
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton2(
-                              isExpanded: true,
-                              hint: Text('Select Area',style: TextStyle(fontSize: 12,),),
-                              iconStyleData: IconStyleData(
-                                icon: Padding(
-                                  padding: const EdgeInsets.only(right: 16),
-                                  child: Icon(Icons.keyboard_arrow_down),
-                                ),
-                              ),
-                              dropdownStyleData: DropdownStyleData(
-                                elevation: 1,
-                                maxHeight: MediaQuery.of(context).size.height/2,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.grey[50],
-                                ),
-                              ),
-                              buttonStyleData: ButtonStyleData(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.white,
-                                ),
-                              ),
-                              menuItemStyleData: MenuItemStyleData(
-                                height: 30,
-                              ),
-                              items: blockTypeItem.map((item12) {
-                                return DropdownMenuItem(
-                                  value: item12['blockKey'],
-                                  child: Container(width: MediaQuery.of(context).size.width/2,child: Text(item12['blockName'],style: TextStyle(fontSize: 12),maxLines: 1,overflow: TextOverflow.ellipsis,)),
-                                );
-                              }).toList(),
-                              onChanged: (newVal12) {
-                                setState(() {
-                                  blockDropdownValue = newVal12;
-                                  print('llllllllll----$blockDropdownValue');
-                                });
-                              },
-                              value: blockDropdownValue,
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 10,),
-                        InkWell(
-                          child: normalButton(name: 'Search',height:45,bordeRadious: 25,fontSize:14,textColor: Colors.white,bckColor: appcolors.greenTextColor,),
-                          onTap: () async {
-                            if(districtDropdownValue==null || blockDropdownValue==null){
-                              toasts().redToastShort('Proper fill the details');
-                            }else{
-                              setState(() {showFilterButtonColor=false;});
-                              lat= 26.830000;
-                              long= 80.91999;
-                              getUidByDistrictBlock();
-                            }
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ) : Container(),
-
-              ],
+                ],
+              ),
             ),
           ),
         ),
+        drawer: drawer(),
+        body:scroll1 || scroll2 ? Center(child: CircularProgressIndicator()) : TabBarView(
+          physics: NeverScrollableScrollPhysics(),
+          children: [
+            Stack(
+              children: [
+                GoogleMap(
+                  mapType: MapType.normal,
+                  initialCameraPosition: _kGooglePlex,
+                  markers: Set<Marker>.of(markerr),
+                  onMapCreated: (GoogleMapController controller) {
+                    //_controller.complete(controller);
+                    controller.animateCamera(CameraUpdate.newCameraPosition(
+                        CameraPosition(target: LatLng(lat,long), zoom: 12,)
+                    ));
+                    customInfoWindowController.googleMapController = controller;
+                  },
+                  onTap: (position) {
+                    customInfoWindowController.hideInfoWindow!();
+                  },
+                  onCameraMove: (position) {
+                    customInfoWindowController.onCameraMove!();
+                  },
+                ),
+                CustomInfoWindow(
+                  controller: customInfoWindowController,
+                  height: 180,
+                  width: 280,
+                  offset: 50,
+                ),
+              ],
+            ),
+            Container(
+              padding: EdgeInsets.only(top: 5),
+              child: ListView.builder(
+                  itemCount: allApiMarker[0]['installedSystemList'].length,
+                  itemBuilder: (BuildContext context, int index) => getRow(index, context)
+              ),
+            ),
+          ],
+        ),
+        //bottomNavigationBar: bottomNavigationBar(0),
       ),
-      drawer: drawer(),
-      body:scroll1 || scroll2 ? Center(child: CircularProgressIndicator()) : Stack(
-        children: [
-          GoogleMap(
-            mapType: MapType.normal,
-            initialCameraPosition: _kGooglePlex,
-            markers: Set<Marker>.of(markerr),
-            onMapCreated: (GoogleMapController controller) {
-              //_controller.complete(controller);
-              controller.animateCamera(CameraUpdate.newCameraPosition(
-                  CameraPosition(target: LatLng(lat,long), zoom: 12,)
-              ));
-              customInfoWindowController.googleMapController = controller;
-            },
-            onTap: (position) {
-              customInfoWindowController.hideInfoWindow!();
-            },
-            onCameraMove: (position) {
-              customInfoWindowController.onCameraMove!();
-            },
-          ),
-          CustomInfoWindow(
-            controller: customInfoWindowController,
-            height: 180,
-            width: 280,
-            offset: 50,
-          ),
-        ],
-      ),
-      //bottomNavigationBar: bottomNavigationBar(0),
     );
   }
 
+
+  Widget getRow(int index,var snapshot) {
+    return  Container(
+      padding: EdgeInsets.fromLTRB(10,0,10,5),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Container(
+          color: allApiMarker[0]['installedSystemList'][index]['isCorrect_LatLong']==true ? Colors.green[100] : Colors.grey[100],
+          child: Stack(
+            alignment: Alignment.topRight,
+            children: [
+              Container(
+                child: ListTile(
+                  title: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+
+                          Text('UID No.: ${allApiMarker[0]['installedSystemList'][index]['uidNo']}',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black),),
+                          Text('Installation Date : ${allApiMarker[0]['installedSystemList'][index]['installationDate']}',style: TextStyle(fontSize: 14,color: Colors.black)),
+                          Text('${allApiMarker[0]['installedSystemList'][index]['placeName']},${allApiMarker[0]['installedSystemList'][index]['villageName']}',style: TextStyle(fontSize: 12,color: Colors.black)),
+
+                        ],
+                      )
+                  ),
+                  onTap: () async {
+                    bool updateUid= false;
+                    updateUid=await Navigator.of(context).push(MaterialPageRoute(builder: (context) => viewLocationFullDetails(
+                      allApiMarker[0]['installedSystemList'][index]['uidKey'],
+                      allApiMarker[0]['installedSystemList'][index]['uidNo'],
+                      allApiMarker[0]['installedSystemList'][index]['mobileNo'],
+                      allApiMarker[0]['installedSystemList'][index]['villageName'],
+                      allApiMarker[0]['installedSystemList'][index]['placeName'],
+                      allApiMarker[0]['installedSystemList'][index]['blockName'],
+                      allApiMarker[0]['installedSystemList'][index]['districtName'],
+                      allApiMarker[0]['installedSystemList'][index]['installationDate'],
+
+                      allApiMarker[0]['installedSystemList'][index]['status'],
+                      allApiMarker[0]['installedSystemList'][index]['beneficiaryName'],
+                      allApiMarker[0]['installedSystemList'][index]['fatherName'],
+                      allApiMarker[0]['installedSystemList'][index]['gramPanchayat'],
+                      allApiMarker[0]['installedSystemList'][index]['latitude'],
+                      allApiMarker[0]['installedSystemList'][index]['longitude'],
+                      allApiMarker[0]['installedSystemList'][index]['photoPath'],
+                      allApiMarker[0]['installedSystemList'][index]['formatPath1'],
+                      allApiMarker[0]['installedSystemList'][index]['formatPath1Extn'],
+                      allApiMarker[0]['installedSystemList'][index]['schemeName'],
+                      allApiMarker[0]['installedSystemList'][index]['serviceValidTill'],
+                    )));
+                    print('uuuuuuuuuuuuuuu-->$updateUid');
+
+                    if(updateUid == true){
+                      if(districtDropdownValue!=null){
+                        getUidByDistrictBlock();
+                      }else{
+                        double latitude=await getCurrentLatitude();
+                        double longitude=await getCurrentLongitude();
+                        getRadiousLatlong(latitude,longitude);
+                      }
+                    }
+
+                  },
+                ),
+              ),
+              Positioned(
+                child: '${allApiMarker[0]['installedSystemList'][index]['latitude']}' == 'null' ? Container() : Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Image.asset('assets/icons/isMapMarker.png',width: 20,height: 20,),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
   Future<void> getLocation() async {
     var status = await Permission.location.request();
@@ -448,7 +551,7 @@ class _viewLocationsState extends State<viewLocations> {
 
   showMarkers() async {
     final Uint8List? markerIcon = await getBytesFromAsset('assets/icons/markerIcon.png', 150);
-    final Uint8List? scmarkerIcon = await getBytesFromAsset('assets/icons/serviceCenterMarkerIcon.png', 150);
+    //final Uint8List? scmarkerIcon = await getBytesFromAsset('assets/icons/serviceCenterMarkerIcon.png', 150);
 
     for(int i=0;i<allApiMarker[0]['installedSystemList'].length;i++)
     {
@@ -537,10 +640,13 @@ class _viewLocationsState extends State<viewLocations> {
                           print('uuuuuuuuuuuuuuu-->$updateUid');
 
                           if(updateUid == true){
-                            double latitude=await getCurrentLatitude();
-                            double longitude=await getCurrentLongitude();
-                            getRadiousLatlong(latitude,longitude);
-                            getDistrict();
+                            if(districtDropdownValue!=null){
+                              getUidByDistrictBlock();
+                            }else{
+                              double latitude=await getCurrentLatitude();
+                              double longitude=await getCurrentLongitude();
+                              getRadiousLatlong(latitude,longitude);
+                            }
                           }
 
                         },
@@ -557,7 +663,7 @@ class _viewLocationsState extends State<viewLocations> {
       }
     }
 
-    for(int i=0;i<allServiceCenterItem.length;i++)
+    /*for(int i=0;i<allServiceCenterItem.length;i++)
     {
       print('ssssssssss${i}');
       if(allServiceCenterItem[i]['latitude'].toString()!='null'){
@@ -636,7 +742,7 @@ class _viewLocationsState extends State<viewLocations> {
           ),
         );
       }
-    }
+    }*/
     setState(() {});
   }
 
@@ -689,8 +795,7 @@ class _viewLocationsState extends State<viewLocations> {
   }
 
   Future<void> getDistrict() async {
-    //progressDialog2=nDialog.nProgressDialog(context);
-    //progressDialog2.show();
+    setState(() {scroll2=true;});
 
     var request = http.Request('GET', Uri.parse(urls().base_url + allAPI().disctrictURL));
 
@@ -700,15 +805,15 @@ class _viewLocationsState extends State<viewLocations> {
     if (response.statusCode == 200) {
       print(await 'aaaaaaaaa-----${results}');
       districtTypeItem=results;
-      //progressDialog2.dismiss();
+      setState(() {scroll2=false;});
     }
     else {
       toasts().redToastLong('Server Error');
-      //progressDialog2.dismiss();
+      setState(() {scroll2=false;});
     }
   }
 
-  Future<void> getBlock() async {
+  /*Future<void> getBlock() async {
     progressDialog3=nDialog.nProgressDialog(context);
     progressDialog3.show();
 
@@ -728,15 +833,15 @@ class _viewLocationsState extends State<viewLocations> {
       toasts().redToastLong('Server Error');
       progressDialog3.dismiss();
     }
-  }
+  }*/
 
 
   Future<void> getUidByDistrictBlock() async {
     setState(() {scroll1=true;});
     markerr.clear();
 
-    var request = http.Request('GET', Uri.parse(urls().base_url + allAPI().getUidByDistrictBlockURL+'/$districtDropdownValue/$blockDropdownValue'));
-    print(await 'aaaaaaaaa-----${urls().base_url + allAPI().getUidByDistrictBlockURL+'/$districtDropdownValue/$blockDropdownValue'}');
+    var request = http.Request('GET', Uri.parse(urls().base_url + allAPI().getUidByDistrictBlockURL+'/$districtDropdownValue/0'));
+    print(await 'aaaaaaaaa-----${urls().base_url + allAPI().getUidByDistrictBlockURL+'/$districtDropdownValue/0'}');
 
 
     var response = await request.send();
@@ -754,7 +859,7 @@ class _viewLocationsState extends State<viewLocations> {
     }
   }
 
-  Future<void> getServiceCenterList() async {
+  /*Future<void> getServiceCenterList() async {
     setState(() {scroll2=true;});
     var request = http.Request('GET', Uri.parse(urls().base_url + allAPI().getServiceCenterListURL));
 
@@ -770,7 +875,7 @@ class _viewLocationsState extends State<viewLocations> {
       toasts().redToastLong('Server Error');
       setState(() {scroll2=false;});
     }
-  }
+  }*/
 
 }
 

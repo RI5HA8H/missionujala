@@ -99,7 +99,14 @@ class _complaintScreenState extends State<complaintScreen> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(left: 5,bottom: 2),
-                        child: Text('Is Light Working ?',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.black),),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Is Light Working?',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.black),),
+                            Text(' *',style: TextStyle(fontSize: 18,color: Colors.red),),
+                          ],
+                        ),
                       ),
                       Container(
                         child: Row(
@@ -139,7 +146,14 @@ class _complaintScreenState extends State<complaintScreen> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(left: 5,bottom: 2),
-                        child: Text('Is battery being, OK?',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.black),),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Is Battery OK?',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.black),),
+                            Text(' *',style: TextStyle(fontSize: 18,color: Colors.red),),
+                          ],
+                        ),
                       ),
                       Container(
                         child: Row(
@@ -179,7 +193,14 @@ class _complaintScreenState extends State<complaintScreen> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(left: 5,bottom: 2),
-                        child: Text('Is panel being, OK?',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.black),),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Is Solar panel OK?',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.black),),
+                            Text(' *',style: TextStyle(fontSize: 18,color: Colors.red),),
+                          ],
+                        ),
                       ),
                       Container(
                         child: Row(
@@ -215,7 +236,7 @@ class _complaintScreenState extends State<complaintScreen> {
 
                 SizedBox(height: 20,),
 
-                editTextSimple(
+               /* editTextSimple(
                   controllers: titleController,
                   focusNode: titleFocusNode,
                   hint: 'Enter UID',
@@ -259,127 +280,210 @@ class _complaintScreenState extends State<complaintScreen> {
                     ),
                   ),
                 ),
+*/
 
-                SizedBox(height: 10,),
-                Container(
-                  height: 90,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(5.0), // Adjust the radius as needed
-                  ),
-                  child: TextField(
-                    maxLines: 3,
-                    maxLength: 200,
-                    keyboardType:TextInputType.text,
-                    controller: descriptionController,
-                    focusNode: descriptionFocusNode,
-                    style: TextStyle(fontSize: 12,color: Colors.black),
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide(
-                            color: Color(0xffC5C5C5), // Border color
-                            width: 0.5,         // Border width
-                          ),
-                        ),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        counterText: '',
-                        labelText: '',
-                        hintText:'Enter your comment',
-                        hintStyle: TextStyle(fontSize: 14)
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Take a photo',style: TextStyle(fontSize: 14,color: Colors.black),),
+                        Text(' *',style: TextStyle(fontSize: 18,color: Colors.red),),
+                      ],
                     ),
-                  ),
-                ),
-
-                SizedBox(height: 10,),
-                Container(
-                  height: 150,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  child:Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(5),
-                      child: GestureDetector(
-                        child: Container(
-                          width: double.infinity,
-                          color: Colors.grey[100],
-                          child: galleryFile == null ?  Icon(Icons.add_a_photo,color: Colors.black,size: 50,) : Stack(
-                            alignment: Alignment.bottomRight,
-                            children: [
-                              Center(child: Image.file(galleryFile!)),
-                              GestureDetector(
-                                child: Positioned(
-                                  child: Icon(Icons.change_circle_outlined,size: 30,color: appcolors.primaryColor,),
-                                ),
-                                onTap: (){
+                    Container(
+                      height: 150,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      child:Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(5),
+                          child: Container(
+                            width: double.infinity,
+                            color: Colors.grey[100],
+                            child: galleryFile == null ?  GestureDetector(
+                                child: Icon(Icons.add_a_photo,color: Colors.black,size: 50,),
+                              onTap: (){
+                                if(galleryFile!=null){
+                                  Alert(
+                                    context: context,
+                                    style: AlertStyle(
+                                        descStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),
+                                        descPadding: EdgeInsets.all(5)
+                                    ),
+                                    image: Padding(
+                                      padding: const EdgeInsets.only(top: 10),
+                                      child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(5),
+                                          child: ExtendedImage.file(
+                                            galleryFile!,
+                                            fit: BoxFit.contain,
+                                            //enableLoadState: false,
+                                            mode: ExtendedImageMode.gesture,
+                                            initGestureConfigHandler: (state) {
+                                              return GestureConfig(
+                                                minScale: 0.9,
+                                                animationMinScale: 0.7,
+                                                maxScale: 3.0,
+                                                animationMaxScale: 3.5,
+                                                speed: 1.0,
+                                                inertialSpeed: 100.0,
+                                                initialScale: 1.0,
+                                                inPageView: false,
+                                                initialAlignment: InitialAlignment.center,
+                                              );
+                                            },
+                                          )
+                                      ),
+                                    ),
+                                    buttons: [
+                                      DialogButton(
+                                        gradient: LinearGradient(colors: [
+                                          Color.fromRGBO(116, 116, 191, 1.0),
+                                          Color.fromRGBO(52, 138, 199, 1.0)]),
+                                        child: Text("OK", style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white, fontSize: 16),),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                      )
+                                    ],
+                                  ).show();
+                                }else{
                                   titleFocusNode.unfocus();
                                   addressFocusNode.unfocus();
                                   descriptionFocusNode.unfocus();
                                   _showPicker(context: context);
-                                },
-                              ),
-                            ],
+                                }
+                              },
+                            ) : Stack(
+                              alignment: Alignment.bottomRight,
+                              children: [
+                                GestureDetector(
+                                    child: Center(child: Image.file(galleryFile!)),
+                                  onTap: (){
+                                    if(galleryFile!=null){
+                                      Alert(
+                                        context: context,
+                                        style: AlertStyle(
+                                            descStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),
+                                            descPadding: EdgeInsets.all(5)
+                                        ),
+                                        image: Padding(
+                                          padding: const EdgeInsets.only(top: 10),
+                                          child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(5),
+                                              child: ExtendedImage.file(
+                                                galleryFile!,
+                                                fit: BoxFit.contain,
+                                                //enableLoadState: false,
+                                                mode: ExtendedImageMode.gesture,
+                                                initGestureConfigHandler: (state) {
+                                                  return GestureConfig(
+                                                    minScale: 0.9,
+                                                    animationMinScale: 0.7,
+                                                    maxScale: 3.0,
+                                                    animationMaxScale: 3.5,
+                                                    speed: 1.0,
+                                                    inertialSpeed: 100.0,
+                                                    initialScale: 1.0,
+                                                    inPageView: false,
+                                                    initialAlignment: InitialAlignment.center,
+                                                  );
+                                                },
+                                              )
+                                          ),
+                                        ),
+                                        buttons: [
+                                          DialogButton(
+                                            gradient: LinearGradient(colors: [
+                                              Color.fromRGBO(116, 116, 191, 1.0),
+                                              Color.fromRGBO(52, 138, 199, 1.0)]),
+                                            child: Text("OK", style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white, fontSize: 16),),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                          )
+                                        ],
+                                      ).show();
+                                    }else{
+                                      titleFocusNode.unfocus();
+                                      addressFocusNode.unfocus();
+                                      descriptionFocusNode.unfocus();
+                                      _showPicker(context: context);
+                                    }
+                                  },
+                                ),
+                                Positioned(
+                                  child: GestureDetector(
+                                      child: Icon(Icons.change_circle_outlined,size: 30,color: appcolors.primaryColor,),
+                                    onTap: (){
+                                      titleFocusNode.unfocus();
+                                      addressFocusNode.unfocus();
+                                      descriptionFocusNode.unfocus();
+                                      _showPicker(context: context);
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        onTap: (){
-                          if(galleryFile!=null){
-                            Alert(
-                              context: context,
-                              style: AlertStyle(
-                                  descStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),
-                                  descPadding: EdgeInsets.all(5)
-                              ),
-                              image: Padding(
-                                padding: const EdgeInsets.only(top: 10),
-                                child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(5),
-                                    child: ExtendedImage.file(
-                                      galleryFile!,
-                                      fit: BoxFit.contain,
-                                      //enableLoadState: false,
-                                      mode: ExtendedImageMode.gesture,
-                                      initGestureConfigHandler: (state) {
-                                        return GestureConfig(
-                                          minScale: 0.9,
-                                          animationMinScale: 0.7,
-                                          maxScale: 3.0,
-                                          animationMaxScale: 3.5,
-                                          speed: 1.0,
-                                          inertialSpeed: 100.0,
-                                          initialScale: 1.0,
-                                          inPageView: false,
-                                          initialAlignment: InitialAlignment.center,
-                                        );
-                                      },
-                                    )
-                                ),
-                              ),
-                              buttons: [
-                                DialogButton(
-                                  gradient: LinearGradient(colors: [
-                                    Color.fromRGBO(116, 116, 191, 1.0),
-                                    Color.fromRGBO(52, 138, 199, 1.0)]),
-                                  child: Text("OK", style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white, fontSize: 16),),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                )
-                              ],
-                            ).show();
-                          }else{
-                            titleFocusNode.unfocus();
-                            addressFocusNode.unfocus();
-                            descriptionFocusNode.unfocus();
-                            _showPicker(context: context);
-                          }
-                        },
                       ),
                     ),
-                  ),
+                  ],
+                ),
+
+                SizedBox(height: 10,),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Comments',style: TextStyle(fontSize: 14,color: Colors.black),),
+                        Text(' (optional)',style: TextStyle(fontSize: 14,color: Colors.red),),
+                      ],
+                    ),
+                    SizedBox(height: 5,),
+                    Container(
+                      height: 90,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(5.0), // Adjust the radius as needed
+                      ),
+                      child: TextField(
+                        maxLines: 3,
+                        maxLength: 200,
+                        keyboardType:TextInputType.text,
+                        controller: descriptionController,
+                        focusNode: descriptionFocusNode,
+                        style: TextStyle(fontSize: 12,color: Colors.black),
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: BorderSide(
+                                color: Color(0xffC5C5C5), // Border color
+                                width: 0.5,         // Border width
+                              ),
+                            ),
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            counterText: '',
+                            labelText: '',
+                            hintText:'Enter your comment (optional)',
+                            hintStyle: TextStyle(fontSize: 14)
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
 
 
@@ -392,8 +496,8 @@ class _complaintScreenState extends State<complaintScreen> {
                     descriptionFocusNode.unfocus();
                     reportLatFocusNode.unfocus();
                     reportLongFocusNode.unfocus();
-                    if(titleController.text.isEmpty || descriptionController.text.isEmpty || galleryFile==null){
-                      toasts().redToastLong('Proper fill the details');
+                    if(titleController.text.isEmpty || galleryFile==null){
+                      toasts().redToastLong('Please fill all the details');
                     }else{
                       double lat= await getCurrentLatitude();
                       double lng= await getCurrentLongitude();
@@ -418,14 +522,14 @@ class _complaintScreenState extends State<complaintScreen> {
         return SafeArea(
           child: Wrap(
             children: <Widget>[
-              ListTile(
+             /* ListTile(
                 leading: const Icon(Icons.photo_library),
                 title: const Text('Gallery'),
                 onTap: () {
                   getImage(ImageSource.gallery);
                   Navigator.of(context).pop();
                 },
-              ),
+              ),*/
               ListTile(
                 leading: const Icon(Icons.photo_camera),
                 title: const Text('Camera'),

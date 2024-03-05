@@ -7,6 +7,7 @@ import 'package:missionujala/Resource/Colors/app_colors.dart';
 import 'package:missionujala/Resource/Utiles/appBar.dart';
 import 'package:missionujala/Resource/Utiles/drawer.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../Resource/StringLocalization/allAPI.dart';
 import '../Resource/StringLocalization/baseUrl.dart';
 import '../Resource/Utiles/bottomNavigationBar.dart';
@@ -24,7 +25,7 @@ class vendorNotificationScreen extends StatefulWidget {
 class _vendorNotificationScreenState extends State<vendorNotificationScreen> {
 
   bool scroll=true;
-
+  String vendorId='';
   var vendorNotificationAllItem = [];
 
   @override
@@ -35,6 +36,10 @@ class _vendorNotificationScreenState extends State<vendorNotificationScreen> {
 
 
   getVendorToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      vendorId = prefs.getString('vendorKey')!;
+    });
     getVendorNotificationList();
   }
 
@@ -143,7 +148,7 @@ class _vendorNotificationScreenState extends State<vendorNotificationScreen> {
 
   Future<void> getVendorNotificationList() async {
     setState(() {scroll=true;});
-    var request = http.Request('GET', Uri.parse(urls().base_url + allAPI().getVendorNotificationListURL));
+    var request = http.Request('GET', Uri.parse(urls().base_url + allAPI().getVendorNotificationListURL+'/$vendorId'));
 
     var response = await request.send();
     var results = jsonDecode(await response.stream.bytesToString());

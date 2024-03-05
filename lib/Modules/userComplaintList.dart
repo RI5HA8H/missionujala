@@ -115,7 +115,7 @@ class _userComplaintListState extends State<userComplaintList> {
             indicatorSize: TabBarIndicatorSize.tab,
             labelStyle: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),
             tabs: [
-              Tab(text: 'Inprocess'),
+              Tab(text: 'Pending'),
               Tab(text: 'Resolved'),
               Tab(text: 'Archived'),
             ],
@@ -139,9 +139,15 @@ class _userComplaintListState extends State<userComplaintList> {
                     itemCount: userComplaintList.length,
                     itemBuilder: (BuildContext context, int index) => getResolveComplaintContainer(index, context),
                   ),
-                  Center(
-                    child: Container(
-                      child: Text('Records not found',style: TextStyle(fontSize: 14,color: Colors.grey),),
+                  Container(
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(5),
+                          width: double.infinity,
+                            color: Colors.grey[200],
+                            child: Text('Resolved complaints more than 6 months old',style: TextStyle(fontSize: 14,color: Colors.green),textAlign: TextAlign.center,)),
+                      ],
                     ),
                   ),
                 ],
@@ -153,6 +159,14 @@ class _userComplaintListState extends State<userComplaintList> {
       ),
     );
   }
+
+  /*Container(
+                          height: 20,
+                            padding: EdgeInsets.all(5),
+                            width: double.infinity,
+                            color: Colors.grey[200],
+                            child: Text('Upto 6 months old',style: TextStyle(fontSize: 14,color: Colors.green),textAlign: TextAlign.center,),
+                        ),*/
 
   Widget getPendingComplaintContainer(int index,var snapshot) {
     if(userComplaintList[index]['status']=='Progress'){

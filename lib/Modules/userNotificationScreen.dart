@@ -7,6 +7,7 @@ import 'package:missionujala/Resource/Colors/app_colors.dart';
 import 'package:missionujala/Resource/Utiles/appBar.dart';
 import 'package:missionujala/Resource/Utiles/drawer.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../Resource/StringLocalization/allAPI.dart';
 import '../Resource/StringLocalization/baseUrl.dart';
 import '../Resource/Utiles/bottomNavigationBar.dart';
@@ -25,7 +26,7 @@ class userNotificationScreen extends StatefulWidget {
 class _userNotificationScreenState extends State<userNotificationScreen> {
 
   bool scroll=true;
-
+  String userId='';
   var userNotificationAllItem = [];
 
   @override
@@ -36,6 +37,10 @@ class _userNotificationScreenState extends State<userNotificationScreen> {
 
 
   getUserToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userId = prefs.getString('userKey')!;
+    });
     getUserNotificationList();
   }
 
@@ -144,7 +149,7 @@ class _userNotificationScreenState extends State<userNotificationScreen> {
 
   Future<void> getUserNotificationList() async {
     setState(() {scroll=true;});
-    var request = http.Request('GET', Uri.parse(urls().base_url + allAPI().getUserNotificationListURL));
+    var request = http.Request('GET', Uri.parse(urls().base_url + allAPI().getUserNotificationListURL+'/$userId'));
 
     var response = await request.send();
     var results = jsonDecode(await response.stream.bytesToString());

@@ -187,7 +187,6 @@ class _userLoginScreenState extends State<userLoginScreen> {
                       } else {
                         mobileFocusNode.unfocus();
                         otpFocusNode.unfocus();
-                        setState(() {halfUI = false;});
                         sendOtpAPI();
                       }
                     },
@@ -311,6 +310,7 @@ class _userLoginScreenState extends State<userLoginScreen> {
     if (response.statusCode == 200) {
       print(await 'aaaaaaaaa-----${results}');
       if(results['userKey'].runtimeType==int){
+        setState(() {halfUI = false;});
         toasts().greenToastShort('OTP Send Successfull');
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('userKey', '${results['userKey']}');
@@ -331,8 +331,13 @@ class _userLoginScreenState extends State<userLoginScreen> {
       }
     }
     else {
-      toasts().redToastLong('Server Error');
-      progressDialog.dismiss();
+     if(results['statusCode']=='MU501'){
+       toasts().redToastLong(results['statusMsg']);
+       progressDialog.dismiss();
+     }else{
+       toasts().redToastLong('Server Error');
+       progressDialog.dismiss();
+     }
     }
   }
 

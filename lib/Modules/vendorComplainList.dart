@@ -108,7 +108,7 @@ class _vendorComplainListState extends State<vendorComplainList> {
             indicatorSize: TabBarIndicatorSize.tab,
             labelStyle: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),
             tabs: [
-              Tab(text: 'Inprocess'),
+              Tab(text: 'Pending'),
               Tab(text: 'Resolved'),
               Tab(text: 'Archived'),
             ],
@@ -132,11 +132,17 @@ class _vendorComplainListState extends State<vendorComplainList> {
                     itemCount: vendorComplaintList.length,
                     itemBuilder: (BuildContext context, int index) => getResolveComplaintContainer(index, context),
                   ),
-                 Center(
-                   child: Container(
-                     child: Text('Records not found',style: TextStyle(fontSize: 14,color: Colors.grey),),
-                   ),
-                 ),
+                  Container(
+                    child: Column(
+                      children: [
+                        Container(
+                            padding: EdgeInsets.all(5),
+                            width: double.infinity,
+                            color: Colors.grey[200],
+                            child: Text('Resolved complaints more than 6 months old',style: TextStyle(fontSize: 14,color: Colors.green),textAlign: TextAlign.center,)),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),

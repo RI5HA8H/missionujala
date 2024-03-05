@@ -519,7 +519,7 @@ class _allUIDScreenState extends State<allUIDScreen> {
                         labelStyle: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),
                         tabs: [
                           Tab(text: 'Pending'),
-                          Tab(text: 'Corrected'),
+                          Tab(text: 'Updated'),
                         ],
                       ),
                     ),

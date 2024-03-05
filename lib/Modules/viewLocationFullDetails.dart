@@ -118,7 +118,7 @@ class _viewLocationFullDetailsState extends State<viewLocationFullDetails> {
                     Divider(),
                     Text('Village : ${widget.uIdVillage}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,),),
                     Divider(),
-                    Text('Block : ${widget.uIdBlock}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,),),
+                    Text('Area : ${widget.uIdBlock}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,),),
                     Divider(),
                     Text('District : ${widget.uIdDist}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,),),
                     Divider(),
@@ -126,7 +126,7 @@ class _viewLocationFullDetailsState extends State<viewLocationFullDetails> {
                     Divider(),
                     Text('Service Valid till : ${widget.uIdSVTill == 'null' ? 'N/A' : convertDateFormat(widget.uIdSVTill)}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,),),
                     Divider(),
-                    Text('Status : ${widget.uIdStatus.toString()=='null' ? 'N/A' : widget.uIdStatus}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: widget.uIdStatus.toString()=='null' ? Colors.red : Colors.black),),
+                    Text('Status : ${widget.uIdStatus.toString()=='null' ? 'N/A' : widget.uIdStatus}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: widget.uIdStatus.toString()=='null' ? Colors.red : Colors.green),),
                     Divider(),
                     Text('Beneficiary Name : ${widget.uIdBeniNAme.toString()=='null' ? 'N/A' : widget.uIdBeniNAme}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: widget.uIdBeniNAme.toString()=='null' ? Colors.red : Colors.black),),
                     Divider(),
@@ -148,10 +148,20 @@ class _viewLocationFullDetailsState extends State<viewLocationFullDetails> {
                             borderRadius: BorderRadius.circular(5),
                             child: Container(
                               padding: EdgeInsets.all(10),
-                              height: MediaQuery.of(context).size.height/6,
+                              height: MediaQuery.of(context).size.height/4.75,
                               width: MediaQuery.of(context).size.width*0.4,
                               color: Colors.grey[300],
-                              child: widget.uIdPhotoPath.toString()=='null' ? Icon(Icons.camera_alt,size: 50,) : Image.network(widget.uIdPhotoPath,width: 70,height: 100,),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    child: widget.uIdPhotoPath.toString()=='null' ? Icon(Icons.camera_alt,size: 50,) : Image.network(widget.uIdPhotoPath,width: 70,height: 100,),
+                                  ),
+                                  SizedBox(height: 5,),
+                                  Text('Photo',style: TextStyle(fontSize: 10,color: Colors.black),),
+                                ],
+                              ),
                             ),
                           ),
                           onTap: () async{
@@ -202,84 +212,106 @@ class _viewLocationFullDetailsState extends State<viewLocationFullDetails> {
                         ),
                         widget.uIdPhotoPathExtn.toString()=='pdf'
                             ? InkWell(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(5),
-                            child: Container(
-                              padding: EdgeInsets.all(10),
-                              height: MediaQuery.of(context).size.height/6,
-                              width: MediaQuery.of(context).size.width*0.4,
-                              color: Colors.grey[300],
-                              child: widget.uIdPdfPath.toString()=='null' ? Icon(Icons.picture_as_pdf,size: 50,) : Image.asset(Assets.iconsPdfIcons,width: 70,height: 100,),
-                            ),
-                          ),
-                          onTap: () async {
-                            var url='${widget.uIdPdfPath}';
-                            var urllaunchable = await canLaunch(url);
-                            if(urllaunchable){
-                              await launchUrl(Uri.parse(url));
-                              setState(() {});
-                            }else{
-                              print("URL can't be launched.");
-                              toasts().redToastLong("Documents not found");
-                            }
-                          },
-                        )
-                            : InkWell(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(5),
-                            child: Container(
-                              padding: EdgeInsets.all(10),
-                              height: MediaQuery.of(context).size.height/6,
-                              width: MediaQuery.of(context).size.width*0.4,
-                              color: Colors.grey[300],
-                              child: widget.uIdPdfPath.toString()=='null' ? Icon(Icons.camera_alt,size: 50,) : Image.network(widget.uIdPdfPath,width: 70,height: 100,),
-                            ),
-                          ),
-                          onTap: () async{
-                            Alert(
-                              context: context,
-                              style: AlertStyle(
-                                  descStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),
-                                  descPadding: EdgeInsets.all(5)
-                              ),
-                              image: Padding(
-                                padding: const EdgeInsets.only(top: 10),
                                 child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(5),
-                                    child: ExtendedImage.network(
-                                      '${widget.uIdPdfPath}',
-                                      fit: BoxFit.contain,
-                                      //enableLoadState: false,
-                                      mode: ExtendedImageMode.gesture,
-                                      initGestureConfigHandler: (state) {
-                                        return GestureConfig(
-                                          minScale: 0.9,
-                                          animationMinScale: 0.7,
-                                          maxScale: 3.0,
-                                          animationMaxScale: 3.5,
-                                          speed: 1.0,
-                                          inertialSpeed: 100.0,
-                                          initialScale: 1.0,
-                                          inPageView: false,
-                                          initialAlignment: InitialAlignment.center,
-                                        );
+                                  borderRadius: BorderRadius.circular(5),
+                                  child: Container(
+                                    padding: EdgeInsets.all(10),
+                                    height: MediaQuery.of(context).size.height/4.75,
+                                    width: MediaQuery.of(context).size.width*0.4,
+                                    color: Colors.grey[300],
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          child: widget.uIdPdfPath.toString()=='null' ? Icon(Icons.picture_as_pdf,size: 50,) : Image.asset(Assets.iconsPdfIcons,width: 70,height: 100,),
+                                        ),
+                                        SizedBox(height: 5,),
+                                        Text('Warranty Card',style: TextStyle(fontSize: 10,color: Colors.black),),
+
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                onTap: () async {
+                                  var url='${widget.uIdPdfPath}';
+                                  var urllaunchable = await canLaunch(url);
+                                  if(urllaunchable){
+                                    await launchUrl(Uri.parse(url));
+                                    setState(() {});
+                                  }else{
+                                    print("URL can't be launched.");
+                                    toasts().redToastLong("Documents not found");
+                                  }
+                                },
+                              )
+                            : InkWell(
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(5),
+                                  child: Container(
+                                    padding: EdgeInsets.all(10),
+                                    height: MediaQuery.of(context).size.height/4.75,
+                                    width: MediaQuery.of(context).size.width*0.4,
+                                    color: Colors.grey[300],
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          child: widget.uIdPdfPath.toString()=='null' ? Icon(Icons.camera_alt,size: 50,) : Image.network(widget.uIdPdfPath,width: 70,height: 100,),
+                                        ),
+                                        SizedBox(height: 5,),
+                                        Text('Warranty Card',style: TextStyle(fontSize: 10,color: Colors.black),),
+
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              onTap: () async{
+                                Alert(
+                                  context: context,
+                                  style: AlertStyle(
+                                      descStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),
+                                      descPadding: EdgeInsets.all(5)
+                                  ),
+                                  image: Padding(
+                                    padding: const EdgeInsets.only(top: 10),
+                                    child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(5),
+                                        child: ExtendedImage.network(
+                                          '${widget.uIdPdfPath}',
+                                          fit: BoxFit.contain,
+                                          //enableLoadState: false,
+                                          mode: ExtendedImageMode.gesture,
+                                          initGestureConfigHandler: (state) {
+                                            return GestureConfig(
+                                              minScale: 0.9,
+                                              animationMinScale: 0.7,
+                                              maxScale: 3.0,
+                                              animationMaxScale: 3.5,
+                                              speed: 1.0,
+                                              inertialSpeed: 100.0,
+                                              initialScale: 1.0,
+                                              inPageView: false,
+                                              initialAlignment: InitialAlignment.center,
+                                            );
+                                          },
+                                        )
+                                    ),
+                                  ),
+                                  buttons: [
+                                    DialogButton(
+                                      gradient: LinearGradient(colors: [
+                                        Color.fromRGBO(116, 116, 191, 1.0),
+                                        Color.fromRGBO(52, 138, 199, 1.0)]),
+                                      child: Text("OK", style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white, fontSize: 16),),
+                                      onPressed: () {
+                                        Navigator.pop(context);
                                       },
                                     )
-                                ),
-                              ),
-                              buttons: [
-                                DialogButton(
-                                  gradient: LinearGradient(colors: [
-                                    Color.fromRGBO(116, 116, 191, 1.0),
-                                    Color.fromRGBO(52, 138, 199, 1.0)]),
-                                  child: Text("OK", style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white, fontSize: 16),),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                )
-                              ],
-                            ).show();
-                          },
+                                  ],
+                                ).show();
+                              },
                         ),
                       ],
                     ),
