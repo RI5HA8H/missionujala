@@ -154,7 +154,7 @@ class _vendorComplainListState extends State<vendorComplainList> {
   }
 
   Widget getPendingComplaintContainer(int index,var snapshot) {
-    if(vendorComplaintList[index]['status']=='Progress'){
+    if(vendorComplaintList[index]['status']=='Pending'){
       return Container(
         child: Column(
           children: [

@@ -169,7 +169,7 @@ class _userComplaintListState extends State<userComplaintList> {
                         ),*/
 
   Widget getPendingComplaintContainer(int index,var snapshot) {
-    if(userComplaintList[index]['status']=='Progress'){
+    if(userComplaintList[index]['status']=='Pending'){
       return Container(
         child: Column(
           children: [
