@@ -28,6 +28,7 @@ import 'Resource/Utiles/checkInternet.dart';
 import 'Resource/Utiles/drawer.dart';
 import 'Resource/Utiles/moduleview.dart';
 import 'Modules/dashBoard.dart';
+import 'loginDashboard.dart';
 
 
 class homeScreen extends StatefulWidget {
@@ -256,7 +257,7 @@ class _homeScreenState extends State<homeScreen> {
       context: context,barrierDismissible: false,
       builder: (context) => WillPopScope(
         onWillPop: () async {
-          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => userLoginScreen()), (Route<dynamic> route) => false);
+          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => loginDashboard()), (Route<dynamic> route) => false);
           return false;
         },
         child: AlertDialog(
@@ -265,7 +266,7 @@ class _homeScreenState extends State<homeScreen> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => userLoginScreen()), (Route<dynamic> route) => false);
+                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => loginDashboard()), (Route<dynamic> route) => false);
               },
               child: Text('OK',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black),),
             ),

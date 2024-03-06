@@ -25,7 +25,7 @@ class appcolors{
   static const Color screenBckColor = Color(0xffEFFEFC);
 
   static const Color l4GradColor = Color(0xff89F0EC);
-  static const Color l3GradColor = Color(0xff80EFEB);
+  static const Color l3GradColor = Color(0xff9DE6E4);
   static const Color l2GradColor = Color(0xffE1FFFD);
   static const Color l1GradColor = Color(0xffDFFCFA);
 

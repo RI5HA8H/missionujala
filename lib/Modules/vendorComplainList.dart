@@ -169,7 +169,7 @@ class _vendorComplainListState extends State<vendorComplainList> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text('#MURI2024XXXX00${vendorComplaintList[index]['reportIssueKey']}',style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold,color: Colors.black)),
+                        Text('${vendorComplaintList[index]['complaintNo']}',style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold,color: Colors.black)),
 
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -618,7 +618,7 @@ class _vendorComplainListState extends State<vendorComplainList> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text('#MURI2024XXXX00${vendorComplaintList[index]['reportIssueKey']}',style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold,color: Colors.black)),
+                        Text('${vendorComplaintList[index]['complaintNo']}',style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold,color: Colors.black)),
 
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

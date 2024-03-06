@@ -16,6 +16,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Modules/addServiceCenter.dart';
+import '../../loginDashboard.dart';
 import '../../venderLoginScreen.dart';
 import '../../userProfile.dart';
 import '../StringLocalization/titles.dart';
@@ -75,13 +76,13 @@ class _drawerState extends State<drawer> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 30,),
+                SizedBox(height: 40,),
                 Container(
                   padding: EdgeInsets.only(left: 20,right: 30),
-                  child: Image.asset('assets/images/muLogo.png',width: 150,height: 100,),
+                  child: Image.asset(Assets.imagesMuAppbarLogo,width: 160,height: 80,),
                 ),
 
-                SizedBox(height: 20,),
+                SizedBox(height: 10,),
                 Container(
                   padding: EdgeInsets.only(left: 20,right: 20),
                   child: Divider(thickness: 2,color: Colors.grey[300],),
@@ -224,7 +225,7 @@ class _drawerState extends State<drawer> {
                     SharedPreferences prefs = await SharedPreferences.getInstance();
                     prefs.setString('userToken', '');
                     prefs.setString('loginType', '');
-                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => userLoginScreen()), (Route<dynamic> route) => false);
+                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => loginDashboard()), (Route<dynamic> route) => false);
                   },
                 ),
               ],

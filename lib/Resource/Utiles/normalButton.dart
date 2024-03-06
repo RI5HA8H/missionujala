@@ -52,7 +52,7 @@ class normalButton extends StatelessWidget {
             ),
           ],
         ),
-      ) : Center(child: Text(name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize, color: textColor)))
+      ) : Center(child: Text(name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize, color: textColor),textAlign:TextAlign.center,))
     );
   }
 }

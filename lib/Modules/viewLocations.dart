@@ -39,6 +39,7 @@ import '../Resource/Utiles/normalButton.dart';
 import '../Resource/Utiles/toasts.dart';
 import '../generated/assets.dart';
 import '../homeScreen.dart';
+import '../loginDashboard.dart';
 import '../userProfile.dart';
 import 'complainScreen.dart';
 
@@ -515,7 +516,7 @@ class _viewLocationsState extends State<viewLocations> {
       context: context,barrierDismissible: false,
       builder: (context) => WillPopScope(
         onWillPop: () async {
-          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => userLoginScreen()), (Route<dynamic> route) => false);
+          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => loginDashboard()), (Route<dynamic> route) => false);
           return false;
         },
         child: AlertDialog(
@@ -524,7 +525,7 @@ class _viewLocationsState extends State<viewLocations> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => userLoginScreen()), (Route<dynamic> route) => false);
+                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => loginDashboard()), (Route<dynamic> route) => false);
               },
               child: Text('OK',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black),),
             ),
@@ -550,7 +551,7 @@ class _viewLocationsState extends State<viewLocations> {
   }
 
   showMarkers() async {
-    final Uint8List? markerIcon = await getBytesFromAsset('assets/icons/markerIcon.png', 150);
+    final Uint8List? markerIcon = await getBytesFromAsset(Assets.iconsMarkerIconNew, 100);
     //final Uint8List? scmarkerIcon = await getBytesFromAsset('assets/icons/serviceCenterMarkerIcon.png', 150);
 
     for(int i=0;i<allApiMarker[0]['installedSystemList'].length;i++)

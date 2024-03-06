@@ -56,8 +56,9 @@ class _complaintScreenState extends State<complaintScreen> {
   final picker = ImagePicker();
   String userId='';
   String isLight='true';
-  String isBattery='true';
-  String isPanel='true';
+  String isBattery='';
+  String isPanel='';
+  String isPole='';
 
 
   @override
@@ -150,8 +151,8 @@ class _complaintScreenState extends State<complaintScreen> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Is Battery OK?',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.black),),
-                            Text(' *',style: TextStyle(fontSize: 18,color: Colors.red),),
+                            Text('Is Battery not there?',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.black),),
+                            //Text(' *',style: TextStyle(fontSize: 18,color: Colors.red),),
                           ],
                         ),
                       ),
@@ -197,8 +198,8 @@ class _complaintScreenState extends State<complaintScreen> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Is Solar panel OK?',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.black),),
-                            Text(' *',style: TextStyle(fontSize: 18,color: Colors.red),),
+                            Text('Is Solar Panel Broken?',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.black),),
+                            //Text(' *',style: TextStyle(fontSize: 18,color: Colors.red),),
                           ],
                         ),
                       ),
@@ -225,6 +226,53 @@ class _complaintScreenState extends State<complaintScreen> {
                                 onChanged: (value) {
                                   setState(() {
                                     isPanel = value!;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),),
+                    ]),
+
+                SizedBox(height: 10,),
+                Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 5,bottom: 2),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Is Pole Broken?',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.black),),
+                            //Text(' *',style: TextStyle(fontSize: 18,color: Colors.red),),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: RadioListTile<String>(
+                                title: const Text('Yes'),
+                                value: "true",
+                                groupValue: isPole,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isPole = value!;
+                                  });
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              child: RadioListTile<String>(
+                                title: const Text('No'),
+                                value: "false",
+                                groupValue: isPole,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isPole = value!;
                                   });
                                 },
                               ),
@@ -591,6 +639,8 @@ class _complaintScreenState extends State<complaintScreen> {
      'Authorization': 'Bearer $userToken'
    };
 
+   print('iiiiiiiiii->$isPole');
+
 
    var request = http.MultipartRequest('POST', Uri.parse(urls().base_url + allAPI().reportIssueApiURL));
     request.fields.addAll({
@@ -599,10 +649,11 @@ class _complaintScreenState extends State<complaintScreen> {
       'Latitude': '$lat',
       'Longitude': '$long',
       'CreatedBy': '$userId',
-      'Status': 'Progress',
+      'Status': 'Pending',
       'IsSSLWorking': '$isLight',
-      'IsBatteryWorking': '$isLight',
-      'IsPannelOk': '$isLight',
+      'IsBatteryWorking': '$isBattery',
+      'IsPannelOk': '$isPanel',
+      'IsPoleBroken': '$isPole',
     });
 
    galleryFile == null ?  print('gggggg---${galleryFile.toString()}') : request.files.add(await http.MultipartFile.fromPath('FilePhoto','${await compressImage(galleryFile!)}'),);
@@ -616,6 +667,9 @@ class _complaintScreenState extends State<complaintScreen> {
       toasts().greenToastShort('${results['statusMsg']}');
       descriptionController.clear();
       galleryFile=null;
+      isBattery='';
+      isPanel='';
+      isPole='';
       setState(() {scroll=false;});
     }
     else {

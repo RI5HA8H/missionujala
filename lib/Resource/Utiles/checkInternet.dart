@@ -54,7 +54,7 @@ class _checkInternetState extends State<checkInternet> {
       context: context,
       builder: (context) => AlertDialog(
         title: new Text('Are you sure ?',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.black),),
-        content: new Text('Do you want to exit an Mission Ujala Application.',style: TextStyle(fontSize: 14,color: Colors.redAccent)),
+        content: new Text('Do you want to exit an U.P. Suryoday Application.',style: TextStyle(fontSize: 14,color: Colors.redAccent)),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.of(context).pop(false), //<-- SEE HERE

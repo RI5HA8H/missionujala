@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:missionujala/Modules/viewLocations.dart';
 import 'package:missionujala/Resource/Colors/app_colors.dart';
 import 'package:missionujala/homeScreen.dart';
+import 'package:missionujala/loginDashboard.dart';
 import 'package:missionujala/userLoginScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'generated/assets.dart';
 import 'venderLoginScreen.dart';
 
 
@@ -31,7 +33,7 @@ class _splashScreenState extends State<splashScreen> with SingleTickerProviderSt
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>homeScreen()));
       }else
       {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>userLoginScreen()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>loginDashboard()));
       }
     });
   }
@@ -45,7 +47,7 @@ class _splashScreenState extends State<splashScreen> with SingleTickerProviderSt
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/images/SplashBackground.png"),
+            image: AssetImage(Assets.imagesSplashBackgroundImg),
             fit: BoxFit.cover,
           ),
         ),

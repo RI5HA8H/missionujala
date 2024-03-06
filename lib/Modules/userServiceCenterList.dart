@@ -13,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:missionujala/Modules/addServiceCenter.dart';
 import 'package:missionujala/Modules/updateServiceCenter.dart';
+import 'package:missionujala/Modules/userServiceCenterDetailedPage.dart';
 import 'package:missionujala/Resource/Colors/app_colors.dart';
 import 'package:http/http.dart' as http;
 import 'dart:ui' as ui;
@@ -269,60 +270,30 @@ class _userServiceCenterListState extends State<userServiceCenterList> {
                         children: [
                           Image.asset(Assets.iconsCallCirculerIcon,width: 20,height: 20,),
                           SizedBox(width: 10,),
-                          Text("${serviceCenterTypeItem[index]['scContactNo']}",style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold,color: appcolors.blackColor)),
+                          GestureDetector(
+                           child: Text("${serviceCenterTypeItem[index]['scContactNo']}",style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold,color: appcolors.blackColor)),
+                            onTap: () async {
+                              final call = Uri.parse('tel:+91 ${serviceCenterTypeItem[index]['scContactNo']}');
+                              if (await canLaunchUrl(call)) {
+                                launchUrl(call);
+                              } else {
+                                throw 'Could not launch $call';
+                              }
+                            },
+                          ),
                         ],
                       ),
                       GestureDetector(
                         child:  Image.asset(Assets.iconsLocationViewIcon,width: 25,height: 25,),
-                        onTap: (){
+                        onTap: () async {
                           lat=serviceCenterTypeItem[index]['latitude'];
                           long=serviceCenterTypeItem[index]['longitude'];
-                          showDialog<void>(
-                            context: context,
-                            barrierDismissible: false,
-                            builder: (BuildContext context) {
-                              return StatefulBuilder(builder: (context, newSetState) {
-                                return AlertDialog(
-                                  titlePadding: EdgeInsets.fromLTRB(10, 20, 10, 5),
-                                  contentPadding: EdgeInsets.all(5),
-                                  //buttonPadding: EdgeInsets.fromLTRB(5, 50, 10, 5),
-                                  // title: const Text('View Location'),
-                                  content: Container(
-                                    padding: EdgeInsets.only(top: 25),
-                                    height: MediaQuery.of(context).size.height/2,
-                                    child: GoogleMap(
-                                        mapType: MapType.normal,
-                                        markers: <Marker>[
-                                          Marker(markerId:MarkerId('1'),
-                                            position: LatLng(lat, long),
-                                            icon: BitmapDescriptor.defaultMarker,
-                                          )
-                                        ].toSet(),
-                                        initialCameraPosition: _kGooglePlex,
-                                        onMapCreated: (GoogleMapController controller) async {
-                                          controller.animateCamera(CameraUpdate.newCameraPosition(
-                                              CameraPosition(target: LatLng(lat, long), zoom: 15,)
-                                          ));
-                                        },
-                                        onTap: (latLng) {
-                                          print('${lat}, ${long}');
-                                        }
-                                    ),
-                                  ),
-                                  actions: <Widget>[
-                                    SizedBox(height: 10,),
-                                    GestureDetector(
-                                      child: normalButton(name: 'OK',height:45,bordeRadious: 5,fontSize:12,textColor: Colors.white,bckColor: appcolors.primaryColor,),
-                                      onTap: (){
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                  ],
-                                );
-                              });
-                            },
-                          );
-                          setState(() {});
+                          String url = 'https://www.google.com/maps/search/?api=1&query=${lat},${long}';
+                          if (await canLaunch(url)) {
+                          await launch(url);
+                          } else {
+                          print('Could not launch $url');
+                          }
                         },
                       ),
 
@@ -335,17 +306,27 @@ class _userServiceCenterListState extends State<userServiceCenterList> {
                     children: [
                       Image.asset(Assets.iconsEmailCirculerIcon,width: 20,height: 20,),
                       SizedBox(width: 10,),
-                      Text("${serviceCenterTypeItem[index]['scEmailId']}",style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold,color: appcolors.blackColor)),
+                      GestureDetector(
+                        child: Text("${serviceCenterTypeItem[index]['scEmailId']}",style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold,color: appcolors.blackColor)),
+                        onTap: () async {
+                          String url = 'mailto:${serviceCenterTypeItem[index]['scEmailId']}';
+                          if (await canLaunch(url)) {
+                            await launch(url);
+                          } else {
+                            print('Could not launch $url');
+                          }
+                        },
+                      ),
                     ],
                   ),
-
-
 
                 ],
 
               ),
             ),
-
+            onTap: (){
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => userServiceCenterDetailedPage(serviceCenterTypeItem[index])));
+            },
           ),
 
           Container(
@@ -361,7 +342,7 @@ class _userServiceCenterListState extends State<userServiceCenterList> {
   }
 
   showMarkers() async {
-    final Uint8List? scmarkerIcon = await getBytesFromAsset('assets/icons/serviceCenterMarkerIcon.png', 150);
+    final Uint8List? scmarkerIcon = await getBytesFromAsset(Assets.iconsServiceCenterMarkerIconNew, 100);
 
     for(int i=0;i<serviceCenterTypeItem.length;i++)
     {
@@ -381,7 +362,7 @@ class _userServiceCenterListState extends State<userServiceCenterList> {
                   child: Scaffold(
                     body: Container(
                       width: 350,
-                      height: 480,
+                      height: 400,
                       color: Colors.white,
                       padding: EdgeInsets.all(10),
                       child: Column(
@@ -404,9 +385,9 @@ class _userServiceCenterListState extends State<userServiceCenterList> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('${serviceCenterTypeItem[i]['scName']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,),),
+                                    Text('${serviceCenterTypeItem[i]['scName']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,),maxLines: 3,overflow: TextOverflow.ellipsis,),
                                     SizedBox(height: 2,),
-                                    Text('${serviceCenterTypeItem[i]['districtName']}',style: TextStyle(fontSize: 12,color: Colors.black),maxLines: 4,overflow: TextOverflow.ellipsis,),
+                                    Text('${serviceCenterTypeItem[i]['districtName']}',style: TextStyle(fontSize: 12,color: Colors.black),maxLines: 2,overflow: TextOverflow.ellipsis,),
                                     SizedBox(height: 5,),
                                     Text('${serviceCenterTypeItem[i]['scContactNo']}',style: TextStyle(fontSize: 12,color: Colors.black,),),
                                     SizedBox(height: 2,),
@@ -422,14 +403,9 @@ class _userServiceCenterListState extends State<userServiceCenterList> {
                     bottomNavigationBar: Padding(
                       padding: const EdgeInsets.only(bottom: 10,left: 10,right: 10),
                       child: InkWell(
-                        child: normalButton(name: 'Call Now',height:35,width: 100,bordeRadious: 10,fontSize:10,textColor: Colors.white,bckColor: appcolors.greenTextColor,),
+                        child: normalButton(name: 'Show More',height:35,width: 100,bordeRadious: 10,fontSize:10,textColor: Colors.white,bckColor: appcolors.greenTextColor,),
                         onTap: () async {
-                          final call = Uri.parse('tel:+91 ${serviceCenterTypeItem[i]['scContactNo']}');
-                          if (await canLaunchUrl(call)) {
-                            launchUrl(call);
-                          } else {
-                            throw 'Could not launch $call';
-                          }
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => userServiceCenterDetailedPage(serviceCenterTypeItem[i])));
                         },
                       ),
                     ),

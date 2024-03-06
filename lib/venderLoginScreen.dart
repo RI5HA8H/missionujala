@@ -82,10 +82,15 @@ class _venderLoginScreenState extends State<venderLoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 50,),
-                  Text('Vendor Login',style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: appcolors.primaryColor),),
+                  Text('Login',style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: appcolors.primaryColor),),
                   SizedBox(height: 10,),
                   Text('Participate in the awareness campaign and encourage others to join!',style: TextStyle(fontSize: 12,color: appcolors.primaryColor),),
-                  SizedBox(height: 50,),
+
+
+                  SizedBox(height: MediaQuery.of(context).size.height/8,),
+
+
+
                   editTextSimple(
                     controllers: userNameController,
                     focusNode: userNameFocusNode,
@@ -138,7 +143,7 @@ class _venderLoginScreenState extends State<venderLoginScreen> {
                     child: normalButton(name: 'Verify',bordeRadious: 25,bckColor: appcolors.primaryColor,),
                     onTap: (){
                       if (userNameController.text.isEmpty == true || passwordController.text.isEmpty == true) {
-                        toasts().redToastLong('Proper Fill the Details');
+                        toasts().redToastLong('Please fill all the details');
                       } else {
                         userNameFocusNode.unfocus();
                         passwordFocusNode.unfocus();
@@ -148,7 +153,7 @@ class _venderLoginScreenState extends State<venderLoginScreen> {
                   ),
                   SizedBox(height: 30,),
 
-                  Row(
+                  /*Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -163,7 +168,7 @@ class _venderLoginScreenState extends State<venderLoginScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(height: 20,),*/
 
                 ],
               ),
@@ -220,8 +225,13 @@ class _venderLoginScreenState extends State<venderLoginScreen> {
       }
     }
     else {
-      toasts().redToastLong('Server Error');
-      progressDialog.dismiss();
+      if(results['statusCode']=='MU501'){
+        toasts().redToastLong(results['statusMsg']);
+        progressDialog.dismiss();
+      }else{
+        toasts().redToastLong('Server Error');
+        progressDialog.dismiss();
+      }
     }
   }
 

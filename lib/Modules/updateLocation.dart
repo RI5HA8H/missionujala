@@ -24,6 +24,7 @@ import '../Resource/Utiles/drawer.dart';
 import '../Resource/Utiles/normalButton.dart';
 import '../Resource/Utiles/toasts.dart';
 import '../generated/assets.dart';
+import '../loginDashboard.dart';
 import '../userProfile.dart';
 import '../venderLoginScreen.dart';
 
@@ -93,7 +94,7 @@ class _updateLocationState extends State<updateLocation> {
   getUserToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userToken = prefs.getString('vendorToken')!;
-    markerIcon = await getBytesFromAsset('assets/icons/markerIcon.png', 200);
+    markerIcon = await getBytesFromAsset(Assets.iconsMarkerIconNew, 200);
 
     print('kkkkkkkkkkkkkkkk$lat');
     if(widget.uIdLat.toString() != 'null'){
@@ -341,7 +342,7 @@ class _updateLocationState extends State<updateLocation> {
       context: context,barrierDismissible: false,
       builder: (context) => WillPopScope(
         onWillPop: () async {
-          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => venderLoginScreen()), (Route<dynamic> route) => false);
+          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => loginDashboard()), (Route<dynamic> route) => false);
           return false;
         },
         child: AlertDialog(
@@ -350,7 +351,7 @@ class _updateLocationState extends State<updateLocation> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => venderLoginScreen()), (Route<dynamic> route) => false);
+                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => loginDashboard()), (Route<dynamic> route) => false);
               },
               child: Text('OK',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black),),
             ),

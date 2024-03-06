@@ -9,7 +9,7 @@
 
 
     <application
-        android:label="Mission Ujala"
+        android:label="U.P. Suryoday"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
 

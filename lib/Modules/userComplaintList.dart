@@ -184,7 +184,7 @@ class _userComplaintListState extends State<userComplaintList> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text('#MURI2024XXXX00${userComplaintList[index]['reportIssueKey']}',style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold,color: Colors.black)),
+                        Text('${userComplaintList[index]['complaintNo']}',style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold,color: Colors.black)),
 
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -512,7 +512,7 @@ class _userComplaintListState extends State<userComplaintList> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text('#MURI2024XXXX00${userComplaintList[index]['reportIssueKey']}',style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold,color: Colors.black)),
+                        Text('${userComplaintList[index]['complaintNo']}',style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold,color: Colors.black)),
 
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

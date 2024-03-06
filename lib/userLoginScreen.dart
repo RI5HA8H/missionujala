@@ -25,6 +25,7 @@ import 'Resource/Utiles/toasts.dart';
 import 'package:http/http.dart' as http;
 
 import 'homeScreen.dart';
+import 'loginDashboard.dart';
 
 
 class userLoginScreen extends StatefulWidget {
@@ -144,7 +145,11 @@ class _userLoginScreenState extends State<userLoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => loginDashboard()), (Route<dynamic> route) => false);
+        return false;
+      },
       child: Container(
         height: double.infinity,
         width: double.infinity,
@@ -165,11 +170,12 @@ class _userLoginScreenState extends State<userLoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 50,),
-                  Text('User Login',style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: appcolors.primaryColor),),
+                  Text('Login',style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: appcolors.primaryColor),),
                   SizedBox(height: 10,),
                   Text('Participate in the awareness campaign and encourage others to join!',style: TextStyle(fontSize: 12,color: appcolors.primaryColor),),
 
-                  SizedBox(height: 50,),
+                  SizedBox(height: MediaQuery.of(context).size.height/8,),
+
                   editTextSimple(
                     controllers: mobileController,
                     focusNode: mobileFocusNode,
@@ -183,7 +189,7 @@ class _userLoginScreenState extends State<userLoginScreen> {
                     child: normalButton(name: 'Send OTP',bordeRadious: 25,bckColor: appcolors.primaryColor,),
                     onTap: (){
                       if (mobileController.text.isEmpty == true) {
-                        toasts().redToastLong('Proper Fill the Details');
+                        toasts().redToastLong('Please fill all the details');
                       } else {
                         mobileFocusNode.unfocus();
                         otpFocusNode.unfocus();
@@ -228,7 +234,7 @@ class _userLoginScreenState extends State<userLoginScreen> {
                         child: normalButton(name: 'Login',bordeRadious: 25,bckColor: appcolors.primaryColor,),
                         onTap: (){
                           if (mobileController.text.isEmpty == true || otpController.text.isEmpty == true) {
-                            toasts().redToastLong('Proper Fill the Details');
+                            toasts().redToastLong('Please fill all the details');
                           } else {
                             mobileFocusNode.unfocus();
                             otpFocusNode.unfocus();
@@ -249,8 +255,8 @@ class _userLoginScreenState extends State<userLoginScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text('If you are new user then click ',style: TextStyle(fontSize: 12,color:Colors.blueGrey),),
-                      InkWell(
-                        child: Text(' User SingUp',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 12,color: Colors.blue),),
+                      GestureDetector(
+                        child: Text('Registeration',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 14,color: Colors.blue),),
                         onTap: (){
                           mobileFocusNode.unfocus();
                           otpFocusNode.unfocus();
@@ -259,7 +265,7 @@ class _userLoginScreenState extends State<userLoginScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 10,),
+                  /*SizedBox(height: 10,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -275,7 +281,7 @@ class _userLoginScreenState extends State<userLoginScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(height: 20,),*/
               ]
             ),
           ),
@@ -289,7 +295,8 @@ class _userLoginScreenState extends State<userLoginScreen> {
             ),),
         ),
       ),
-    ),);
+          ),
+    );
   }
 
   Future<void> sendOtpAPI() async {

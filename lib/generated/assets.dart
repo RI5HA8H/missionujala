@@ -6,7 +6,8 @@ class Assets {
   static const String iconsBottomNotificationIcon = 'assets/icons/bottomNotificationIcon.png';
   static const String iconsBottomProfile = 'assets/icons/bottomProfile.png';
   static const String iconsBottomStrretLight = 'assets/icons/bottomStrretLight.png';
-  static const String iconsBrowser = 'assets/icons/browser.png';
+  static const String iconsBrowser = 'assets/icons/browsers.png';
+  static const String iconsBrowsers = 'assets/icons/browsers.png';
   static const String iconsCallCirculerIcon = 'assets/icons/callCirculerIcon.png';
   static const String iconsComment = 'assets/icons/comment.png';
   static const String iconsComplaint = 'assets/icons/complaint.png';
@@ -28,6 +29,7 @@ class Assets {
   static const String iconsLocationViewIcon = 'assets/icons/locationViewIcon.png';
   static const String iconsLogout = 'assets/icons/logout.png';
   static const String iconsMarkerIcon = 'assets/icons/markerIcon.png';
+  static const String iconsMarkerIconNew = 'assets/icons/markerIconNew.png';
   static const String iconsMenuIcon = 'assets/icons/menuIcon.png';
   static const String iconsPdfIcon = 'assets/icons/pdfIcon.png';
   static const String iconsPdfIcons = 'assets/icons/pdfIcons.png';
@@ -36,6 +38,7 @@ class Assets {
   static const String iconsSendResolveInfo = 'assets/icons/sendResolveInfo.png';
   static const String iconsServiceCenterIcon = 'assets/icons/serviceCenterIcon.png';
   static const String iconsServiceCenterMarkerIcon = 'assets/icons/serviceCenterMarkerIcon.png';
+  static const String iconsServiceCenterMarkerIconNew = 'assets/icons/serviceCenterMarkerIconNew.png';
   static const String iconsSetting = 'assets/icons/setting.png';
   static const String iconsStrretLight = 'assets/icons/strretLight.png';
   static const String iconsUpdateBottomLocation = 'assets/icons/updateBottomLocation.png';
@@ -49,11 +52,13 @@ class Assets {
   static const String imagesFeedbackUser = 'assets/images/feedbackUser.png';
   static const String imagesHomeBanner1 = 'assets/images/homeBanner1.png';
   static const String imagesLoginFooter = 'assets/images/loginFooter.png';
-  static const String imagesMuAppbarLogo = 'assets/images/muAppbarLogo.png';
+  static const String imagesMuAppbarLogo = 'assets/images/suryodayAppbarLogo.png';
   static const String imagesMuLogo = 'assets/images/muLogo.png';
   static const String imagesProfileImg = 'assets/images/profileImg.png';
   static const String imagesProfileLogo = 'assets/images/profileLogo.png';
   static const String imagesSplashBackground = 'assets/images/SplashBackground.png';
+  static const String imagesSplashBackgroundImg = 'assets/images/splashBackgroundImg.png';
   static const String imagesSplashBottom = 'assets/images/splashBottom.png';
+  static const String imagesSuryodayAppbarLogo = 'assets/images/suryodayAppbarLogo.png';
 
 }
