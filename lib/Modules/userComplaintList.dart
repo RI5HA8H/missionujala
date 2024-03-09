@@ -9,6 +9,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:missionujala/Modules/userComplaintDetailedPage.dart';
 import 'package:missionujala/Resource/Colors/app_colors.dart';
 import 'package:missionujala/Resource/Utiles/appBar.dart';
 import 'package:missionujala/Resource/Utiles/drawer.dart';
@@ -16,6 +17,7 @@ import 'package:http/http.dart' as http;
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../Resource/StringLocalization/allAPI.dart';
 import '../Resource/StringLocalization/baseUrl.dart';
 import '../Resource/Utiles/bottomNavigationBar.dart';
@@ -169,7 +171,7 @@ class _userComplaintListState extends State<userComplaintList> {
                         ),*/
 
   Widget getPendingComplaintContainer(int index,var snapshot) {
-    if(userComplaintList[index]['status']=='Pending'){
+    if(userComplaintList[index]['status']=='Pending'  || userComplaintList[index]['status']=='InProcess'){
       return Container(
         child: Column(
           children: [
@@ -231,49 +233,12 @@ class _userComplaintListState extends State<userComplaintList> {
                                 if(userComplaintList[index]['latitude']==''){
                                   toasts().redToastLong('Latlong Not Found');
                                 }else{
-                                  showDialog<void>(
-                                    context: context,
-                                    barrierDismissible: false,
-                                    builder: (BuildContext context) {
-                                      return StatefulBuilder(builder: (context, newSetState) {
-                                        return AlertDialog(
-                                          titlePadding: EdgeInsets.fromLTRB(10, 20, 10, 5),
-                                          contentPadding: EdgeInsets.all(5),
-                                          //buttonPadding: EdgeInsets.fromLTRB(5, 50, 10, 5),
-                                          //title: const Text('Complaint Location'),
-                                          content: Container(
-                                            padding: EdgeInsets.only(top: 25),
-                                            height: MediaQuery.of(context).size.height/2,
-                                            child: GoogleMap(
-                                              mapType: MapType.normal,
-                                              markers: <Marker>[
-                                                Marker(markerId:MarkerId('1'),
-                                                  position: LatLng(userComplaintList[index]['latitude'], userComplaintList[index]['longitude']),
-                                                  icon: BitmapDescriptor.defaultMarker,
-                                                )
-                                              ].toSet(),
-                                              initialCameraPosition: _kGooglePlex,
-                                              onMapCreated: (GoogleMapController controller) async {
-                                                controller.animateCamera(CameraUpdate.newCameraPosition(
-                                                    CameraPosition(target: LatLng(userComplaintList[index]['latitude'], userComplaintList[index]['longitude']), zoom: 15,)
-                                                ));
-                                              },
-
-                                            ),
-                                          ),
-                                          actions: <Widget>[
-                                            SizedBox(height: 10,),
-                                            GestureDetector(
-                                              child: normalButton(name: 'OK',height:45,bordeRadious: 5,fontSize:12,textColor: Colors.white,bckColor: appcolors.primaryColor,width: double.infinity,),
-                                              onTap: (){
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                          ],
-                                        );
-                                      });
-                                    },
-                                  );
+                                  String url = 'https://www.google.com/maps/search/?api=1&query=${userComplaintList[index]['latitude']},${userComplaintList[index]['longitude']}';
+                                  if (await canLaunch(url)) {
+                                    await launch(url);
+                                  } else {
+                                    print('Could not launch $url');
+                                  }
                                   setState(() {});
                                 }
                               },
@@ -451,14 +416,24 @@ class _userComplaintListState extends State<userComplaintList> {
                     Text('${userComplaintList[index]['companyName']}',style: TextStyle(fontSize: 12,color: Colors.black54)),
 
                     SizedBox(height: 5,),
-                    userComplaintList[index]['vendorMobileNo']!=null ? Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Image.asset(Assets.iconsCallCirculerIcon,width: 20,height: 20,),
-                        SizedBox(width: 10,),
-                        Text('${userComplaintList[index]['vendorMobileNo']}',style: TextStyle(fontSize: 12,color: Colors.black54)),
-                      ],
+                    userComplaintList[index]['vendorMobileNo']!=null ? GestureDetector(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image.asset(Assets.iconsCallCirculerIcon,width: 20,height: 20,),
+                          SizedBox(width: 10,),
+                          Text('${userComplaintList[index]['vendorMobileNo']}',style: TextStyle(fontSize: 12,color: Colors.black54)),
+                        ],
+                      ),
+                      onTap: () async {
+                        final call = Uri.parse('tel:+91 ${userComplaintList[index]['vendorMobileNo']}');
+                        if (await canLaunchUrl(call)) {
+                          launchUrl(call);
+                        } else {
+                          throw 'Could not launch $call';
+                        }
+                      },
                     ) : Container(),
 
 
@@ -477,7 +452,12 @@ class _userComplaintListState extends State<userComplaintList> {
                   ],
                 ),
               ),
+              onTap: (){
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => userComplaintDetailedPage(
+                  userComplaintList[index],
+                )));
 
+              },
             ),
 
             Container(
@@ -663,49 +643,12 @@ class _userComplaintListState extends State<userComplaintList> {
                                 if(userComplaintList[index]['latitude']==''){
                                   toasts().redToastLong('Latlong Not Found');
                                 }else{
-                                  showDialog<void>(
-                                    context: context,
-                                    barrierDismissible: false,
-                                    builder: (BuildContext context) {
-                                      return StatefulBuilder(builder: (context, newSetState) {
-                                        return AlertDialog(
-                                          titlePadding: EdgeInsets.fromLTRB(10, 20, 10, 5),
-                                          contentPadding: EdgeInsets.all(5),
-                                          //buttonPadding: EdgeInsets.fromLTRB(5, 50, 10, 5),
-                                          //title: const Text('Complaint Location'),
-                                          content: Container(
-                                            padding: EdgeInsets.only(top: 25),
-                                            height: MediaQuery.of(context).size.height/2,
-                                            child: GoogleMap(
-                                              mapType: MapType.normal,
-                                              markers: <Marker>[
-                                                Marker(markerId:MarkerId('1'),
-                                                  position: LatLng(userComplaintList[index]['latitude'], userComplaintList[index]['longitude']),
-                                                  icon: BitmapDescriptor.defaultMarker,
-                                                )
-                                              ].toSet(),
-                                              initialCameraPosition: _kGooglePlex,
-                                              onMapCreated: (GoogleMapController controller) async {
-                                                controller.animateCamera(CameraUpdate.newCameraPosition(
-                                                    CameraPosition(target: LatLng(userComplaintList[index]['latitude'], userComplaintList[index]['longitude']), zoom: 15,)
-                                                ));
-                                              },
-
-                                            ),
-                                          ),
-                                          actions: <Widget>[
-                                            SizedBox(height: 10,),
-                                            GestureDetector(
-                                              child: normalButton(name: 'OK',height:45,bordeRadious: 5,fontSize:12,textColor: Colors.white,bckColor: appcolors.primaryColor,width: double.infinity,),
-                                              onTap: (){
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                          ],
-                                        );
-                                      });
-                                    },
-                                  );
+                                  String url = 'https://www.google.com/maps/search/?api=1&query=${userComplaintList[index]['latitude']},${userComplaintList[index]['longitude']}';
+                                  if (await canLaunch(url)) {
+                                    await launch(url);
+                                  } else {
+                                    print('Could not launch $url');
+                                  }
                                   setState(() {});
                                 }
                               },
@@ -880,14 +823,24 @@ class _userComplaintListState extends State<userComplaintList> {
                     Text('${userComplaintList[index]['companyName']}',style: TextStyle(fontSize: 12,color: Colors.black54)),
 
                     SizedBox(height: 5,),
-                    userComplaintList[index]['vendorMobileNo']!=null ? Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Image.asset(Assets.iconsCallCirculerIcon,width: 20,height: 20,),
-                        SizedBox(width: 10,),
-                        Text('${userComplaintList[index]['vendorMobileNo']}',style: TextStyle(fontSize: 12,color: Colors.black54)),
-                      ],
+                    userComplaintList[index]['vendorMobileNo']!=null ? GestureDetector(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image.asset(Assets.iconsCallCirculerIcon,width: 20,height: 20,),
+                          SizedBox(width: 10,),
+                          Text('${userComplaintList[index]['vendorMobileNo']}',style: TextStyle(fontSize: 12,color: Colors.black54)),
+                        ],
+                      ),
+                      onTap: () async {
+                        final call = Uri.parse('tel:+91 ${userComplaintList[index]['vendorMobileNo']}');
+                        if (await canLaunchUrl(call)) {
+                          launchUrl(call);
+                        } else {
+                          throw 'Could not launch $call';
+                        }
+                      },
                     ) : Container(),
 
 
@@ -907,7 +860,12 @@ class _userComplaintListState extends State<userComplaintList> {
                   ],
                 ),
               ),
+              onTap: (){
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => userComplaintDetailedPage(
+                    userComplaintList[index],
+                )));
 
+              },
             ),
 
             Container(
@@ -950,8 +908,13 @@ class _userComplaintListState extends State<userComplaintList> {
       setState(() {scroll = false;});
     }
     else {
-      toasts().redToastLong('Server Error');
-      setState(() {scroll = false;});
+      if(results['statusCode']=='MU501'){
+        toasts().redToastLong(results['statusMsg']);
+        setState(() {scroll = false;});
+      }else{
+        toasts().redToastLong('Server Error');
+        setState(() {scroll = false;});
+      }
     }
   }
 
