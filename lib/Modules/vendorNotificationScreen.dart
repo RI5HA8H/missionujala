@@ -154,7 +154,7 @@ class _vendorNotificationScreenState extends State<vendorNotificationScreen> {
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      print(await 'aaaaaaaaa-----${results}');
+      debugPrint(await 'aaaaaaaaa-----${results}');
       vendorNotificationAllItem=results;
       setState(() {scroll=false;});
     }

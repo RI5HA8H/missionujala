@@ -91,7 +91,7 @@ class _vendorServiceCenterDetailedPageState extends State<vendorServiceCenterDet
                               if (await canLaunch(url)) {
                                 await launch(url);
                               } else {
-                                print('Could not launch $url');
+                                debugPrint('Could not launch $url');
                               }
                             },
                           ),
@@ -114,7 +114,7 @@ class _vendorServiceCenterDetailedPageState extends State<vendorServiceCenterDet
                               if (await canLaunch(url)) {
                                 await launch(url);
                               } else {
-                                print('Could not launch $url');
+                                debugPrint('Could not launch $url');
                               }
                             },
                           ),
@@ -137,7 +137,7 @@ class _vendorServiceCenterDetailedPageState extends State<vendorServiceCenterDet
                               if (await canLaunch(url)) {
                                 await launch(url);
                               } else {
-                                print('Could not launch $url');
+                                debugPrint('Could not launch $url');
                                 toasts().redToastLong('Url not found');
                               }
                             },

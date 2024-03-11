@@ -147,7 +147,7 @@ class _userServiceCenterListState extends State<userServiceCenterList> {
                             onChanged: (newVal11) {
                               setState(() {
                                 districtDropdownValue = newVal11;
-                                print('llllllllll----$districtDropdownValue');
+                                debugPrint('llllllllll----$districtDropdownValue');
                                 var newDistrictWiseServiceCenterList=[];
                                 for(int i=0;i<allServiceCenterItem.length;i++){
                                   if(allServiceCenterItem[i]['districtkey']==districtDropdownValue){
@@ -292,7 +292,7 @@ class _userServiceCenterListState extends State<userServiceCenterList> {
                           if (await canLaunch(url)) {
                           await launch(url);
                           } else {
-                          print('Could not launch $url');
+                          debugPrint('Could not launch $url');
                           }
                         },
                       ),
@@ -313,7 +313,7 @@ class _userServiceCenterListState extends State<userServiceCenterList> {
                           if (await canLaunch(url)) {
                             await launch(url);
                           } else {
-                            print('Could not launch $url');
+                            debugPrint('Could not launch $url');
                           }
                         },
                       ),
@@ -346,16 +346,16 @@ class _userServiceCenterListState extends State<userServiceCenterList> {
 
     for(int i=0;i<serviceCenterTypeItem.length;i++)
     {
-      print('ssssssssss${i}');
+      debugPrint('ssssssssss${i}');
       if(serviceCenterTypeItem[i]['latitude'].toString()!='null'){
-        print('hhhhhhhh${i}');
+        debugPrint('hhhhhhhh${i}');
         lat=double.parse('${serviceCenterTypeItem[i]['latitude']}');
         long=double.parse('${serviceCenterTypeItem[i]['longitude']}');
         markerr.add(
           Marker(markerId:MarkerId(i.toString()),
             position: LatLng(double.parse('${serviceCenterTypeItem[i]['latitude']}'),double.parse('${serviceCenterTypeItem[i]['longitude']}')),
             onTap: () {
-              print('${serviceCenterTypeItem[i]['latitude']}');
+              debugPrint('${serviceCenterTypeItem[i]['latitude']}');
               customInfoWindowController.addInfoWindow!(
                 ClipRRect(
                   borderRadius: BorderRadius.circular(5),
@@ -439,7 +439,7 @@ class _userServiceCenterListState extends State<userServiceCenterList> {
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      print(await 'aaaaaaaaa-----${results}');
+      debugPrint(await 'aaaaaaaaa-----${results}');
       districtTypeItem=results;
       setState(() {scroll=false;});
     }
@@ -460,7 +460,7 @@ class _userServiceCenterListState extends State<userServiceCenterList> {
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      print(await 'aaaaaaaaa-----${results}');
+      debugPrint(await 'aaaaaaaaa-----${results}');
       serviceCenterTypeItem=results;
       allServiceCenterItem=results;
       showMarkers();

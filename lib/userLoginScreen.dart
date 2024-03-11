@@ -15,6 +15,7 @@ import 'package:ndialog/ndialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Resource/StringLocalization/allAPI.dart';
 import 'Resource/StringLocalization/baseUrl.dart';
+import 'Resource/Utiles/allFunctions.dart';
 import 'Resource/Utiles/checkInternet.dart';
 import 'Resource/Utiles/editText.dart';
 import 'Resource/Utiles/nProgressDialog.dart';
@@ -57,7 +58,7 @@ class _userLoginScreenState extends State<userLoginScreen> {
         setState(() {
           ActiveConnection = true;
           T = "Turn off the data and repress again";
-          print(T);
+          debugPrint(T);
         });
       }
     } on SocketException catch (_) {
@@ -306,16 +307,16 @@ class _userLoginScreenState extends State<userLoginScreen> {
     var request = http.MultipartRequest('POST', Uri.parse(urls().base_url + allAPI().userLoginURL));
     request.fields.addAll({
       'UserName': '',
-      'MobileNo': mobileController.text.toString(),
+      'MobileNo': allFunctions().encryptToBase64(mobileController.text.toString()),
       'PNRKey': token.toString(),
     });
-    print(await 'tttttttttttttttttttttttt-----${token}');
+    debugPrint(await 'tttttttttttttttttttttttt-----${token}');
 
     var response = await request.send();
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      print(await 'aaaaaaaaa-----${results}');
+      debugPrint(await 'aaaaaaaaa-----${results}');
       if(results['userKey'].runtimeType==int){
         setState(() {halfUI = false;});
         toasts().greenToastShort('OTP Send Successfull');
@@ -328,8 +329,8 @@ class _userLoginScreenState extends State<userLoginScreen> {
         prefs.setString('userCompanyKey', '${results['companyKey']}');
         prefs.setString('userToken', results['userToken']);
         prefs.setString('loginType', 'user');
-        apiOTP=int.parse('${results['otp']}');
-        print('aaaaaaaaaaaaa-->$apiOTP');
+        apiOTP=int.parse('${allFunctions().decryptStringFromBase64(results['otp'])}');
+        debugPrint('aaaaaaaaaaaaa-->$apiOTP');
         progressDialog.dismiss();
 
       }else{

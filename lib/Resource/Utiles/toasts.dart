@@ -4,9 +4,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class toasts{
 
-  void redToastShort(String printvalue){
+  void redToastShort(String debugPrintvalue){
     Fluttertoast.showToast(
-        msg: printvalue,
+        msg: debugPrintvalue,
         backgroundColor: Colors.red,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
@@ -17,9 +17,9 @@ class toasts{
     );
   }
 
-  void redToastLong(String printvalue){
+  void redToastLong(String debugPrintvalue){
     Fluttertoast.showToast(
-        msg: printvalue,
+        msg: debugPrintvalue,
         backgroundColor: Colors.red,
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
@@ -31,9 +31,9 @@ class toasts{
   }
 
 
-  void greenToastShort(String printvalue){
+  void greenToastShort(String debugPrintvalue){
     Fluttertoast.showToast(
-        msg: printvalue,
+        msg: debugPrintvalue,
         backgroundColor: Colors.green,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
@@ -43,9 +43,9 @@ class toasts{
     );
   }
 
-  void greenToastLong(String printvalue){
+  void greenToastLong(String debugPrintvalue){
     Fluttertoast.showToast(
-        msg: printvalue,
+        msg: debugPrintvalue,
         backgroundColor: Colors.green,
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
@@ -56,9 +56,9 @@ class toasts{
   }
 
 
-  void greyToastShort(String printvalue){
+  void greyToastShort(String debugPrintvalue){
     Fluttertoast.showToast(
-        msg: printvalue,
+        msg: debugPrintvalue,
         backgroundColor: Colors.grey[300],
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
@@ -68,9 +68,9 @@ class toasts{
     );
   }
 
-  void greyToastLong(String printvalue){
+  void greyToastLong(String debugPrintvalue){
     Fluttertoast.showToast(
-        msg: printvalue,
+        msg: debugPrintvalue,
         backgroundColor: Colors.grey[300],
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:missionujala/Resource/Colors/app_colors.dart';
+import 'package:missionujala/Resource/Utiles/allFunctions.dart';
 import 'package:missionujala/homeScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -41,11 +42,12 @@ class _userProfileState extends State<userProfile> {
   getUserName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
+
       loginType = prefs.getString('loginType')!;
-      userName = prefs.getString('userName')!;
-      userPhoneNo = prefs.getString('userMobile')!;
-      vendorName = prefs.getString('vendorName')!;
-      vendorPhoneNo = prefs.getString('vendorMobile')!;
+      userName = allFunctions().decryptStringFromBase64(prefs.getString('userName')!);
+      userPhoneNo = allFunctions().decryptStringFromBase64(prefs.getString('userMobile')!);
+      vendorName = allFunctions().decryptStringFromBase64(prefs.getString('vendorName')!);
+      vendorPhoneNo = allFunctions().decryptStringFromBase64(prefs.getString('vendorMobile')!);
 
     });
   }

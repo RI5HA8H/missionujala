@@ -82,7 +82,7 @@ class _updateServiceCenterState extends State<updateServiceCenter> {
   getLatLong() async {
     lat=await getCurrentLatitude();
     long=await getCurrentLongitude();
-    print('lattttt-->$lat');
+    debugPrint('lattttt-->$lat');
     setState(() {});
   }
 
@@ -176,7 +176,7 @@ class _updateServiceCenterState extends State<updateServiceCenter> {
                       onChanged: (newVal11) {
                         setState(() {
                           districtDropdownValue = newVal11;
-                          print('llllllllll----$districtDropdownValue');
+                          debugPrint('llllllllll----$districtDropdownValue');
                         });
                       },
                       value: districtDropdownValue,
@@ -302,7 +302,7 @@ class _updateServiceCenterState extends State<updateServiceCenter> {
                                     onTap: (latLng) {
                                       lat= latLng.latitude;
                                       long= latLng.longitude;
-                                      print('${lat}, ${long}');
+                                      debugPrint('${lat}, ${long}');
                                       newSetState(() {});
                                     }
                                 ),
@@ -389,7 +389,7 @@ class _updateServiceCenterState extends State<updateServiceCenter> {
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      print(await 'aaaaaaaaa-----${results}');
+      debugPrint(await 'aaaaaaaaa-----${results}');
       districtTypeItem=results;
       setState(() {scroll=false;});
     }
@@ -427,7 +427,7 @@ class _updateServiceCenterState extends State<updateServiceCenter> {
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      print(await 'ffffffffffffffff-----${results}');
+      debugPrint(await 'ffffffffffffffff-----${results}');
       centerNameController.clear();
       contactNoController.clear();
       emailController.clear();

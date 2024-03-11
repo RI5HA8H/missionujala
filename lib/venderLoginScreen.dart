@@ -10,6 +10,7 @@ import 'package:in_app_update/in_app_update.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:missionujala/Modules/viewLocations.dart';
 import 'package:missionujala/Resource/Colors/app_colors.dart';
+import 'package:missionujala/Resource/Utiles/allFunctions.dart';
 import 'package:missionujala/Resource/Utiles/nProgressDialog.dart';
 import 'package:missionujala/homeScreen.dart';
 import 'package:missionujala/userLoginScreen.dart';
@@ -193,16 +194,16 @@ class _venderLoginScreenState extends State<venderLoginScreen> {
 
     var request = http.MultipartRequest('POST', Uri.parse(urls().base_url + allAPI().venderLoginURL));
     request.fields.addAll({
-      'UserName': userNameController.text.toString(),
-      'UserPassword': passwordController.text.toString(),
+      'UserName': allFunctions().encryptToBase64(userNameController.text.toString()),
+      'UserPassword': allFunctions().encryptToBase64(passwordController.text.toString()),
       'PNRKey': token.toString(),
     });
-    print(await 'tttttttttttttttttttttttt-----${token}');
+    debugPrint(await 'tttttttttttttttttttttttt-----${token}');
     var response = await request.send();
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      print(await 'aaaaaaaaa-----${results}');
+      debugPrint(await 'aaaaaaaaa-----${results}');
       if(results['userKey'].runtimeType==int){
         toasts().greenToastShort('Login Successfull');
         SharedPreferences prefs = await SharedPreferences.getInstance();

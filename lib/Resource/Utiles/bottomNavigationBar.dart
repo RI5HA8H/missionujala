@@ -81,7 +81,7 @@ class _bottomNavigationBarState extends State<bottomNavigationBar> {
       onTap: (index) {
         setState(() {
           currentIndex = index;
-          print('iiiiiii->$index');
+          debugPrint('iiiiiii->$index');
           if(currentIndex==0){
             Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => homeScreen()), (Route<dynamic> route) => false);
           }

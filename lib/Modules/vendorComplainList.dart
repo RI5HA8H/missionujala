@@ -306,7 +306,7 @@ class _vendorComplainListState extends State<vendorComplainList> {
                                   if (await canLaunch(url)) {
                                     await launch(url);
                                   } else {
-                                    print('Could not launch $url');
+                                    debugPrint('Could not launch $url');
                                   }
                                   setState(() {});
                                 }
@@ -658,7 +658,7 @@ class _vendorComplainListState extends State<vendorComplainList> {
                                   if (await canLaunch(url)) {
                                     await launch(url);
                                   } else {
-                                    print('Could not launch $url');
+                                    debugPrint('Could not launch $url');
                                   }
                                   setState(() {});
                                 }
@@ -916,10 +916,10 @@ class _vendorComplainListState extends State<vendorComplainList> {
 
     var response = await request.send();
     var results = jsonDecode(await response.stream.bytesToString());
-    print('rrrr->${urls().base_url + allAPI().getVendorComplaintListURL + '/$vendorCompanyKey/$vendorId'}');
+    debugPrint('rrrr->${urls().base_url + allAPI().getVendorComplaintListURL + '/$vendorCompanyKey/$vendorId'}');
 
     if (response.statusCode == 200) {
-      print('rrrr->$results');
+      debugPrint('rrrr->$results');
       vendorComplaintList=results;
 
       setState(() {scroll = false;});
@@ -946,7 +946,7 @@ class _vendorComplainListState extends State<vendorComplainList> {
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      print(await 'aaaaaaaaa-----${results}');
+      debugPrint(await 'aaaaaaaaa-----${results}');
       if(results['statusCode']=='MU501'){
         toasts().greenToastShort(results['statusMsg']);
         vendorRemarkController.clear();
@@ -978,7 +978,7 @@ class _vendorComplainListState extends State<vendorComplainList> {
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      print(await 'aaaaaaaaa-----${results}');
+      debugPrint(await 'aaaaaaaaa-----${results}');
       if(results['statusCode']=='MU501'){
         toasts().greenToastShort(results['statusMsg']);
         vendorRemarkController.clear();

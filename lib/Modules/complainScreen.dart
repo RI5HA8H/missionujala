@@ -73,7 +73,7 @@ class _complaintScreenState extends State<complaintScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userId = prefs.getString('userKey')!;
     userToken = prefs.getString('userToken')!;
-    print('uuu--${userId}');
+    debugPrint('uuu--${userId}');
 
   }
 
@@ -639,7 +639,7 @@ class _complaintScreenState extends State<complaintScreen> {
      'Authorization': 'Bearer $userToken'
    };
 
-   print('iiiiiiiiii->$isPole');
+   debugPrint('iiiiiiiiii->$isPole');
 
 
    var request = http.MultipartRequest('POST', Uri.parse(urls().base_url + allAPI().reportIssueApiURL));
@@ -656,14 +656,14 @@ class _complaintScreenState extends State<complaintScreen> {
       'IsPoleBroken': '$isPole',
     });
 
-   galleryFile == null ?  print('gggggg---${galleryFile.toString()}') : request.files.add(await http.MultipartFile.fromPath('FilePhoto','${await compressImage(galleryFile!)}'),);
+   galleryFile == null ?  debugPrint('gggggg---${galleryFile.toString()}') : request.files.add(await http.MultipartFile.fromPath('FilePhoto','${await compressImage(galleryFile!)}'),);
 
     request.headers.addAll(headers);
     var response = await request.send();
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      print(await 'aaaaaaaaa-----${results}');
+      debugPrint(await 'aaaaaaaaa-----${results}');
       toasts().greenToastShort('${results['statusMsg']}');
       descriptionController.clear();
       galleryFile=null;

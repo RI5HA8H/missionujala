@@ -233,110 +233,7 @@ class _userComplaintDetailedPageState extends State<userComplaintDetailedPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          GestureDetector(
-                            child: Image.asset(Assets.iconsFeedbacksIcon,width: 30,height: 30,color: appcolors.primaryColor,),
-                            onTap: (){
-                              Alert(
-                                context: context,
-                                style: AlertStyle(
-                                  descStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 12),
-                                  descPadding: EdgeInsets.all(5),
-                                  descTextAlign: TextAlign.center,
-                                  isOverlayTapDismiss: false,
-                                ),
-                                closeFunction: (){
-                                  userRemarkController.clear();
-                                  Navigator.of(context).pop();
-                                },
-                                content: StatefulBuilder(
-                                    builder: (context,setState){
-                                      return Container(
-                                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(5.0), // Adjust the radius as needed
-                                        ),
-                                        child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            children: [
-                                              SizedBox(height: 10,),
-                                              ToggleSwitch(
-                                                minWidth: 108.0,
-                                                initialLabelIndex: 0,
-                                                cornerRadius: 20.0,
-                                                activeFgColor: Colors.white,
-                                                inactiveBgColor: Colors.grey[500],
-                                                inactiveFgColor: Colors.white,
-                                                totalSwitches: 2,
-                                                iconSize: 30,
-                                                //labels: ['Satisfied', 'UnSatisfied'],
-                                                icons: [Icons.sentiment_satisfied_alt, Icons.sentiment_dissatisfied_outlined],
-                                                activeBgColors: [[Colors.green], [Colors.red]],
-                                                onToggle: (index) {
-                                                  if(index==0){
-                                                    feedbackStatusDropdownValue='Satishfied';
-                                                  }else{
-                                                    feedbackStatusDropdownValue='UnSatishfied';
-                                                  }
-                                                  print('switched to: $index');
-                                                  print('switched to: $feedbackStatusDropdownValue');
-                                                },
-                                              ),
-                                              SizedBox(height: 10,),
-                                              ClipRRect(
-                                                borderRadius: BorderRadius.circular(5.0),
-                                                child: Container(
-                                                  color: Colors.white,
-                                                  child:TextField(
-                                                    maxLines: 3,
-                                                    maxLength: 200,
-                                                    keyboardType:TextInputType.text,
-                                                    controller: userRemarkController,
-                                                    focusNode: userRemarkFocusNode,
-                                                    style: TextStyle(fontSize: 12,color: Colors.black),
-                                                    decoration: InputDecoration(
-                                                      border: OutlineInputBorder(),
-                                                      enabledBorder: OutlineInputBorder(
-                                                        borderRadius: BorderRadius.circular(5),
-                                                        borderSide: BorderSide(
-                                                          color: Color(0xffC5C5C5), // Border color
-                                                          width: 0.5,         // Border width
-                                                        ),
-                                                      ),
-                                                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                                                      counterText: '',
-                                                      labelText: '',
-                                                      hintText:'Type Comment',
-                                                      hintStyle: TextStyle(fontSize: 10,color: Colors.grey[500]),
-                                                    ),
-                                                  ) ,
-                                                ),
-                                              ),
-                                            ]
-                                        ),
-                                      );
-                                    }
-                      
-                                ),
-                                buttons: [
-                                  DialogButton(
-                                    color: appcolors.buttonColor,
-                                    child: Text("Send Feedback", style: TextStyle(color: Colors.white, fontSize: 16,fontWeight: FontWeight.bold),),
-                                    onPressed: () async {
-                                      if(userRemarkController.text.isEmpty){
-                                        toasts().redToastLong('Proper fill the details');
-                                      }else{
-                                        Navigator.pop(context);
-                                        setState(() {scroll = true;});
-                                        updateFeedbackFunction('${widget.userData['reportIssueKey']}',userRemarkController.text);
-                                      }
-                                    },
-                                  ),
-                                ],
-                              ).show();
-                            },
-                          ),
-                          SizedBox(width: 10,),
+
                           GestureDetector(
                             child: Image.asset('assets/icons/imgIconn.png',width: 30,height: 30,color: appcolors.primaryColor,),
                             onTap: () async {
@@ -382,7 +279,7 @@ class _userComplaintDetailedPageState extends State<userComplaintDetailedPage> {
                                 if (await canLaunch(url)) {
                                   await launch(url);
                                 } else {
-                                  print('Could not launch $url');
+                                  debugPrint('Could not launch $url');
                                 }
                                 setState(() {});
                               }
@@ -531,6 +428,111 @@ class _userComplaintDetailedPageState extends State<userComplaintDetailedPage> {
                               ).show();
                             },
                           ),
+                          SizedBox(width: 10,),
+                          widget.userData['status']=='Resolved' ? GestureDetector(
+                            child: Image.asset(Assets.iconsFeedbacksIcon,width: 30,height: 30,color: appcolors.primaryColor,),
+                            onTap: (){
+                              Alert(
+                                context: context,
+                                style: AlertStyle(
+                                  descStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 12),
+                                  descPadding: EdgeInsets.all(5),
+                                  descTextAlign: TextAlign.center,
+                                  isOverlayTapDismiss: false,
+                                ),
+                                closeFunction: (){
+                                  userRemarkController.clear();
+                                  Navigator.of(context).pop();
+                                },
+                                content: StatefulBuilder(
+                                    builder: (context,setState){
+                                      return Container(
+                                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(5.0), // Adjust the radius as needed
+                                        ),
+                                        child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              SizedBox(height: 10,),
+                                              ToggleSwitch(
+                                                minWidth: 108.0,
+                                                initialLabelIndex: 0,
+                                                cornerRadius: 20.0,
+                                                activeFgColor: Colors.white,
+                                                inactiveBgColor: Colors.grey[500],
+                                                inactiveFgColor: Colors.white,
+                                                totalSwitches: 2,
+                                                iconSize: 30,
+                                                //labels: ['Satisfied', 'UnSatisfied'],
+                                                icons: [Icons.sentiment_satisfied_alt, Icons.sentiment_dissatisfied_outlined],
+                                                activeBgColors: [[Colors.green], [Colors.red]],
+                                                onToggle: (index) {
+                                                  if(index==0){
+                                                    feedbackStatusDropdownValue='Satishfied';
+                                                  }else{
+                                                    feedbackStatusDropdownValue='UnSatishfied';
+                                                  }
+                                                  debugPrint('switched to: $index');
+                                                  debugPrint('switched to: $feedbackStatusDropdownValue');
+                                                },
+                                              ),
+                                              SizedBox(height: 10,),
+                                              ClipRRect(
+                                                borderRadius: BorderRadius.circular(5.0),
+                                                child: Container(
+                                                  color: Colors.white,
+                                                  child:TextField(
+                                                    maxLines: 3,
+                                                    maxLength: 200,
+                                                    keyboardType:TextInputType.text,
+                                                    controller: userRemarkController,
+                                                    focusNode: userRemarkFocusNode,
+                                                    style: TextStyle(fontSize: 12,color: Colors.black),
+                                                    decoration: InputDecoration(
+                                                      border: OutlineInputBorder(),
+                                                      enabledBorder: OutlineInputBorder(
+                                                        borderRadius: BorderRadius.circular(5),
+                                                        borderSide: BorderSide(
+                                                          color: Color(0xffC5C5C5), // Border color
+                                                          width: 0.5,         // Border width
+                                                        ),
+                                                      ),
+                                                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                                                      counterText: '',
+                                                      labelText: '',
+                                                      hintText:'Type Comment',
+                                                      hintStyle: TextStyle(fontSize: 10,color: Colors.grey[500]),
+                                                    ),
+                                                  ) ,
+                                                ),
+                                              ),
+                                            ]
+                                        ),
+                                      );
+                                    }
+
+                                ),
+                                buttons: [
+                                  DialogButton(
+                                    color: appcolors.buttonColor,
+                                    child: Text("Send Feedback", style: TextStyle(color: Colors.white, fontSize: 16,fontWeight: FontWeight.bold),),
+                                    onPressed: () async {
+                                      if(userRemarkController.text.isEmpty){
+                                        toasts().redToastLong('Proper fill the details');
+                                      }else{
+                                        Navigator.pop(context);
+                                        setState(() {scroll = true;});
+                                        updateFeedbackFunction('${widget.userData['reportIssueKey']}',userRemarkController.text);
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ).show();
+                            },
+                          ) : Container(),
+
                         ],
                       ),
                     ),
@@ -564,7 +566,7 @@ class _userComplaintDetailedPageState extends State<userComplaintDetailedPage> {
 
 
     if (response.statusCode == 200) {
-      print(await 'aaaaaaaaa-----${results}');
+      debugPrint(await 'aaaaaaaaa-----${results}');
       if(results['statusCode']=='MU501'){
         toasts().greenToastShort(results['statusMsg']);
         userRemarkController.clear();

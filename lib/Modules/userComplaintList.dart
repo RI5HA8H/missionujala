@@ -237,7 +237,7 @@ class _userComplaintListState extends State<userComplaintList> {
                                   if (await canLaunch(url)) {
                                     await launch(url);
                                   } else {
-                                    print('Could not launch $url');
+                                    debugPrint('Could not launch $url');
                                   }
                                   setState(() {});
                                 }
@@ -543,8 +543,8 @@ class _userComplaintListState extends State<userComplaintList> {
                                                }else{
                                                  feedbackStatusDropdownValue='UnSatishfied';
                                                }
-                                               print('switched to: $index');
-                                               print('switched to: $feedbackStatusDropdownValue');
+                                               debugPrint('switched to: $index');
+                                               debugPrint('switched to: $feedbackStatusDropdownValue');
                                              },
                                            ),
                                            SizedBox(height: 10,),
@@ -647,7 +647,7 @@ class _userComplaintListState extends State<userComplaintList> {
                                   if (await canLaunch(url)) {
                                     await launch(url);
                                   } else {
-                                    print('Could not launch $url');
+                                    debugPrint('Could not launch $url');
                                   }
                                   setState(() {});
                                 }
@@ -902,7 +902,7 @@ class _userComplaintListState extends State<userComplaintList> {
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      print('rrrr->$results');
+      debugPrint('rrrr->$results');
       userComplaintList=results;
 
       setState(() {scroll = false;});
@@ -929,7 +929,7 @@ class _userComplaintListState extends State<userComplaintList> {
 
 
     if (response.statusCode == 200) {
-      print(await 'aaaaaaaaa-----${results}');
+      debugPrint(await 'aaaaaaaaa-----${results}');
       if(results['statusCode']=='MU501'){
         toasts().greenToastShort(results['statusMsg']);
         userRemarkController.clear();

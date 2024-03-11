@@ -267,7 +267,7 @@ class _viewLocationsState extends State<viewLocations> {
                                 onChanged: (newVal11) {
                                   setState(() {
                                     districtDropdownValue = newVal11;
-                                    print('llllllllll----$districtDropdownValue');
+                                    debugPrint('llllllllll----$districtDropdownValue');
                                     setState(() {showFilterButtonColor=false;});
                                     getUidByDistrictBlock();
                                   });
@@ -323,7 +323,7 @@ class _viewLocationsState extends State<viewLocations> {
                                 onChanged: (newVal12) {
                                   setState(() {
                                     blockDropdownValue = newVal12;
-                                    print('llllllllll----$blockDropdownValue');
+                                    debugPrint('llllllllll----$blockDropdownValue');
                                   });
                                 },
                                 value: blockDropdownValue,
@@ -463,7 +463,7 @@ class _viewLocationsState extends State<viewLocations> {
                       allApiMarker[0]['installedSystemList'][index]['schemeName'],
                       allApiMarker[0]['installedSystemList'][index]['serviceValidTill'],
                     )));
-                    print('uuuuuuuuuuuuuuu-->$updateUid');
+                    debugPrint('uuuuuuuuuuuuuuu-->$updateUid');
 
                     if(updateUid == true){
                       if(districtDropdownValue!=null){
@@ -556,16 +556,16 @@ class _viewLocationsState extends State<viewLocations> {
 
     for(int i=0;i<allApiMarker[0]['installedSystemList'].length;i++)
     {
-      print('ggggggg${i}');
+      debugPrint('ggggggg${i}');
       if(allApiMarker[0]['installedSystemList'][i]['latitude'].toString()!='null'){
-        print('hhhhhhhh${i}');
+        debugPrint('hhhhhhhh${i}');
         lat=double.parse('${allApiMarker[0]['installedSystemList'][i]['latitude']}');
         long=double.parse('${allApiMarker[0]['installedSystemList'][i]['longitude']}');
         markerr.add(
           Marker(markerId:MarkerId(i.toString()),
             position: LatLng(double.parse('${allApiMarker[0]['installedSystemList'][i]['latitude']}'),double.parse('${allApiMarker[0]['installedSystemList'][i]['longitude']}')),
             onTap: () {
-              print('${allApiMarker[0]['installedSystemList'][i]['latitude']}');
+              debugPrint('${allApiMarker[0]['installedSystemList'][i]['latitude']}');
               customInfoWindowController.addInfoWindow!(
                 ClipRRect(
                   borderRadius: BorderRadius.circular(5),
@@ -638,7 +638,7 @@ class _viewLocationsState extends State<viewLocations> {
                             '${allApiMarker[0]['installedSystemList'][i]['schemeName']}',
                             '${allApiMarker[0]['installedSystemList'][i]['serviceValidTill']}',
                           )));
-                          print('uuuuuuuuuuuuuuu-->$updateUid');
+                          debugPrint('uuuuuuuuuuuuuuu-->$updateUid');
 
                           if(updateUid == true){
                             if(districtDropdownValue!=null){
@@ -666,16 +666,16 @@ class _viewLocationsState extends State<viewLocations> {
 
     /*for(int i=0;i<allServiceCenterItem.length;i++)
     {
-      print('ssssssssss${i}');
+      debugPrint('ssssssssss${i}');
       if(allServiceCenterItem[i]['latitude'].toString()!='null'){
-        print('hhhhhhhh${i}');
+        debugPrint('hhhhhhhh${i}');
         //lat=double.parse('${allServiceCenterItem[i]['latitude']}');
         //long=double.parse('${allServiceCenterItem[i]['longitude']}');
         markerr.add(
           Marker(markerId:MarkerId(i.toString()),
             position: LatLng(double.parse('${allServiceCenterItem[i]['latitude']}'),double.parse('${allServiceCenterItem[i]['longitude']}')),
             onTap: () {
-              print('${allServiceCenterItem[i]['latitude']}');
+              debugPrint('${allServiceCenterItem[i]['latitude']}');
               customInfoWindowController.addInfoWindow!(
                 ClipRRect(
                   borderRadius: BorderRadius.circular(5),
@@ -771,7 +771,7 @@ class _viewLocationsState extends State<viewLocations> {
     long=longi;
     markerr.clear();
 
-    print(await 'aaaaaaaaa-----${urls().base_url + allAPI().getRadiousLocationURL}');
+    debugPrint(await 'aaaaaaaaa-----${urls().base_url + allAPI().getRadiousLocationURL}');
     var request = http.MultipartRequest('POST', Uri.parse(urls().base_url + allAPI().getRadiousLocationURL));
     request.fields.addAll({
       'AMCVisitLatitude': '$lati',//26.822184
@@ -779,12 +779,12 @@ class _viewLocationsState extends State<viewLocations> {
     });
     //var response = await request.send();
     http.StreamedResponse response = await request.send();
-    print(await 'ffffffffffffffff-----${response}');
+    debugPrint(await 'ffffffffffffffff-----${response}');
     var results = jsonDecode(await response.stream.bytesToString());
     if (response.statusCode == 200) {
-      print(await 'ffffffffffffffff-----${results}');
+      debugPrint(await 'ffffffffffffffff-----${results}');
       allApiMarker=results;
-      print('llllllllll--->${results.length}');
+      debugPrint('llllllllll--->${results.length}');
       showMarkers();
       setState(() {scroll1=false;});
 
@@ -804,7 +804,7 @@ class _viewLocationsState extends State<viewLocations> {
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      print(await 'aaaaaaaaa-----${results}');
+      debugPrint(await 'aaaaaaaaa-----${results}');
       districtTypeItem=results;
       setState(() {scroll2=false;});
     }
@@ -825,7 +825,7 @@ class _viewLocationsState extends State<viewLocations> {
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      print(await 'aaaaaaaaa-----${results}');
+      debugPrint(await 'aaaaaaaaa-----${results}');
       blockTypeItem=results;
       progressDialog3.dismiss();
       setState(() {});
@@ -842,14 +842,14 @@ class _viewLocationsState extends State<viewLocations> {
     markerr.clear();
 
     var request = http.Request('GET', Uri.parse(urls().base_url + allAPI().getUidByDistrictBlockURL+'/$districtDropdownValue/0'));
-    print(await 'aaaaaaaaa-----${urls().base_url + allAPI().getUidByDistrictBlockURL+'/$districtDropdownValue/0'}');
+    debugPrint(await 'aaaaaaaaa-----${urls().base_url + allAPI().getUidByDistrictBlockURL+'/$districtDropdownValue/0'}');
 
 
     var response = await request.send();
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      print(await 'aaaaaaaaa-----${results}');
+      debugPrint(await 'aaaaaaaaa-----${results}');
       allApiMarker=results;
       showMarkers();
       setState(() {scroll1=false;});
@@ -868,7 +868,7 @@ class _viewLocationsState extends State<viewLocations> {
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      print(await 'aaaaaaaaa-----${results}');
+      debugPrint(await 'aaaaaaaaa-----${results}');
       allServiceCenterItem=results;
       setState(() {scroll2=false;});
     }

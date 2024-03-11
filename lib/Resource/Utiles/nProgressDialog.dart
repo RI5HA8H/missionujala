@@ -12,7 +12,7 @@ class nDialog {
       dismissable: false,
       //title: Text(""),
       message: Text("Please wait.."),
-      onDismiss: () => print("Do something onDismiss"),
+      onDismiss: () => debugPrint("Do something onDismiss"),
     );
   }
 

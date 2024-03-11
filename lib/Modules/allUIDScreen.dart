@@ -150,7 +150,7 @@ class _allUIDScreenState extends State<allUIDScreen> {
                                 onChanged: (newVal1) {
                                   setState(() {
                                     financialDropdownValue = newVal1;
-                                    print('llllllllll----$financialDropdownValue');
+                                    debugPrint('llllllllll----$financialDropdownValue');
 
                                     schemsTypeItem.clear();
                                     purchaseTypeItem.clear();
@@ -218,7 +218,7 @@ class _allUIDScreenState extends State<allUIDScreen> {
                                 onChanged: (newVal2) {
                                   setState(() {
                                     schemsDropdownValue = newVal2;
-                                    print('llllllllll----$schemsDropdownValue');
+                                    debugPrint('llllllllll----$schemsDropdownValue');
 
                                     purchaseTypeItem.clear();
                                     districtsTypeItem.clear();
@@ -286,7 +286,7 @@ class _allUIDScreenState extends State<allUIDScreen> {
                                     enableScroll=true;
                                     purchaseDropdownValue = newVal3.toString();
                                     purchaseOrderKey=purchaseDropdownValue.toString().split('_')[1];
-                                    print('llllllllll----$purchaseOrderKey');
+                                    debugPrint('llllllllll----$purchaseOrderKey');
 
                                     districtsTypeItem.clear();
                                     blocksTypeItem.clear();
@@ -350,7 +350,7 @@ class _allUIDScreenState extends State<allUIDScreen> {
                                 onChanged: (newVal4) {
                                   setState(() {
                                     districtsDropdownValue = newVal4;
-                                    print('llllllllll----$districtsDropdownValue');
+                                    debugPrint('llllllllll----$districtsDropdownValue');
 
                                     blocksTypeItem.clear();
                                     villagesTypeItem.clear();
@@ -412,7 +412,7 @@ class _allUIDScreenState extends State<allUIDScreen> {
                                 onChanged: (newVal5) {
                                   setState(() {
                                     blocksDropdownValue = newVal5;
-                                    print('llllllllll----$blocksDropdownValue');
+                                    debugPrint('llllllllll----$blocksDropdownValue');
 
                                     villagesTypeItem.clear();
 
@@ -472,7 +472,7 @@ class _allUIDScreenState extends State<allUIDScreen> {
                                 onChanged: (newVal6) {
                                   setState(() {
                                     villagesDropdownValue = newVal6;
-                                    print('llllllllll----$villagesDropdownValue');
+                                    debugPrint('llllllllll----$villagesDropdownValue');
                                   });
                                 },
                                 value: villagesDropdownValue,
@@ -604,7 +604,7 @@ class _allUIDScreenState extends State<allUIDScreen> {
                       installedSystemList[index]['schemeName'],
                       installedSystemList[index]['serviceValidTill'],
                     )));
-                    print('uuuuuuuuuuuuuuu-->$updateUid');
+                    debugPrint('uuuuuuuuuuuuuuu-->$updateUid');
 
                     if(updateUid != null){
                       getInstalledList();
@@ -676,7 +676,7 @@ class _allUIDScreenState extends State<allUIDScreen> {
                       installedSystemList[index]['schemeName'],
                       installedSystemList[index]['serviceValidTill'],
                     )));
-                    print('uuuuuuuuuuuuuuu-->$updateUid');
+                    debugPrint('uuuuuuuuuuuuuuu-->$updateUid');
 
                     if(updateUid == true){
                       getInstalledList();
@@ -713,7 +713,7 @@ class _allUIDScreenState extends State<allUIDScreen> {
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      print(await 'aaaaaaaaa-----${results}');
+      debugPrint(await 'aaaaaaaaa-----${results}');
       financialTypeItem=results;
       setState(() {scroll1 = false;});
     }
@@ -736,8 +736,8 @@ class _allUIDScreenState extends State<allUIDScreen> {
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      print(await 'aaaaaaaaa-----${urls().base_url + allAPI().schemesByFYURL+'/$financialDropdownValue/$companyKey'}');
-      print(await 'aaaaaaaaa-----${results}');
+      debugPrint(await 'aaaaaaaaa-----${urls().base_url + allAPI().schemesByFYURL+'/$financialDropdownValue/$companyKey'}');
+      debugPrint(await 'aaaaaaaaa-----${results}');
       schemsTypeItem=results;
       if(schemsTypeItem.isEmpty){
         toasts().redToastLong('Scheme Not Found');
@@ -763,8 +763,8 @@ class _allUIDScreenState extends State<allUIDScreen> {
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      print(await 'aaaaaaaaa-----${urls().base_url + allAPI().pusrchaseOrderBySFYURL}');
-      print(await 'aaaaaaaaa-----${results}');
+      debugPrint(await 'aaaaaaaaa-----${urls().base_url + allAPI().pusrchaseOrderBySFYURL}');
+      debugPrint(await 'aaaaaaaaa-----${results}');
       purchaseTypeItem=results;
       if(purchaseTypeItem.isEmpty){
         toasts().redToastLong('Purchase Order Not Found');
@@ -790,7 +790,7 @@ class _allUIDScreenState extends State<allUIDScreen> {
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      print(await 'aaaaaaaaa-----${results}');
+      debugPrint(await 'aaaaaaaaa-----${results}');
       districtsTypeItem=results;
       if(districtsTypeItem.isEmpty){
         toasts().redToastLong('District Not Found');
@@ -816,7 +816,7 @@ class _allUIDScreenState extends State<allUIDScreen> {
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      print(await 'aaaaaaaaa-----${results}');
+      debugPrint(await 'aaaaaaaaa-----${results}');
       blocksTypeItem=results;
       if(blocksTypeItem.isEmpty){
         toasts().redToastLong('Block Not Found');
@@ -842,7 +842,7 @@ class _allUIDScreenState extends State<allUIDScreen> {
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      print(await 'aaaaaaaaa-----${results}');
+      debugPrint(await 'aaaaaaaaa-----${results}');
       villagesTypeItem=results;
       if(villagesTypeItem.isEmpty){
         toasts().redToastLong('Village Not Found');
@@ -869,7 +869,7 @@ class _allUIDScreenState extends State<allUIDScreen> {
     var headers = {
       'Authorization': 'Bearer $userToken'
     };
-    debugPrint(await 'aaaaaaaaa-----${urls().base_url + allAPI().installedAllListURL+'/$purchaseOrderKey/$districtsDropdownValue/$blocksDropdownValue/$villagesDropdownValue'}');
+    //debugdebugPrint(await 'aaaaaaaaa-----${urls().base_url + allAPI().installedAllListURL+'/$purchaseOrderKey/$districtsDropdownValue/$blocksDropdownValue/$villagesDropdownValue'}');
 
     var request = http.Request('GET', Uri.parse(urls().base_url + allAPI().installedAllListURL+'/$purchaseOrderKey/$districtsDropdownValue/$blocksDropdownValue/$villagesDropdownValue'));
     request.headers.addAll(headers);

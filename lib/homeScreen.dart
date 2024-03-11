@@ -14,6 +14,7 @@ import 'package:missionujala/Modules/vendorComplainList.dart';
 import 'package:missionujala/Modules/updateLocation.dart';
 import 'package:missionujala/Modules/viewLocations.dart';
 import 'package:missionujala/Resource/Colors/app_colors.dart';
+import 'package:missionujala/Resource/Utiles/allFunctions.dart';
 import 'package:missionujala/generated/assets.dart';
 import 'package:missionujala/userLoginScreen.dart';
 import 'package:missionujala/userProfile.dart';
@@ -27,7 +28,6 @@ import 'Resource/Utiles/bottomNavigationBar.dart';
 import 'Resource/Utiles/checkInternet.dart';
 import 'Resource/Utiles/drawer.dart';
 import 'Resource/Utiles/moduleview.dart';
-import 'Modules/dashBoard.dart';
 import 'loginDashboard.dart';
 
 
@@ -56,7 +56,7 @@ class _homeScreenState extends State<homeScreen> {
         setState(() {
           ActiveConnection = true;
           T = "Turn off the data and repress again";
-          print(T);
+          debugPrint(T);
         });
       }
     } on SocketException catch (_) {
@@ -105,7 +105,7 @@ class _homeScreenState extends State<homeScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       loginType = prefs.getString('loginType')!;
-      userName = prefs.getString('userName')!;
+      userName = allFunctions().decryptStringFromBase64(prefs.getString('userName')!);
     });
   }
 
@@ -277,4 +277,5 @@ class _homeScreenState extends State<homeScreen> {
       ),
     );
   }
+
 }

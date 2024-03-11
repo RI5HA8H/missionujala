@@ -13,6 +13,7 @@ import 'package:ndialog/ndialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Resource/StringLocalization/allAPI.dart';
 import 'Resource/StringLocalization/baseUrl.dart';
+import 'Resource/Utiles/allFunctions.dart';
 import 'Resource/Utiles/editText.dart';
 import 'Resource/Utiles/nProgressDialog.dart';
 import 'Resource/Utiles/normalButton.dart';
@@ -220,17 +221,17 @@ class _userRegistrationScreenState extends State<userRegistrationScreen> {
 
     var request = http.MultipartRequest('POST', Uri.parse(urls().base_url + allAPI().userLoginURL));
     request.fields.addAll({
-      'UserName': nameController.text.toString(),
-      'MobileNo': mobileController.text.toString(),
+      'UserName':allFunctions().encryptToBase64(nameController.text.toString()),
+      'MobileNo': allFunctions().encryptToBase64(mobileController.text.toString()),
       'PNRKey': token.toString(),
     });
-    print(await 'tttttttttttttttttttttttt-----${token}');
+    debugPrint(await 'tttttttttttttttttttttttt-----${token}');
 
     var response = await request.send();
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      print(await 'aaaaaaaaa-----${results}');
+      debugPrint(await 'aaaaaaaaa-----${results}');
       if(results['userKey'].runtimeType==int){
         setState(() {halfUI = false;});
         toasts().greenToastShort('OTP Send Successfull');
@@ -243,7 +244,7 @@ class _userRegistrationScreenState extends State<userRegistrationScreen> {
         prefs.setString('userCompanyKey', '${results['companyKey']}');
         prefs.setString('userToken', results['userToken']);
         prefs.setString('loginType', 'user');
-        apiOTP=int.parse('${results['otp']}');
+        apiOTP=int.parse('${allFunctions().decryptStringFromBase64(results['otp'])}');
         //toasts().greenToastShort('OTP - ${results['otp']}');
         progressDialog.dismiss();
 
