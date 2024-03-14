@@ -44,10 +44,14 @@ class _userProfileState extends State<userProfile> {
     setState(() {
 
       loginType = prefs.getString('loginType')!;
-      userName = allFunctions().decryptStringFromBase64(prefs.getString('userName')!);
-      userPhoneNo = allFunctions().decryptStringFromBase64(prefs.getString('userMobile')!);
-      vendorName = allFunctions().decryptStringFromBase64(prefs.getString('vendorName')!);
-      vendorPhoneNo = allFunctions().decryptStringFromBase64(prefs.getString('vendorMobile')!);
+
+      if(loginType=='user'){
+        userName = allFunctions().decryptStringFromBase64(prefs.getString('userName')!);
+        userPhoneNo = allFunctions().decryptStringFromBase64(prefs.getString('userMobile')!);
+      }else{
+        vendorName = allFunctions().decryptStringFromBase64(prefs.getString('vendorName')!);
+        vendorPhoneNo = allFunctions().decryptStringFromBase64(prefs.getString('vendorMobile')!);
+      }
 
     });
   }

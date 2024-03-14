@@ -30,10 +30,10 @@ class _splashScreenState extends State<splashScreen> with SingleTickerProviderSt
       String? loginType =prefs.getString('loginType');
       debugPrint('hhhhhhhhhhh$loginType');
       if(loginType=='vendor' || loginType=='user'){
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>homeScreen()));
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => homeScreen()), (Route<dynamic> route) => false);
       }else
       {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>loginDashboard()));
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => loginDashboard()), (Route<dynamic> route) => false);
       }
     });
   }
@@ -62,9 +62,9 @@ class _splashScreenState extends State<splashScreen> with SingleTickerProviderSt
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text('Mission',style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: appcolors.screenBckColor),),
-                    SizedBox(width: 5,),
-                    Text('Ujala',style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: appcolors.primaryTextColor),),
+                    //Text('Mission',style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: appcolors.screenBckColor),),
+                    //SizedBox(width: 5,),
+                    //Text('Ujala',style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: appcolors.primaryTextColor),),
                   ],
                 ),
 

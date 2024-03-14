@@ -7,6 +7,8 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:in_app_update/in_app_update.dart';
+import 'package:material_text_fields/material_text_fields.dart';
+import 'package:material_text_fields/utils/form_validation.dart';
 import 'package:missionujala/Modules/userComplaintList.dart';
 import 'package:missionujala/Modules/vendorServiceCenterList.dart';
 import 'package:missionujala/Modules/allUIDScreen.dart';
@@ -15,6 +17,7 @@ import 'package:missionujala/Modules/updateLocation.dart';
 import 'package:missionujala/Modules/viewLocations.dart';
 import 'package:missionujala/Resource/Colors/app_colors.dart';
 import 'package:missionujala/Resource/Utiles/allFunctions.dart';
+import 'package:missionujala/Resource/Utiles/normalButton.dart';
 import 'package:missionujala/generated/assets.dart';
 import 'package:missionujala/userLoginScreen.dart';
 import 'package:missionujala/userProfile.dart';
@@ -27,6 +30,8 @@ import 'Resource/Utiles/appBar.dart';
 import 'Resource/Utiles/bottomNavigationBar.dart';
 import 'Resource/Utiles/checkInternet.dart';
 import 'Resource/Utiles/drawer.dart';
+import 'Resource/Utiles/dropDown.dart';
+import 'Resource/Utiles/editText.dart';
 import 'Resource/Utiles/moduleview.dart';
 import 'loginDashboard.dart';
 
@@ -44,6 +49,11 @@ class _homeScreenState extends State<homeScreen> {
   String userName  = "XYZ";
   String loginType='';
   Position? currentPosition;
+
+  TextEditingController userNameController = TextEditingController();
+  FocusNode userNameFocusNode = FocusNode();
+
+
 
   StreamSubscription? internetconnection;
   bool isoffline = false;
@@ -105,7 +115,13 @@ class _homeScreenState extends State<homeScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       loginType = prefs.getString('loginType')!;
-      userName = allFunctions().decryptStringFromBase64(prefs.getString('userName')!);
+
+      if(loginType=='user'){
+        userName = allFunctions().decryptStringFromBase64(prefs.getString('userName')!);
+      }else{
+        userName = allFunctions().decryptStringFromBase64(prefs.getString('vendorName')!);
+      }
+
     });
   }
 
@@ -223,9 +239,13 @@ class _homeScreenState extends State<homeScreen> {
                       ),*/
 
 
+
                     ],
                   ),
                 ),
+
+
+
               ],
             ),
           ),

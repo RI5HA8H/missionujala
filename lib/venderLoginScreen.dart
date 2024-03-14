@@ -128,7 +128,7 @@ class _venderLoginScreenState extends State<venderLoginScreen> {
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         suffixIcon: IconButton(
                             icon: Icon(
-                                _isObscure ? Icons.visibility : Icons.visibility_off),
+                                _isObscure ? Icons.visibility_off : Icons.visibility),
                             onPressed: () {
                               setState(() {
                                 _isObscure = !_isObscure;
@@ -208,8 +208,8 @@ class _venderLoginScreenState extends State<venderLoginScreen> {
         toasts().greenToastShort('Login Successfull');
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('vendorKey', '${results['userKey']}');
-        prefs.setString('vendorName', results['userName']);
-        prefs.setString('vendorMobile', results['mobileNo']);
+        prefs.setString('vendorName', '${results['userName']}');
+        prefs.setString('vendorMobile', '${results['mobileNo']}');
         prefs.setString('vendorType', '${results['userType']}');
         prefs.setString('vendorCompanyKey', '${results['companyKey']}');
         prefs.setString('vendorDistrictKey', '${results['districtKey']}');

@@ -50,6 +50,7 @@ class editTextSimple extends StatelessWidget {
           focusNode: focusNode,
           decoration: InputDecoration(
             border: OutlineInputBorder(),
+            //contentPadding: EdgeInsets.only(left: 15,right: 15),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5),
               borderSide: BorderSide(

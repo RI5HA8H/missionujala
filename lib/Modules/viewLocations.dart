@@ -1,9 +1,7 @@
 
 import 'dart:async';
 import 'dart:convert';
-import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';

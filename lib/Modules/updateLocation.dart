@@ -94,7 +94,7 @@ class _updateLocationState extends State<updateLocation> {
   getUserToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userToken = prefs.getString('vendorToken')!;
-    markerIcon = await getBytesFromAsset(Assets.iconsMarkerIconNew, 200);
+    markerIcon = await getBytesFromAsset(Assets.iconsMarkerIconNew, 100);
 
     debugPrint('kkkkkkkkkkkkkkkk$lat');
     if(widget.uIdLat.toString() != 'null'){

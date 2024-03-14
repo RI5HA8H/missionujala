@@ -5,8 +5,10 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app_badger/flutter_app_badger.dart';
+import 'package:material_text_fields/theme/material_text_field_theme.dart';
 import 'package:missionujala/Resource/Colors/app_colors.dart';
 import 'package:missionujala/splashScreen.dart';
+import 'package:missionujala/verifyAppSignature.dart';
 
 
 
@@ -58,8 +60,8 @@ class MyApp extends StatelessWidget {
             shadowColor: Colors.black,
             backgroundColor: appcolors.screenBckColor,
             foregroundColor: appcolors.whiteColor,
-          )
-      ),
+          ),
+          ),
       home:  const splashScreen(),
     );
   }
