@@ -28,7 +28,7 @@ class _splashScreenState extends State<splashScreen> with SingleTickerProviderSt
     Timer(Duration(seconds: 3),() async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? loginType =prefs.getString('loginType');
-      debugPrint('hhhhhhhhhhh$loginType');
+      //debugPrint('hhhhhhhhhhh$loginType');
       if(loginType=='vendor' || loginType=='user'){
         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => homeScreen()), (Route<dynamic> route) => false);
       }else

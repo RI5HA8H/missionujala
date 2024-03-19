@@ -279,7 +279,7 @@ class _userComplaintDetailedPageState extends State<userComplaintDetailedPage> {
                                 if (await canLaunch(url)) {
                                   await launch(url);
                                 } else {
-                                  debugPrint('Could not launch $url');
+                                  //debugPrint('Could not launch $url');
                                 }
                                 setState(() {});
                               }
@@ -474,8 +474,8 @@ class _userComplaintDetailedPageState extends State<userComplaintDetailedPage> {
                                                   }else{
                                                     feedbackStatusDropdownValue='UnSatishfied';
                                                   }
-                                                  debugPrint('switched to: $index');
-                                                  debugPrint('switched to: $feedbackStatusDropdownValue');
+                                                  //debugPrint('switched to: $index');
+                                                  //debugPrint('switched to: $feedbackStatusDropdownValue');
                                                 },
                                               ),
                                               SizedBox(height: 10,),
@@ -566,7 +566,7 @@ class _userComplaintDetailedPageState extends State<userComplaintDetailedPage> {
 
 
     if (response.statusCode == 200) {
-      debugPrint(await 'aaaaaaaaa-----${results}');
+      //debugPrint(await 'aaaaaaaaa-----${results}');
       if(results['statusCode']=='MU501'){
         toasts().greenToastShort(results['statusMsg']);
         userRemarkController.clear();

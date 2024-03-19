@@ -6,7 +6,7 @@ class Assets {
   static const String iconsBottomNotificationIcon = 'assets/icons/bottomNotificationIcon.png';
   static const String iconsBottomProfile = 'assets/icons/bottomProfile.png';
   static const String iconsBottomStrretLight = 'assets/icons/bottomStrretLight.png';
-  static const String iconsBrowser = 'assets/icons/browsers.png';
+  static const String iconsBrowser = 'assets/icons/browser.png';
   static const String iconsBrowsers = 'assets/icons/browsers.png';
   static const String iconsCallCirculerIcon = 'assets/icons/callCirculerIcon.png';
   static const String iconsComment = 'assets/icons/comment.png';
@@ -31,6 +31,7 @@ class Assets {
   static const String iconsMarkerIcon = 'assets/icons/markerIcon.png';
   static const String iconsMarkerIconNew = 'assets/icons/markerIconNew.png';
   static const String iconsMenuIcon = 'assets/icons/menuIcon.png';
+  static const String iconsNotificationHomeBox = 'assets/icons/notificationHomeBox.png';
   static const String iconsPdfIcon = 'assets/icons/pdfIcon.png';
   static const String iconsPdfIcons = 'assets/icons/pdfIcons.png';
   static const String iconsProfile = 'assets/icons/profile.png';
@@ -49,11 +50,14 @@ class Assets {
   static const String iconsWifi = 'assets/icons/wifi.png';
   static const String imagesDepartmentLogo = 'assets/images/departmentLogo.png';
   static const String imagesElectrician = 'assets/images/electrician.png';
+  static const String imagesEmptyConplaints = 'assets/images/emptyConplaints.jpg';
+  static const String imagesEmptyNotification = 'assets/images/emptyNotification.png';
   static const String imagesFeedbackUser = 'assets/images/feedbackUser.png';
   static const String imagesHomeBanner1 = 'assets/images/homeBanner1.png';
   static const String imagesLoginFooter = 'assets/images/loginFooter.png';
-  static const String imagesMuAppbarLogo = 'assets/images/suryodayAppbarLogo.png';
+  static const String imagesMuAppbarLogo = 'assets/images/muAppbarLogo.png';
   static const String imagesMuLogo = 'assets/images/muLogo.png';
+  static const String imagesNoInternetLogo = 'assets/images/noInternetLogo.jpg';
   static const String imagesProfileImg = 'assets/images/profileImg.png';
   static const String imagesProfileLogo = 'assets/images/profileLogo.png';
   static const String imagesSplashBackground = 'assets/images/SplashBackground.png';

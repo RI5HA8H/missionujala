@@ -4,9 +4,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class toasts{
 
-  void redToastShort(String debugPrintvalue){
+  void redToastShort(String msg){
     Fluttertoast.showToast(
-        msg: debugPrintvalue,
+        msg: msg,
         backgroundColor: Colors.red,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
@@ -17,9 +17,9 @@ class toasts{
     );
   }
 
-  void redToastLong(String debugPrintvalue){
+  void redToastLong(String msg){
     Fluttertoast.showToast(
-        msg: debugPrintvalue,
+        msg:msg,
         backgroundColor: Colors.red,
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
@@ -31,9 +31,9 @@ class toasts{
   }
 
 
-  void greenToastShort(String debugPrintvalue){
+  void greenToastShort(String msg){
     Fluttertoast.showToast(
-        msg: debugPrintvalue,
+        msg: msg,
         backgroundColor: Colors.green,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
@@ -43,9 +43,9 @@ class toasts{
     );
   }
 
-  void greenToastLong(String debugPrintvalue){
+  void greenToastLong(String msg){
     Fluttertoast.showToast(
-        msg: debugPrintvalue,
+        msg: msg,
         backgroundColor: Colors.green,
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
@@ -56,9 +56,9 @@ class toasts{
   }
 
 
-  void greyToastShort(String debugPrintvalue){
+  void greyToastShort(String msg){
     Fluttertoast.showToast(
-        msg: debugPrintvalue,
+        msg: msg,
         backgroundColor: Colors.grey[300],
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
@@ -68,9 +68,9 @@ class toasts{
     );
   }
 
-  void greyToastLong(String debugPrintvalue){
+  void greyToastLong(String msg){
     Fluttertoast.showToast(
-        msg: debugPrintvalue,
+        msg: msg,
         backgroundColor: Colors.grey[300],
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,

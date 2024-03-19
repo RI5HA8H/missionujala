@@ -49,8 +49,8 @@ class editTextSimple extends StatelessWidget {
           controller: controllers,
           focusNode: focusNode,
           decoration: InputDecoration(
+            contentPadding: EdgeInsets.fromLTRB(10, 14, 10, 14),
             border: OutlineInputBorder(),
-            //contentPadding: EdgeInsets.only(left: 15,right: 15),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5),
               borderSide: BorderSide(

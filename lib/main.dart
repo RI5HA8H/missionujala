@@ -33,10 +33,10 @@ Future<void> main() async {
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingbackgroundHandler(RemoteMessage message) async{
   await Firebase.initializeApp();
-  debugPrint(message.notification!.title.toString());
-  debugPrint(message.notification!.body.toString());
-  debugPrint(message.data.toString());
-  debugPrint(message.data['badge'].runtimeType.toString());
+  //debugPrint(message.notification!.title.toString());
+  //debugPrint(message.notification!.body.toString());
+  //debugPrint(message.data.toString());
+  //debugPrint(message.data['badge'].runtimeType.toString());
   if(await FlutterAppBadger.isAppBadgeSupported()){
     FlutterAppBadger.updateBadgeCount(int.parse(message.data['badge']));
   }

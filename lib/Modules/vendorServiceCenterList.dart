@@ -118,7 +118,7 @@ class _vendorServiceCenterListState extends State<vendorServiceCenterList> {
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton2(
                             isExpanded: true,
-                            hint: Text('Select District',style: TextStyle(fontSize: 12,),),
+                            hint: Text('Select District For Service Center',style: TextStyle(fontSize: 12,),),
                             iconStyleData: IconStyleData(
                               icon: Padding(
                                 padding: const EdgeInsets.only(right: 20),
@@ -151,7 +151,7 @@ class _vendorServiceCenterListState extends State<vendorServiceCenterList> {
                             onChanged: (newVal11) {
                               setState(() {
                                 districtDropdownValue = newVal11;
-                                debugPrint('llllllllll----$districtDropdownValue');
+                                //debugPrint('llllllllll----$districtDropdownValue');
                                 var newDistrictWiseServiceCenterList=[];
                                 for(int i=0;i<allServiceCenterItem.length;i++){
                                   if(allServiceCenterItem[i]['districtkey']==districtDropdownValue){
@@ -327,7 +327,7 @@ class _vendorServiceCenterListState extends State<vendorServiceCenterList> {
                                 if (await canLaunch(url)) {
                                   await launch(url);
                                 } else {
-                                  debugPrint('Could not launch $url');
+                                  //debugPrint('Could not launch $url');
                                 }
                             },
                           ),
@@ -350,7 +350,7 @@ class _vendorServiceCenterListState extends State<vendorServiceCenterList> {
                           if (await canLaunch(url)) {
                             await launch(url);
                           } else {
-                            debugPrint('Could not launch $url');
+                            //debugPrint('Could not launch $url');
                           }
                         },
                       ),
@@ -385,68 +385,78 @@ class _vendorServiceCenterListState extends State<vendorServiceCenterList> {
 
     for(int i=0;i<serviceCenterTypeItem.length;i++)
     {
-      debugPrint('ssssssssss${i}');
+      //debugPrint('ssssssssss${i}');
       if(serviceCenterTypeItem[i]['latitude'].toString()!='null'){
-        debugPrint('hhhhhhhh${i}');
+        //debugPrint('hhhhhhhh${i}');
         lat=double.parse('${serviceCenterTypeItem[i]['latitude']}');
         long=double.parse('${serviceCenterTypeItem[i]['longitude']}');
         markerr.add(
           Marker(markerId:MarkerId(i.toString()),
             position: LatLng(double.parse('${serviceCenterTypeItem[i]['latitude']}'),double.parse('${serviceCenterTypeItem[i]['longitude']}')),
             onTap: () {
-              debugPrint('${serviceCenterTypeItem[i]['latitude']}');
+              //debugPrint('${serviceCenterTypeItem[i]['latitude']}');
               customInfoWindowController.addInfoWindow!(
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(5),
-                  child: Scaffold(
-                    body: Container(
-                      width: 350,
-                      height: 400,
-                      color: Colors.white,
-                      padding: EdgeInsets.all(10),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: 60,
-                                color: Colors.grey[200],
-                                child: Image.network('https://i.pinimg.com/736x/44/27/2d/44272df32b1b832c9ea8f596fb4d76b2.jpg',width: 60,height: 60,fit: BoxFit.fill,),
-                              ),
-                              SizedBox(width: 5,),
-                              Container(
-                                width: 190,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('${serviceCenterTypeItem[i]['scName']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,),maxLines: 3,overflow: TextOverflow.ellipsis,),
-                                    SizedBox(height: 2,),
-                                    Text('${serviceCenterTypeItem[i]['districtName']}',style: TextStyle(fontSize: 12,color: Colors.black),maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                    SizedBox(height: 5,),
-                                    Text('${serviceCenterTypeItem[i]['scContactNo']}',style: TextStyle(fontSize: 12,color: Colors.black,),),
-                                    SizedBox(height: 2,),
-                                  ],
-                                ),
-
-                              ),
-                            ],
-                          ),
-
-                        ],
-                      ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: Colors.black54,
+                      width: 0.5,
                     ),
-                    bottomNavigationBar: Padding(
-                      padding: const EdgeInsets.only(bottom: 10,left: 10,right: 10),
-                      child: InkWell(
-                        child: normalButton(name: 'Show More',height:35,width: 100,bordeRadious: 10,fontSize:10,textColor: Colors.white,bckColor: appcolors.greenTextColor,),
-                        onTap: () async {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => vendorServiceCenterDetailedPage(serviceCenterTypeItem[i])));
-                        },
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Scaffold(
+                      body: Container(
+                        width: 350,
+                        height: 400,
+                        color: Colors.white,
+                        padding: EdgeInsets.all(10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 60,
+                                  color: Colors.grey[200],
+                                  child: Image.network('https://i.pinimg.com/736x/44/27/2d/44272df32b1b832c9ea8f596fb4d76b2.jpg',width: 60,height: 60,fit: BoxFit.fill,),
+                                ),
+                                SizedBox(width: 5,),
+                                Container(
+                                  width: 190,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text('${serviceCenterTypeItem[i]['scName']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,),maxLines: 3,overflow: TextOverflow.ellipsis,),
+                                      SizedBox(height: 2,),
+                                      Text('${serviceCenterTypeItem[i]['districtName']}',style: TextStyle(fontSize: 12,color: Colors.black),maxLines: 2,overflow: TextOverflow.ellipsis,),
+                                      SizedBox(height: 5,),
+                                      Text('${serviceCenterTypeItem[i]['scContactNo']}',style: TextStyle(fontSize: 12,color: Colors.black,),),
+                                      SizedBox(height: 2,),
+                                    ],
+                                  ),
+
+                                ),
+                              ],
+                            ),
+
+                          ],
+                        ),
+                      ),
+                      bottomNavigationBar: Padding(
+                        padding: const EdgeInsets.only(bottom: 10,left: 10,right: 10),
+                        child: InkWell(
+                          child: normalButton(name: 'Show More',height:35,width: 100,bordeRadious: 10,fontSize:10,textColor: Colors.white,bckColor: appcolors.greenTextColor,),
+                          onTap: () async {
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => vendorServiceCenterDetailedPage(serviceCenterTypeItem[i])));
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -479,7 +489,7 @@ class _vendorServiceCenterListState extends State<vendorServiceCenterList> {
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      debugPrint(await 'aaaaaaaaa-----${results}');
+      //debugPrint(await 'aaaaaaaaa-----${results}');
       districtTypeItem=results;
       setState(() {scroll=false;});
     }
@@ -500,7 +510,7 @@ class _vendorServiceCenterListState extends State<vendorServiceCenterList> {
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      debugPrint(await 'aaaaaaaaa-----${results}');
+      //debugPrint(await 'aaaaaaaaa-----${results}');
       serviceCenterTypeItem=results;
       allServiceCenterItem=results;
       showMarkers();

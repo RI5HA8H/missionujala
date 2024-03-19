@@ -331,7 +331,7 @@ class _vendorComplaintDetailedPageState extends State<vendorComplaintDetailedPag
                                 if (await canLaunch(url)) {
                                   await launch(url);
                                 } else {
-                                  debugPrint('Could not launch $url');
+                                  //debugPrint('Could not launch $url');
                                 }
                                 setState(() {});
                               }
@@ -604,7 +604,7 @@ class _vendorComplaintDetailedPageState extends State<vendorComplaintDetailedPag
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      debugPrint(await 'aaaaaaaaa-----${results}');
+      //debugPrint(await 'aaaaaaaaa-----${results}');
       if(results['statusCode']=='MU501'){
         toasts().greenToastShort(results['statusMsg']);
         vendorRemarkController.clear();

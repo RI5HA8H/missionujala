@@ -96,7 +96,7 @@ class _updateLocationState extends State<updateLocation> {
     userToken = prefs.getString('vendorToken')!;
     markerIcon = await getBytesFromAsset(Assets.iconsMarkerIconNew, 100);
 
-    debugPrint('kkkkkkkkkkkkkkkk$lat');
+    //debugPrint('kkkkkkkkkkkkkkkk$lat');
     if(widget.uIdLat.toString() != 'null'){
       lat=double.parse(widget.uIdLat);
       long=double.parse(widget.uIdLong);
@@ -184,7 +184,7 @@ class _updateLocationState extends State<updateLocation> {
                 buttonView=true;
                 lat= position.latitude;
                 long= position.longitude;
-                debugPrint('${lat}, ${long}');
+                //debugPrint('${lat}, ${long}');
                 setState(() {});
                 customInfoWindowController2.hideInfoWindow!();
               },
@@ -272,7 +272,7 @@ class _updateLocationState extends State<updateLocation> {
                 buttonView=true;
                 lat= position.latitude;
                 long= position.longitude;
-                debugPrint('${lat}, ${long}');
+                //debugPrint('${lat}, ${long}');
                 setState(() {});
                 customInfoWindowController2.hideInfoWindow!();
               },
@@ -411,7 +411,7 @@ class _updateLocationState extends State<updateLocation> {
 
     if (response.statusCode == 200) {
       latlonfUpdated=true;
-      debugPrint(await 'aaaaaaaaa-----${results}');
+      //debugPrint(await 'aaaaaaaaa-----${results}');
       getUidRefresh();
       //setState(() {scroll = false;});
     }
@@ -434,7 +434,7 @@ class _updateLocationState extends State<updateLocation> {
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      debugPrint(await 'aaaaaaaaa-----${results}');
+      //debugPrint(await 'aaaaaaaaa-----${results}');
       toasts().greenToastShort('Geo coordinates updated successfully');
       lat=results['installedSystemList'][0]['latitude'];
       long=results['installedSystemList'][0]['longitude']!;
@@ -442,7 +442,7 @@ class _updateLocationState extends State<updateLocation> {
       latController.text='$lat';
       longController.text='$long';
 
-      debugPrint('lattttttttttttttttttttttttttttt--${lat}');
+      //debugPrint('lattttttttttttttttttttttttttttt--${lat}');
       setState(() {scroll = false; });
     }
     else {

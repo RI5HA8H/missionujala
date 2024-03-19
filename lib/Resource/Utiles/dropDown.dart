@@ -18,6 +18,8 @@ class dropDown extends StatelessWidget {
   }) : super(key: key);
 
 
+  var cHeight;
+
   var selectText;
   var sendValue;
   var viewValue;
@@ -30,7 +32,7 @@ class dropDown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 45,
+      height: 50,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(5),
@@ -69,7 +71,7 @@ class dropDown extends StatelessWidget {
           items: allItem.map((item) {
             return DropdownMenuItem(
               value: item['$sendValue'],
-              child: Container(width: MediaQuery.of(context).size.width/2,child: Text('${item['$viewValue']}',style: TextStyle(fontSize: 12),maxLines: 1,overflow: TextOverflow.ellipsis,)),
+              child: Container(width: MediaQuery.of(context).size.width/2,child: Text('${item['$viewValue']}',style: TextStyle(fontSize: 14,color: Colors.black),maxLines: 1,overflow: TextOverflow.ellipsis,)),
             );
           }).toList(),
           onChanged: onChanged,
@@ -101,7 +103,7 @@ class dropDown extends StatelessWidget {
     onChanged: (value){
       setState(() {
         blockDropdownValue = value!;
-        debugPrint('vvvvvvvvvvvvvvvvvvvv$blockDropdownValue');
+        //debugPrint('vvvvvvvvvvvvvvvvvvvv$blockDropdownValue');
       });
     },
   ),

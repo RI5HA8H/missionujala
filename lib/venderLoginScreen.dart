@@ -48,12 +48,12 @@ class _venderLoginScreenState extends State<venderLoginScreen> {
   @override
   void initState() {
     super.initState();
-    debugPrint("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+    //debugPrint("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
     notiservices.requestNotificationPermissions();
     notiservices.firebaseinit(context);
     notiservices.getifDeviceTokenRefresh();
     notiservices.getDeviceToken().then((value) {
-      debugPrint("device token --- $value");
+      //debugPrint("device token --- $value");
       token=value;
     });
   }
@@ -198,17 +198,17 @@ class _venderLoginScreenState extends State<venderLoginScreen> {
       'UserPassword': allFunctions().encryptToBase64(passwordController.text.toString()),
       'PNRKey': token.toString(),
     });
-    debugPrint(await 'tttttttttttttttttttttttt-----${token}');
+    //debugPrint(await 'tttttttttttttttttttttttt-----${token}');
     var response = await request.send();
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      debugPrint(await 'aaaaaaaaa-----${results}');
+      //debugPrint(await 'aaaaaaaaa-----${results}');
       if(results['userKey'].runtimeType==int){
         toasts().greenToastShort('Login Successfull');
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('vendorKey', '${results['userKey']}');
-        prefs.setString('vendorName', '${results['userName']}');
+        prefs.setString('vendorName', '${results['userContactName']}');
         prefs.setString('vendorMobile', '${results['mobileNo']}');
         prefs.setString('vendorType', '${results['userType']}');
         prefs.setString('vendorCompanyKey', '${results['companyKey']}');

@@ -81,27 +81,27 @@ class _bottomNavigationBarState extends State<bottomNavigationBar> {
       onTap: (index) {
         setState(() {
           currentIndex = index;
-          debugPrint('iiiiiii->$index');
+          //debugPrint('iiiiiii->$index');
           if(currentIndex==0){
             Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => homeScreen()), (Route<dynamic> route) => false);
           }
           if(currentIndex==1){
             if(loginType=='user'){
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => userComplaintList()));
+              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => userComplaintList()), (Route<dynamic> route) => false);
             }else{
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => vendorComplainList()));
+              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => vendorComplainList()), (Route<dynamic> route) => false);
             }
           }
           if(currentIndex==2){
             if(loginType=='user'){
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => userNotificationScreen()));
+              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => userNotificationScreen()), (Route<dynamic> route) => false);
             }else{
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => vendorNotificationScreen()));
+              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => vendorNotificationScreen()), (Route<dynamic> route) => false);
             }
           }
 
           if(currentIndex==3){
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => userProfile()));
+            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => userProfile()), (Route<dynamic> route) => false);
           }
         });
       },

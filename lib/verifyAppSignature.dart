@@ -1,13 +1,12 @@
 
 
-
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:missionujala/splashScreen.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+
+
 
 class verifyAppSignature extends StatefulWidget {
   const verifyAppSignature({super.key});
@@ -39,7 +38,7 @@ class _verifyAppSignatureState extends State<verifyAppSignature> {
        final platform = MethodChannel('signatureVerification');
        final String currentSignature = await platform.invokeMethod('getSHA1Signature');
 
-       debugPrint('ssssssssssssssss$currentSignature');
+       //debugPrint('ssssssssssssssss$currentSignature');
 
        // Compare signatures
        if (currentSignature.contains(developerSignature)) {
@@ -49,7 +48,7 @@ class _verifyAppSignatureState extends State<verifyAppSignature> {
        }
      } on PlatformException catch (e) {
        // Error accessing package info
-       print('Error: $e');
+       //debugPrint('Error: $e');
      }
    }
 

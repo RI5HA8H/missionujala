@@ -128,7 +128,7 @@ class _viewLocationsState extends State<viewLocations> {
               );
             },
           ),
-          title: Image.asset(Assets.imagesMuAppbarLogo,height: 50,),
+          title: Image.asset(Assets.imagesSuryodayAppbarLogo,height: 50,),
           actions: [
             IconButton(
               icon: Image.asset(Assets.imagesDepartmentLogo,width: 50,height: 50,),
@@ -137,7 +137,7 @@ class _viewLocationsState extends State<viewLocations> {
               },
             ),
             IconButton(
-              icon: Image.asset(Assets.imagesProfileLogo,width: 50,height: 50,),
+              icon: Icon(Icons.account_circle,size: 35,color: appcolors.greenTextColor,),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => userProfile()));
               },
@@ -265,7 +265,7 @@ class _viewLocationsState extends State<viewLocations> {
                                 onChanged: (newVal11) {
                                   setState(() {
                                     districtDropdownValue = newVal11;
-                                    debugPrint('llllllllll----$districtDropdownValue');
+                                    //debugPrint('llllllllll----$districtDropdownValue');
                                     setState(() {showFilterButtonColor=false;});
                                     getUidByDistrictBlock();
                                   });
@@ -321,7 +321,7 @@ class _viewLocationsState extends State<viewLocations> {
                                 onChanged: (newVal12) {
                                   setState(() {
                                     blockDropdownValue = newVal12;
-                                    debugPrint('llllllllll----$blockDropdownValue');
+                                    //debugPrint('llllllllll----$blockDropdownValue');
                                   });
                                 },
                                 value: blockDropdownValue,
@@ -461,7 +461,7 @@ class _viewLocationsState extends State<viewLocations> {
                       allApiMarker[0]['installedSystemList'][index]['schemeName'],
                       allApiMarker[0]['installedSystemList'][index]['serviceValidTill'],
                     )));
-                    debugPrint('uuuuuuuuuuuuuuu-->$updateUid');
+                    //debugPrint('uuuuuuuuuuuuuuu-->$updateUid');
 
                     if(updateUid == true){
                       if(districtDropdownValue!=null){
@@ -554,101 +554,111 @@ class _viewLocationsState extends State<viewLocations> {
 
     for(int i=0;i<allApiMarker[0]['installedSystemList'].length;i++)
     {
-      debugPrint('ggggggg${i}');
+      //debugPrint('ggggggg${i}');
       if(allApiMarker[0]['installedSystemList'][i]['latitude'].toString()!='null'){
-        debugPrint('hhhhhhhh${i}');
+        //debugPrint('hhhhhhhh${i}');
         lat=double.parse('${allApiMarker[0]['installedSystemList'][i]['latitude']}');
         long=double.parse('${allApiMarker[0]['installedSystemList'][i]['longitude']}');
         markerr.add(
           Marker(markerId:MarkerId(i.toString()),
             position: LatLng(double.parse('${allApiMarker[0]['installedSystemList'][i]['latitude']}'),double.parse('${allApiMarker[0]['installedSystemList'][i]['longitude']}')),
             onTap: () {
-              debugPrint('${allApiMarker[0]['installedSystemList'][i]['latitude']}');
+              //debugPrint('${allApiMarker[0]['installedSystemList'][i]['latitude']}');
               customInfoWindowController.addInfoWindow!(
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(5),
-                  child: Scaffold(
-                    body: Container(
-                      width: 350,
-                      height: 480,
-                      color: Colors.white,
-                      padding: EdgeInsets.all(10),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: 60,
-                                color: Colors.grey[200],
-                                child: Image.network('${allApiMarker[0]['installedSystemList'][i]['photoPath']}',width: 60,height: 80,fit: BoxFit.fill,),
-                              ),
-                              SizedBox(width: 5,),
-                              Container(
-                                width: 190,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('UID No.: ${allApiMarker[0]['installedSystemList'][i]['uidNo']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,),),
-                                    SizedBox(height: 2,),
-                                    Text('${allApiMarker[0]['installedSystemList'][i]['placeName']}, ${allApiMarker[0]['installedSystemList'][i]['villageName']}, ${allApiMarker[0]['installedSystemList'][i]['blockName']}, ${allApiMarker[0]['installedSystemList'][i]['districtName']}',style: TextStyle(fontSize: 12,color: Colors.black),maxLines: 4,overflow: TextOverflow.ellipsis,),
-                                    SizedBox(height: 5,),
-                                    Text('Service Valid till: ${convertDateFormat(allApiMarker[0]['installedSystemList'][i]['serviceValidTill'])}',style: TextStyle(fontSize: 12,color: Colors.black,),),
-                                    SizedBox(height: 2,),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-
-                        ],
-                      ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: Colors.black54,
+                      width: 0.5,
                     ),
-                    bottomNavigationBar: Padding(
-                      padding: const EdgeInsets.only(bottom: 10,left: 10,right: 10),
-                      child: InkWell(
-                        child: normalButton(name: 'SHOW MORE',height:35,width: 100,bordeRadious: 10,fontSize:10,textColor: Colors.white,bckColor: appcolors.greenTextColor,),
-                        onTap: () async {
-                          bool updateUid= false;
-                          updateUid=await Navigator.of(context).push(MaterialPageRoute(builder: (context) => viewLocationFullDetails(
-                            '${allApiMarker[0]['installedSystemList'][i]['uidKey']}',
-                            '${allApiMarker[0]['installedSystemList'][i]['uidNo']}',
-                            '${allApiMarker[0]['installedSystemList'][i]['mobileNo']}',
-                            '${allApiMarker[0]['installedSystemList'][i]['villageName']}',
-                            '${allApiMarker[0]['installedSystemList'][i]['placeName']}',
-                            '${allApiMarker[0]['installedSystemList'][i]['blockName']}',
-                            '${allApiMarker[0]['installedSystemList'][i]['districtName']}',
-                            '${allApiMarker[0]['installedSystemList'][i]['installationDate']}',
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Scaffold(
+                      body: Container(
+                        width: 350,
+                        height: 480,
+                        color: Colors.white,
+                        padding: EdgeInsets.all(10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 60,
+                                  color: Colors.grey[200],
+                                  child: Image.network('${allApiMarker[0]['installedSystemList'][i]['photoPath']}',width: 60,height: 80,fit: BoxFit.fill,),
+                                ),
+                                SizedBox(width: 5,),
+                                Container(
+                                  width: 190,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text('UID No.: ${allApiMarker[0]['installedSystemList'][i]['uidNo']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,),),
+                                      SizedBox(height: 2,),
+                                      Text('${allApiMarker[0]['installedSystemList'][i]['placeName']}, ${allApiMarker[0]['installedSystemList'][i]['villageName']}, ${allApiMarker[0]['installedSystemList'][i]['blockName']}, ${allApiMarker[0]['installedSystemList'][i]['districtName']}',style: TextStyle(fontSize: 12,color: Colors.black),maxLines: 4,overflow: TextOverflow.ellipsis,),
+                                      SizedBox(height: 5,),
+                                      Text('Service Valid till: ${convertDateFormat(allApiMarker[0]['installedSystemList'][i]['serviceValidTill'])}',style: TextStyle(fontSize: 12,color: Colors.black,),),
+                                      SizedBox(height: 2,),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
 
-                            '${allApiMarker[0]['installedSystemList'][i]['status']}',
-                            '${allApiMarker[0]['installedSystemList'][i]['beneficiaryName']}',
-                            '${allApiMarker[0]['installedSystemList'][i]['fatherName']}',
-                            '${allApiMarker[0]['installedSystemList'][i]['gramPanchayat']}',
-                            '${allApiMarker[0]['installedSystemList'][i]['latitude']}',
-                            '${allApiMarker[0]['installedSystemList'][i]['longitude']}',
-                            '${allApiMarker[0]['installedSystemList'][i]['photoPath']}',
-                            '${allApiMarker[0]['installedSystemList'][i]['formatPath1']}',
-                            '${allApiMarker[0]['installedSystemList'][i]['formatPath1Extn']}',
-                            '${allApiMarker[0]['installedSystemList'][i]['schemeName']}',
-                            '${allApiMarker[0]['installedSystemList'][i]['serviceValidTill']}',
-                          )));
-                          debugPrint('uuuuuuuuuuuuuuu-->$updateUid');
+                          ],
+                        ),
+                      ),
+                      bottomNavigationBar: Padding(
+                        padding: const EdgeInsets.only(bottom: 10,left: 10,right: 10),
+                        child: InkWell(
+                          child: normalButton(name: 'SHOW MORE',height:35,width: 100,bordeRadious: 10,fontSize:10,textColor: Colors.white,bckColor: appcolors.greenTextColor,),
+                          onTap: () async {
+                            bool updateUid= false;
+                            updateUid=await Navigator.of(context).push(MaterialPageRoute(builder: (context) => viewLocationFullDetails(
+                              '${allApiMarker[0]['installedSystemList'][i]['uidKey']}',
+                              '${allApiMarker[0]['installedSystemList'][i]['uidNo']}',
+                              '${allApiMarker[0]['installedSystemList'][i]['mobileNo']}',
+                              '${allApiMarker[0]['installedSystemList'][i]['villageName']}',
+                              '${allApiMarker[0]['installedSystemList'][i]['placeName']}',
+                              '${allApiMarker[0]['installedSystemList'][i]['blockName']}',
+                              '${allApiMarker[0]['installedSystemList'][i]['districtName']}',
+                              '${allApiMarker[0]['installedSystemList'][i]['installationDate']}',
 
-                          if(updateUid == true){
-                            if(districtDropdownValue!=null){
-                              getUidByDistrictBlock();
-                            }else{
-                              double latitude=await getCurrentLatitude();
-                              double longitude=await getCurrentLongitude();
-                              getRadiousLatlong(latitude,longitude);
+                              '${allApiMarker[0]['installedSystemList'][i]['status']}',
+                              '${allApiMarker[0]['installedSystemList'][i]['beneficiaryName']}',
+                              '${allApiMarker[0]['installedSystemList'][i]['fatherName']}',
+                              '${allApiMarker[0]['installedSystemList'][i]['gramPanchayat']}',
+                              '${allApiMarker[0]['installedSystemList'][i]['latitude']}',
+                              '${allApiMarker[0]['installedSystemList'][i]['longitude']}',
+                              '${allApiMarker[0]['installedSystemList'][i]['photoPath']}',
+                              '${allApiMarker[0]['installedSystemList'][i]['formatPath1']}',
+                              '${allApiMarker[0]['installedSystemList'][i]['formatPath1Extn']}',
+                              '${allApiMarker[0]['installedSystemList'][i]['schemeName']}',
+                              '${allApiMarker[0]['installedSystemList'][i]['serviceValidTill']}',
+                            )));
+                            //debugPrint('uuuuuuuuuuuuuuu-->$updateUid');
+
+                            if(updateUid == true){
+                              if(districtDropdownValue!=null){
+                                getUidByDistrictBlock();
+                              }else{
+                                double latitude=await getCurrentLatitude();
+                                double longitude=await getCurrentLongitude();
+                                getRadiousLatlong(latitude,longitude);
+                              }
                             }
-                          }
 
-                        },
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -664,16 +674,16 @@ class _viewLocationsState extends State<viewLocations> {
 
     /*for(int i=0;i<allServiceCenterItem.length;i++)
     {
-      debugPrint('ssssssssss${i}');
+      //debugPrint('ssssssssss${i}');
       if(allServiceCenterItem[i]['latitude'].toString()!='null'){
-        debugPrint('hhhhhhhh${i}');
+        //debugPrint('hhhhhhhh${i}');
         //lat=double.parse('${allServiceCenterItem[i]['latitude']}');
         //long=double.parse('${allServiceCenterItem[i]['longitude']}');
         markerr.add(
           Marker(markerId:MarkerId(i.toString()),
             position: LatLng(double.parse('${allServiceCenterItem[i]['latitude']}'),double.parse('${allServiceCenterItem[i]['longitude']}')),
             onTap: () {
-              debugPrint('${allServiceCenterItem[i]['latitude']}');
+              //debugPrint('${allServiceCenterItem[i]['latitude']}');
               customInfoWindowController.addInfoWindow!(
                 ClipRRect(
                   borderRadius: BorderRadius.circular(5),
@@ -769,7 +779,7 @@ class _viewLocationsState extends State<viewLocations> {
     long=longi;
     markerr.clear();
 
-    debugPrint(await 'aaaaaaaaa-----${urls().base_url + allAPI().getRadiousLocationURL}');
+    //debugPrint(await 'aaaaaaaaa-----${urls().base_url + allAPI().getRadiousLocationURL}');
     var request = http.MultipartRequest('POST', Uri.parse(urls().base_url + allAPI().getRadiousLocationURL));
     request.fields.addAll({
       'AMCVisitLatitude': '$lati',//26.822184
@@ -777,12 +787,12 @@ class _viewLocationsState extends State<viewLocations> {
     });
     //var response = await request.send();
     http.StreamedResponse response = await request.send();
-    debugPrint(await 'ffffffffffffffff-----${response}');
+    //debugPrint(await 'ffffffffffffffff-----${response}');
     var results = jsonDecode(await response.stream.bytesToString());
     if (response.statusCode == 200) {
-      debugPrint(await 'ffffffffffffffff-----${results}');
+      //debugPrint(await 'ffffffffffffffff-----${results}');
       allApiMarker=results;
-      debugPrint('llllllllll--->${results.length}');
+      //debugPrint('llllllllll--->${results.length}');
       showMarkers();
       setState(() {scroll1=false;});
 
@@ -802,7 +812,7 @@ class _viewLocationsState extends State<viewLocations> {
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      debugPrint(await 'aaaaaaaaa-----${results}');
+      //debugPrint(await 'aaaaaaaaa-----${results}');
       districtTypeItem=results;
       setState(() {scroll2=false;});
     }
@@ -823,7 +833,7 @@ class _viewLocationsState extends State<viewLocations> {
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      debugPrint(await 'aaaaaaaaa-----${results}');
+      //debugPrint(await 'aaaaaaaaa-----${results}');
       blockTypeItem=results;
       progressDialog3.dismiss();
       setState(() {});
@@ -840,14 +850,14 @@ class _viewLocationsState extends State<viewLocations> {
     markerr.clear();
 
     var request = http.Request('GET', Uri.parse(urls().base_url + allAPI().getUidByDistrictBlockURL+'/$districtDropdownValue/0'));
-    debugPrint(await 'aaaaaaaaa-----${urls().base_url + allAPI().getUidByDistrictBlockURL+'/$districtDropdownValue/0'}');
+    //debugPrint(await 'aaaaaaaaa-----${urls().base_url + allAPI().getUidByDistrictBlockURL+'/$districtDropdownValue/0'}');
 
 
     var response = await request.send();
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      debugPrint(await 'aaaaaaaaa-----${results}');
+      //debugPrint(await 'aaaaaaaaa-----${results}');
       allApiMarker=results;
       showMarkers();
       setState(() {scroll1=false;});
@@ -866,7 +876,7 @@ class _viewLocationsState extends State<viewLocations> {
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      debugPrint(await 'aaaaaaaaa-----${results}');
+      //debugPrint(await 'aaaaaaaaa-----${results}');
       allServiceCenterItem=results;
       setState(() {scroll2=false;});
     }

@@ -22,9 +22,11 @@ import '../Resource/StringLocalization/allAPI.dart';
 import '../Resource/StringLocalization/baseUrl.dart';
 import '../Resource/Utiles/bottomNavigationBar.dart';
 import '../Resource/Utiles/editText.dart';
+import '../Resource/Utiles/emptyContainer.dart';
 import '../Resource/Utiles/normalButton.dart';
 import '../Resource/Utiles/toasts.dart';
 import '../generated/assets.dart';
+import '../homeScreen.dart';
 import '../userProfile.dart';
 
 
@@ -75,89 +77,109 @@ class _userComplaintListState extends State<userComplaintList> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      initialIndex: 1,
-      length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          leadingWidth: 50,
-          shadowColor: Colors.transparent,
-          leading: Builder(
-            builder: (BuildContext context) {
-              return IconButton(
-                icon: Image.asset(Assets.iconsMenuIcon,color: appcolors.primaryColor,width: 50,height: 50,),
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => homeScreen()), (Route<dynamic> route) => false);
+        return false;
+      },
+      child: DefaultTabController(
+        initialIndex: 1,
+        length: 3,
+        child: Scaffold(
+          appBar: AppBar(
+            elevation: 0,
+            leadingWidth: 50,
+            shadowColor: Colors.transparent,
+            leading: Builder(
+              builder: (BuildContext context) {
+                return IconButton(
+                  icon: Image.asset(Assets.iconsMenuIcon,color: appcolors.primaryColor,width: 50,height: 50,),
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                  tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+                );
+              },
+            ),
+            title: Image.asset(Assets.imagesSuryodayAppbarLogo,height: 50,),
+            actions: [
+              IconButton(
+                icon: Image.asset(Assets.imagesDepartmentLogo,width: 50,height: 50,),
                 onPressed: () {
-                  Scaffold.of(context).openDrawer();
+                  //Navigator.of(context).push(MaterialPageRoute(builder: (context) => userProfile()));
                 },
-                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-              );
-            },
-          ),
-          title: Image.asset(Assets.imagesMuAppbarLogo,height: 50,),
-          actions: [
-            IconButton(
-              icon: Image.asset(Assets.imagesDepartmentLogo,width: 50,height: 50,),
-              onPressed: () {
-                //Navigator.of(context).push(MaterialPageRoute(builder: (context) => userProfile()));
-              },
-            ),
-            IconButton(
-              icon: Image.asset(Assets.imagesProfileLogo,width: 50,height: 50,),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => userProfile()));
-              },
-            ),
-          ],
-          bottom: const TabBar(
-            indicatorColor: appcolors.primaryColor,
-            labelColor: appcolors.primaryColor,
-            unselectedLabelColor: Colors.black38,
-            dividerColor: Colors.transparent,
-            indicatorSize: TabBarIndicatorSize.tab,
-            labelStyle: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),
-            tabs: [
-              Tab(text: 'Pending'),
-              Tab(text: 'Resolved'),
-              Tab(text: 'Archived'),
+              ),
+              IconButton(
+                icon: Icon(Icons.account_circle,size: 35,color: appcolors.greenTextColor,),
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => userProfile()));
+                },
+              ),
             ],
+            bottom: const TabBar(
+              indicatorColor: appcolors.primaryColor,
+              labelColor: appcolors.primaryColor,
+              unselectedLabelColor: Colors.black38,
+              dividerColor: Colors.transparent,
+              indicatorSize: TabBarIndicatorSize.tab,
+              labelStyle: TextStyle(fontWeight: FontWeight.w500,fontSize: 14),
+              tabs: [
+                Tab(text: 'Pending'),
+                Tab(text: 'Resolved'),
+                Tab(text: 'Archived'),
+              ],
+            ),
           ),
-        ),
-        drawer: drawer(),
-        body:scroll ? Center(child: CircularProgressIndicator()) : Container(
-          padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-          color: appcolors.screenBckColor,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Container(
-              color: Colors.white,
-              child: TabBarView(
-                children: [
-                  ListView.builder(
-                    itemCount: userComplaintList.length,
-                    itemBuilder: (BuildContext context, int index) => getPendingComplaintContainer(index, context),
-                  ),
-                  ListView.builder(
-                    itemCount: userComplaintList.length,
-                    itemBuilder: (BuildContext context, int index) => getResolveComplaintContainer(index, context),
-                  ),
-                  Container(
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(5),
-                          width: double.infinity,
-                            color: Colors.grey[200],
-                            child: Text('Resolved complaints more than 6 months old',style: TextStyle(fontSize: 14,color: Colors.green),textAlign: TextAlign.center,)),
-                      ],
+          drawer: drawer(),
+          body:scroll ? Center(child: CircularProgressIndicator()) : Container(
+            padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+            color: appcolors.screenBckColor,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Container(
+                color: Colors.white,
+                child: TabBarView(
+                  children: [
+                    userComplaintList.length==0 ?  Container(
+                      height: MediaQuery.of(context).size.height/2,
+                      child: emptyContainer(
+                        imgPath: 'assets/images/emptyConplaints.jpg',
+                        title: 'No Complaints Record',
+                        subTitle: 'All complaints related to street lights will be found here',
+                      ),
+                    ) : ListView.builder(
+                      itemCount: userComplaintList.length,
+                      itemBuilder: (BuildContext context, int index) => getPendingComplaintContainer(index, context),
                     ),
-                  ),
-                ],
+                    userComplaintList.length==0 ?  Container(
+                      height: MediaQuery.of(context).size.height/2,
+                      child: emptyContainer(
+                        imgPath: 'assets/images/emptyConplaints.jpg',
+                        title: 'No Complaints Record',
+                        subTitle: 'All complaints related to street lights will be found here',
+                      ),
+                    ) : ListView.builder(
+                      itemCount: userComplaintList.length,
+                      itemBuilder: (BuildContext context, int index) => getResolveComplaintContainer(index, context),
+                    ),
+                    Container(
+                      child: Column(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            width: double.infinity,
+                              color: Colors.grey[200],
+                              child: Text('Resolved complaints more than 6 months old',style: TextStyle(fontSize: 14,color: Colors.green),textAlign: TextAlign.center,)),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
+          bottomNavigationBar: bottomNavigationBar(1),
         ),
-        bottomNavigationBar: bottomNavigationBar(1),
       ),
     );
   }
@@ -237,7 +259,7 @@ class _userComplaintListState extends State<userComplaintList> {
                                   if (await canLaunch(url)) {
                                     await launch(url);
                                   } else {
-                                    debugPrint('Could not launch $url');
+                                    //debugPrint('Could not launch $url');
                                   }
                                   setState(() {});
                                 }
@@ -543,8 +565,8 @@ class _userComplaintListState extends State<userComplaintList> {
                                                }else{
                                                  feedbackStatusDropdownValue='UnSatishfied';
                                                }
-                                               debugPrint('switched to: $index');
-                                               debugPrint('switched to: $feedbackStatusDropdownValue');
+                                               //debugPrint('switched to: $index');
+                                               //debugPrint('switched to: $feedbackStatusDropdownValue');
                                              },
                                            ),
                                            SizedBox(height: 10,),
@@ -647,7 +669,7 @@ class _userComplaintListState extends State<userComplaintList> {
                                   if (await canLaunch(url)) {
                                     await launch(url);
                                   } else {
-                                    debugPrint('Could not launch $url');
+                                    //debugPrint('Could not launch $url');
                                   }
                                   setState(() {});
                                 }
@@ -902,7 +924,7 @@ class _userComplaintListState extends State<userComplaintList> {
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      debugPrint('rrrr->$results');
+      //debugPrint('rrrr->$results');
       userComplaintList=results;
 
       setState(() {scroll = false;});
@@ -929,7 +951,7 @@ class _userComplaintListState extends State<userComplaintList> {
 
 
     if (response.statusCode == 200) {
-      debugPrint(await 'aaaaaaaaa-----${results}');
+      //debugPrint(await 'aaaaaaaaa-----${results}');
       if(results['statusCode']=='MU501'){
         toasts().greenToastShort(results['statusMsg']);
         userRemarkController.clear();

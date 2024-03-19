@@ -4,7 +4,7 @@ class allTitle {
   allTitle._();
 
   static const String appName = 'Mission Ujala';
-  static const String viewLocationModule = 'View Lights on Map';
+  static const String viewLocationModule = 'View Lights';
   static const String nearByModule = 'Near by';
   static const String updateLocationModule = 'Add GPS Coordinates';
   static const String addServiceCenterModule = 'Add Service Center';

@@ -10,6 +10,7 @@ import 'package:in_app_update/in_app_update.dart';
 import 'package:material_text_fields/material_text_fields.dart';
 import 'package:material_text_fields/utils/form_validation.dart';
 import 'package:missionujala/Modules/userComplaintList.dart';
+import 'package:missionujala/Modules/userNotificationScreen.dart';
 import 'package:missionujala/Modules/vendorServiceCenterList.dart';
 import 'package:missionujala/Modules/allUIDScreen.dart';
 import 'package:missionujala/Modules/vendorComplainList.dart';
@@ -66,7 +67,7 @@ class _homeScreenState extends State<homeScreen> {
         setState(() {
           ActiveConnection = true;
           T = "Turn off the data and repress again";
-          debugPrint(T);
+          //debugPrint(T);
         });
       }
     } on SocketException catch (_) {
@@ -173,7 +174,7 @@ class _homeScreenState extends State<homeScreen> {
                   color: appcolors.screenBckColor,
                   padding: EdgeInsets.fromLTRB(15, 20, 15, 20),
                   alignment: Alignment.centerLeft,
-                  child: Text('Welcome, $userName ',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: appcolors.blackColor),),
+                  child: Text('Welcome, $userName',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: appcolors.primaryColor),maxLines: 2,),
                 ),
                 /*Container(
                   child: Image.asset(Assets.imagesHomeBanner),
@@ -191,7 +192,7 @@ class _homeScreenState extends State<homeScreen> {
                     ),
                     children: [
                       InkWell(
-                        child: moduleview(title: '${allTitle.viewLocationModule}', path: Assets.iconsBottomStrretLight,),
+                        child: moduleview(title: '${allTitle.viewLocationModule}', path: Assets.iconsStrretLight,),
                         onTap: (){
                           Navigator.of(context).push(MaterialPageRoute(builder: (context) => viewLocations()));
                         },
@@ -224,8 +225,13 @@ class _homeScreenState extends State<homeScreen> {
                         },
                       ),
 
-                      loginType=='user' ? Container() : InkWell(
-                        child: moduleview(title: '${allTitle.updateLocationModule}', path: Assets.iconsUpdateLocation,),
+                      loginType=='user' ? InkWell(
+                        child: moduleview(title: '${allTitle.notification}', path: Assets.iconsNotificationHomeBox,),
+                        onTap: (){
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => userNotificationScreen()));
+                        },
+                       ) : InkWell(
+                        child: moduleview(title: '${'Add GPS \n Coordinates'}', path: Assets.iconsUpdateLocation,),
                         onTap: (){
                           Navigator.of(context).push(MaterialPageRoute(builder: (context) => allUIDScreen()));
                         },

@@ -77,7 +77,7 @@ class _viewLocationFullDetailsState extends State<viewLocationFullDetails> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       loginType = prefs.getString('loginType')!;
-      debugPrint('uuu--${loginType}');
+      //debugPrint('uuu--${loginType}');
     });
 
   }
@@ -240,7 +240,7 @@ class _viewLocationFullDetailsState extends State<viewLocationFullDetails> {
                                     await launchUrl(Uri.parse(url));
                                     setState(() {});
                                   }else{
-                                    debugPrint("URL can't be launched.");
+                                    //debugPrint("URL can't be launched.");
                                     toasts().redToastLong("Documents not found");
                                   }
                                 },

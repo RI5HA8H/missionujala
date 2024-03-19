@@ -11,7 +11,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../Resource/StringLocalization/allAPI.dart';
 import '../Resource/StringLocalization/baseUrl.dart';
 import '../Resource/Utiles/bottomNavigationBar.dart';
+import '../Resource/Utiles/emptyContainer.dart';
 import '../Resource/Utiles/toasts.dart';
+import '../homeScreen.dart';
 
 
 
@@ -46,39 +48,56 @@ class _userNotificationScreenState extends State<userNotificationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: appBar(),
-      drawer: drawer(),
-      body: Container(
-        padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
-        color: appcolors.screenBckColor,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Container(
-                  color: Colors.white,
-                  child: Column(
-                    children: [
-                      SizedBox(height: 10,),
-                      Expanded(
-                        child: scroll ? Center(child: CircularProgressIndicator()) : ListView.builder(
-                            itemCount: userNotificationAllItem.length,
-                            itemBuilder: (BuildContext context, int index) => getRow(index, context)
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => homeScreen()), (Route<dynamic> route) => false);
+        return false;
+      },
+      child: Scaffold(
+        appBar: appBar(),
+        drawer: drawer(),
+        body: Container(
+          padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+          color: appcolors.screenBckColor,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.fromLTRB(5, 5, 5, 10),
+                  child: Text('Notification',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: appcolors.primaryColor),),
+                ),
+                Expanded(
+                  child: Container(
+                    color: Colors.white,
+                    child: Column(
+                      children: [
+                        SizedBox(height: 10,),
+                        Expanded(
+                          child: scroll ? Center(child: CircularProgressIndicator()) : userNotificationAllItem.length==0 ?  Container(
+                            height: MediaQuery.of(context).size.height/2,
+                            child: emptyContainer(
+                              imgPath: 'assets/images/emptyNotification.png',
+                              title: 'No Notification Record',
+                              subTitle: 'All information related to this app will be found here',
+                            ),
+                          ) : ListView.builder(
+                              itemCount: userNotificationAllItem.length,
+                              itemBuilder: (BuildContext context, int index) => getRow(index, context)
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
+        bottomNavigationBar: bottomNavigationBar(2),
       ),
-      bottomNavigationBar: bottomNavigationBar(2),
     );
   }
 
@@ -105,7 +124,7 @@ class _userNotificationScreenState extends State<userNotificationScreen> {
                   SizedBox(height: 5,),
                   Container(
                     width: double.infinity,
-                    child: Text("${userNotificationAllItem[index]['notificationBody']}",style: TextStyle(fontSize: 12,color: Colors.black38),
+                    child: Text("${userNotificationAllItem[index]['notificationBody']}",style: TextStyle(fontSize: 12,color: Colors.black),
                       maxLines: 10,overflow: TextOverflow.ellipsis,),
                   ),
 
@@ -115,7 +134,7 @@ class _userNotificationScreenState extends State<userNotificationScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(),
-                      Text('${formatDate(userNotificationAllItem[index]['createdOn'])}',style: TextStyle(fontSize: 8,color: Colors.grey)),
+                      Text('${formatDate(userNotificationAllItem[index]['createdOn'])}',style: TextStyle(fontSize: 8,color: Colors.black)),
                     ],
                   ),
 
@@ -130,7 +149,7 @@ class _userNotificationScreenState extends State<userNotificationScreen> {
             padding: EdgeInsets.only(left: 15,right: 15),
             child: Divider(
               thickness: 0.5,
-              color: Colors.black12,
+              color: Colors.grey[300],
             ),
           ),
         ],
@@ -155,7 +174,7 @@ class _userNotificationScreenState extends State<userNotificationScreen> {
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      debugPrint(await 'aaaaaaaaa-----${results}');
+      //debugPrint(await 'aaaaaaaaa-----${results}');
       userNotificationAllItem=results;
       setState(() {scroll=false;});
     }

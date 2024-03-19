@@ -25,11 +25,11 @@ class notificationservices {
       sound: true,
     );
     if(setting.authorizationStatus==AuthorizationStatus.authorized){
-      debugPrint('user granted permission android');
+      //debugPrint('user granted permission android');
     }else if(setting.authorizationStatus==AuthorizationStatus.provisional){
-      debugPrint('user granted provisional permission ios');
+      //debugPrint('user granted provisional permission ios');
     }else{
-      debugPrint('user denied permission');
+      //debugPrint('user denied permission');
     }
   }
 
@@ -52,8 +52,8 @@ class notificationservices {
   void firebaseinit(BuildContext context){
     FirebaseMessaging.onMessage.listen((message) async {
      /* if(kDebugMode){
-        debugPrint("Tittle---${message.notification!.title.toString()}");
-        debugPrint("Bodye---${message.notification!.body.toString()}");
+        //debugPrint("Tittle---${message.notification!.title.toString()}");
+        //debugPrint("Bodye---${message.notification!.body.toString()}");
       }*/
       if(Platform.isAndroid){
         initLocalNotification(context,message);
@@ -121,7 +121,7 @@ class notificationservices {
 
   void getifDeviceTokenRefresh() {
     messaging.onTokenRefresh.listen((event) {
-      debugPrint("if token is refresh...........");
+      //debugPrint("if token is refresh...........");
       event.toString();
     });
   }

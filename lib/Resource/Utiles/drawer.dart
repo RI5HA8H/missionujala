@@ -13,6 +13,7 @@ import 'package:missionujala/generated/assets.dart';
 import 'package:missionujala/homeScreen.dart';
 import 'package:missionujala/userLoginScreen.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Modules/addServiceCenter.dart';
@@ -79,7 +80,7 @@ class _drawerState extends State<drawer> {
                 SizedBox(height: 40,),
                 Container(
                   padding: EdgeInsets.only(left: 20,right: 30),
-                  child: Image.asset(Assets.imagesMuAppbarLogo,width: 160,height: 80,),
+                  child: Image.asset(Assets.imagesSuryodayAppbarLogo,width: 160,height: 80,),
                 ),
 
                 SizedBox(height: 10,),
@@ -222,10 +223,39 @@ class _drawerState extends State<drawer> {
                     ),
                   ),
                   onTap: ()async{
-                    SharedPreferences prefs = await SharedPreferences.getInstance();
-                    prefs.setString('userToken', '');
-                    prefs.setString('loginType', '');
-                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => loginDashboard()), (Route<dynamic> route) => false);
+                    Alert(
+                      context: context,
+                      type: AlertType.none,
+                      style: AlertStyle(
+                        descStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 14),
+                        descPadding: EdgeInsets.all(5),
+                        titlePadding: EdgeInsets.all(5),
+                        descTextAlign: TextAlign.start,
+                        titleTextAlign: TextAlign.start,
+                        titleStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 24),
+                      ),
+                      title: 'Logout',
+                      desc: 'Are you sure, do you want to logout?',
+                      buttons: [
+                        DialogButton(
+                          color: Colors.redAccent[200],
+                          child: Text("Cancel", style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white, fontSize: 14),),
+                          onPressed: () async {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        DialogButton(
+                          color: Colors.green[500],
+                          child: Text("Confirm", style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white, fontSize: 14),),
+                          onPressed: () async {
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            prefs.setString('userToken', '');
+                            prefs.setString('loginType', '');
+                            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => loginDashboard()), (Route<dynamic> route) => false);
+                          },
+                        ),
+                      ],
+                    ).show();
                   },
                 ),
               ],

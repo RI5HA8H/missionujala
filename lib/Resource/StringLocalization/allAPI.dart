@@ -42,6 +42,11 @@ class allAPI{
   String getVendorNotificationListURL = 'VendorNotificationlog';
 
 
+  String getUVProfileURL = 'ViewProfile';
+
+
+
+
 
 
 
@@ -67,6 +72,11 @@ class allAPI{
   String userVerifyComplaintStatus = 'VerifyComplaintStatus';
 
   String vedorAcknowledgeActive = 'Acknowledge';
+
+
+  String updatePicURL = 'UpdatePic';
+
+  String updateProfileURL = 'UpdateProfileData';
 
 
 }

@@ -52,13 +52,13 @@ class _userRegistrationScreenState extends State<userRegistrationScreen> {
   @override
   void initState() {
     super.initState();
-    debugPrint("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+    //debugPrint("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
     notiservices.requestNotificationPermissions();
     notiservices.firebaseinit(context);
 
     notiservices.getifDeviceTokenRefresh();
     notiservices.getDeviceToken().then((value) {
-      debugPrint("device token --- $value");
+      //debugPrint("device token --- $value");
       token=value;
     });
   }
@@ -225,19 +225,19 @@ class _userRegistrationScreenState extends State<userRegistrationScreen> {
       'MobileNo': allFunctions().encryptToBase64(mobileController.text.toString()),
       'PNRKey': token.toString(),
     });
-    debugPrint(await 'tttttttttttttttttttttttt-----${token}');
+    //debugPrint(await 'tttttttttttttttttttttttt-----${token}');
 
     var response = await request.send();
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      debugPrint(await 'aaaaaaaaa-----${results}');
+      //debugPrint(await 'aaaaaaaaa-----${results}');
       if(results['userKey'].runtimeType==int){
         setState(() {halfUI = false;});
         toasts().greenToastShort('OTP Send Successfull');
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('userKey', '${results['userKey']}');
-        prefs.setString('userName', '${results['userName']}');
+        prefs.setString('userName', '${results['userContactName']}');
         prefs.setString('userMobile', '${results['mobileNo']}');
         prefs.setString('userType', '${results['uType']}');
         prefs.setString('userDistrictKey', '${results['districtKey']}');

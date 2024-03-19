@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:missionujala/Resource/Colors/app_colors.dart';
 
 class checkInternet extends StatefulWidget {
   const checkInternet({Key? key}) : super(key: key);
@@ -53,16 +54,16 @@ class _checkInternetState extends State<checkInternet> {
     return (await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: new Text('Are you sure ?',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.black),),
-        content: new Text('Do you want to exit an U.P. Suryoday Application.',style: TextStyle(fontSize: 14,color: Colors.redAccent)),
+        title: new Text('Are you sure?',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.black),),
+        content: new Text('Do you want to exit an U.P. Suryoday Application.',style: TextStyle(fontSize: 14,color: Colors.black54)),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.of(context).pop(false), //<-- SEE HERE
-            child: new Text('No'),
+            child: new Text('No',style: TextStyle(fontSize: 16,color: Colors.black),),
           ),
           TextButton(
             onPressed: () => SystemNavigator.pop(), // <-- SEE HERE
-            child: new Text('Yes'),
+            child: new Text('Yes',style: TextStyle(fontSize: 16,color: Colors.black),),
           ),
         ],
       ),
@@ -81,9 +82,11 @@ class _checkInternetState extends State<checkInternet> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.asset('assets/icons/wifi.png',width: 100,height: 100,),
+                  Image.asset('assets/images/noInternetLogo.jpg',width: 200,height: 200,),
                   SizedBox(height: 20,),
-                  Text("Please Check Your Internet Connection",style: TextStyle(fontSize: 14, color:Colors.green,fontWeight: FontWeight.bold),),
+                  Text("Oops!",style: TextStyle(fontSize: 24, color:appcolors.primaryColor,fontWeight: FontWeight.bold),),
+                  SizedBox(height: 10,),
+                  Text("Please Check Your Internet Connection",style: TextStyle(fontSize: 14, color:appcolors.primaryColor,fontWeight: FontWeight.bold),),
                   /*Padding(
                     padding: const EdgeInsets.all(50),
                     child: ElevatedButton(child: SizedBox(width: double.infinity, height: 50,child: Center(child: Text('Enable',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black),))),

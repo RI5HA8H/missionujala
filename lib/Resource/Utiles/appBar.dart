@@ -27,7 +27,7 @@ class appBar extends StatelessWidget implements PreferredSizeWidget {
           );
         },
       ),
-      title: Image.asset(Assets.imagesMuAppbarLogo,height: 50,),
+      title: Image.asset(Assets.imagesSuryodayAppbarLogo,height: 50,),
       actions: [
         IconButton(
           icon: Image.asset(Assets.imagesDepartmentLogo,width: 50,height: 50,),

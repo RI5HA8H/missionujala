@@ -93,7 +93,7 @@ class _userServiceCenterDetailedPageState extends State<userServiceCenterDetaile
                                 if (await canLaunch(url)) {
                                   await launch(url);
                                 } else {
-                                  debugPrint('Could not launch $url');
+                                  //debugPrint('Could not launch $url');
                                 }
                               },
                             ),
@@ -116,7 +116,7 @@ class _userServiceCenterDetailedPageState extends State<userServiceCenterDetaile
                                 if (await canLaunch(url)) {
                                   await launch(url);
                                 } else {
-                                  debugPrint('Could not launch $url');
+                                  //debugPrint('Could not launch $url');
                                 }
                               },
                             ),
@@ -139,7 +139,7 @@ class _userServiceCenterDetailedPageState extends State<userServiceCenterDetaile
                               if (await canLaunch(url)) {
                                 await launch(url);
                               } else {
-                                debugPrint('Could not launch $url');
+                                //debugPrint('Could not launch $url');
                                 toasts().redToastLong('Url not found');
                               }
                             },
