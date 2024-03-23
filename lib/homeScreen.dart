@@ -55,7 +55,6 @@ class _homeScreenState extends State<homeScreen> {
   FocusNode userNameFocusNode = FocusNode();
 
 
-
   StreamSubscription? internetconnection;
   bool isoffline = false;
   bool ActiveConnection = false;

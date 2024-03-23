@@ -86,334 +86,291 @@ class _complaintScreenState extends State<complaintScreen> {
       body: scroll ? Center(child: CircularProgressIndicator()) : SingleChildScrollView(
         child: Container(
           color: appcolors.screenBckColor,
-          child: Container(
-            padding: EdgeInsets.all(20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-
-                SizedBox(height: 10,),
-                Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 5,bottom: 2),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Is Light Working?',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.black),),
-                            Text(' *',style: TextStyle(fontSize: 18,color: Colors.red),),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: RadioListTile<String>(
-                                title: const Text('Yes'),
-                                value: "true",
-                                groupValue: isLight,
-                                onChanged: (value) {
-                                  setState(() {
-                                    isLight = value!;
-                                  });
-                                },
-                              ),
-                            ),
-                            Expanded(
-                              child: RadioListTile<String>(
-                                title: const Text('No'),
-                                value: "false",
-                                groupValue: isLight,
-                                onChanged: (value) {
-                                  setState(() {
-                                    isLight = value!;
-                                  });
-                                },
-                              ),
-                            ),
-                          ],
-                        ),),
-                    ]),
-
-                SizedBox(height: 10,),
-                Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 5,bottom: 2),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Is Battery not there?',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.black),),
-                            //Text(' *',style: TextStyle(fontSize: 18,color: Colors.red),),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: RadioListTile<String>(
-                                title: const Text('Yes'),
-                                value: "true",
-                                groupValue: isBattery,
-                                onChanged: (value) {
-                                  setState(() {
-                                    isBattery = value!;
-                                  });
-                                },
-                              ),
-                            ),
-                            Expanded(
-                              child: RadioListTile<String>(
-                                title: const Text('No'),
-                                value: "false",
-                                groupValue: isBattery,
-                                onChanged: (value) {
-                                  setState(() {
-                                    isBattery = value!;
-                                  });
-                                },
-                              ),
-                            ),
-                          ],
-                        ),),
-                    ]),
-
-                SizedBox(height: 10,),
-                Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 5,bottom: 2),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Is Solar Panel Broken?',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.black),),
-                            //Text(' *',style: TextStyle(fontSize: 18,color: Colors.red),),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: RadioListTile<String>(
-                                title: const Text('Yes'),
-                                value: "true",
-                                groupValue: isPanel,
-                                onChanged: (value) {
-                                  setState(() {
-                                    isPanel = value!;
-                                  });
-                                },
-                              ),
-                            ),
-                            Expanded(
-                              child: RadioListTile<String>(
-                                title: const Text('No'),
-                                value: "false",
-                                groupValue: isPanel,
-                                onChanged: (value) {
-                                  setState(() {
-                                    isPanel = value!;
-                                  });
-                                },
-                              ),
-                            ),
-                          ],
-                        ),),
-                    ]),
-
-                SizedBox(height: 10,),
-                Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 5,bottom: 2),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Is Pole Broken?',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.black),),
-                            //Text(' *',style: TextStyle(fontSize: 18,color: Colors.red),),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: RadioListTile<String>(
-                                title: const Text('Yes'),
-                                value: "true",
-                                groupValue: isPole,
-                                onChanged: (value) {
-                                  setState(() {
-                                    isPole = value!;
-                                  });
-                                },
-                              ),
-                            ),
-                            Expanded(
-                              child: RadioListTile<String>(
-                                title: const Text('No'),
-                                value: "false",
-                                groupValue: isPole,
-                                onChanged: (value) {
-                                  setState(() {
-                                    isPole = value!;
-                                  });
-                                },
-                              ),
-                            ),
-                          ],
-                        ),),
-                    ]),
+          child: Column(
+            children: [
+              Container(
+                alignment: Alignment.centerLeft,
+                color: appcolors.screenBckColor,
+                padding: EdgeInsets.only(left: 10,right: 10,top: 10,bottom: 10),
+                child: Text(allTitle.userComplaint,style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: appcolors.primaryColor),),
+              ),
 
 
-                SizedBox(height: 20,),
 
-               /* editTextSimple(
-                  controllers: titleController,
-                  focusNode: titleFocusNode,
-                  hint: 'Enter UID',
-                  label: 'UID',
-                  keyboardTypes: TextInputType.text,
-                  maxlength: 50,
-                  fontSize: 14,
-                  readOnly: true,
-                  etBckgoundColor: appcolors.editTextBckColor,
-                ),
-
-                SizedBox(height: 10,),
-                Container(
-                  height: 90,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[100],
-                    borderRadius: BorderRadius.circular(5.0), // Adjust the radius as needed
-                  ),
-                  child: TextField(
-                    maxLines: 3,
-                    maxLength: 200,
-                    readOnly: true,
-                    keyboardType:TextInputType.text,
-                    controller: addressController,
-                    focusNode: addressFocusNode,
-                    style: TextStyle(fontSize: 12,color: Colors.black),
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide(
-                            color: Color(0xffC5C5C5), // Border color
-                            width: 0.5,         // Border width
-                          ),
-                        ),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        counterText: '',
-                        labelText: 'Address',
-                        hintText:'Enter Address',
-                        hintStyle: TextStyle(fontSize: 14)
-                    ),
-                  ),
-                ),
-*/
-
-                Column(
+              Container(
+                padding: EdgeInsets.all(20),
+                color: appcolors.whiteColor,
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
+
+                    SizedBox(height: 10,),
+                    Container(
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 5,bottom: 2),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Is Light Working?',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.black),),
+                                  Text(' *',style: TextStyle(fontSize: 18,color: Colors.red),),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: RadioListTile<String>(
+                                      title: const Text('Yes'),
+                                      value: "true",
+                                      groupValue: isLight,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          isLight = value!;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: RadioListTile<String>(
+                                      title: const Text('No'),
+                                      value: "false",
+                                      groupValue: isLight,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          isLight = value!;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),),
+                          ]),
+                    ),
+
+                    SizedBox(height: 10,),
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5,bottom: 2),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Is Battery not there?',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.black),),
+                                //Text(' *',style: TextStyle(fontSize: 18,color: Colors.red),),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: RadioListTile<String>(
+                                    title: const Text('Yes'),
+                                    value: "true",
+                                    groupValue: isBattery,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        isBattery = value!;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                Expanded(
+                                  child: RadioListTile<String>(
+                                    title: const Text('No'),
+                                    value: "false",
+                                    groupValue: isBattery,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        isBattery = value!;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),),
+                        ]),
+
+                    SizedBox(height: 10,),
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5,bottom: 2),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Is Solar Panel Broken?',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.black),),
+                                //Text(' *',style: TextStyle(fontSize: 18,color: Colors.red),),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: RadioListTile<String>(
+                                    title: const Text('Yes'),
+                                    value: "true",
+                                    groupValue: isPanel,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        isPanel = value!;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                Expanded(
+                                  child: RadioListTile<String>(
+                                    title: const Text('No'),
+                                    value: "false",
+                                    groupValue: isPanel,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        isPanel = value!;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),),
+                        ]),
+
+                    SizedBox(height: 10,),
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5,bottom: 2),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Is Pole Broken?',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.black),),
+                                //Text(' *',style: TextStyle(fontSize: 18,color: Colors.red),),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: RadioListTile<String>(
+                                    title: const Text('Yes'),
+                                    value: "true",
+                                    groupValue: isPole,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        isPole = value!;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                Expanded(
+                                  child: RadioListTile<String>(
+                                    title: const Text('No'),
+                                    value: "false",
+                                    groupValue: isPole,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        isPole = value!;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),),
+                        ]),
+
+
+                    SizedBox(height: 20,),
+
+                   /* editTextSimple(
+                      controllers: titleController,
+                      focusNode: titleFocusNode,
+                      hint: 'Enter UID',
+                      label: 'UID',
+                      keyboardTypes: TextInputType.text,
+                      maxlength: 50,
+                      fontSize: 14,
+                      readOnly: true,
+                      etBckgoundColor: appcolors.editTextBckColor,
+                    ),
+
+                    SizedBox(height: 10,),
+                    Container(
+                      height: 90,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[100],
+                        borderRadius: BorderRadius.circular(5.0), // Adjust the radius as needed
+                      ),
+                      child: TextField(
+                        maxLines: 3,
+                        maxLength: 200,
+                        readOnly: true,
+                        keyboardType:TextInputType.text,
+                        controller: addressController,
+                        focusNode: addressFocusNode,
+                        style: TextStyle(fontSize: 12,color: Colors.black),
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: BorderSide(
+                                color: Color(0xffC5C5C5), // Border color
+                                width: 0.5,         // Border width
+                              ),
+                            ),
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            counterText: '',
+                            labelText: 'Address',
+                            hintText:'Enter Address',
+                            hintStyle: TextStyle(fontSize: 14)
+                        ),
+                      ),
+                    ),
+              */
+
+                    Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Take a photo',style: TextStyle(fontSize: 14,color: Colors.black),),
-                        Text(' *',style: TextStyle(fontSize: 18,color: Colors.red),),
-                      ],
-                    ),
-                    Container(
-                      height: 150,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      child:Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(5),
-                          child: Container(
-                            width: double.infinity,
-                            color: Colors.grey[100],
-                            child: galleryFile == null ?  GestureDetector(
-                                child: Icon(Icons.add_a_photo,color: Colors.black,size: 50,),
-                              onTap: (){
-                                if(galleryFile!=null){
-                                  Alert(
-                                    context: context,
-                                    style: AlertStyle(
-                                        descStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),
-                                        descPadding: EdgeInsets.all(5)
-                                    ),
-                                    image: Padding(
-                                      padding: const EdgeInsets.only(top: 10),
-                                      child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(5),
-                                          child: ExtendedImage.file(
-                                            galleryFile!,
-                                            fit: BoxFit.contain,
-                                            //enableLoadState: false,
-                                            mode: ExtendedImageMode.gesture,
-                                            initGestureConfigHandler: (state) {
-                                              return GestureConfig(
-                                                minScale: 0.9,
-                                                animationMinScale: 0.7,
-                                                maxScale: 3.0,
-                                                animationMaxScale: 3.5,
-                                                speed: 1.0,
-                                                inertialSpeed: 100.0,
-                                                initialScale: 1.0,
-                                                inPageView: false,
-                                                initialAlignment: InitialAlignment.center,
-                                              );
-                                            },
-                                          )
-                                      ),
-                                    ),
-                                    buttons: [
-                                      DialogButton(
-                                        gradient: LinearGradient(colors: [
-                                          Color.fromRGBO(116, 116, 191, 1.0),
-                                          Color.fromRGBO(52, 138, 199, 1.0)]),
-                                        child: Text("OK", style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white, fontSize: 16),),
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                      )
-                                    ],
-                                  ).show();
-                                }else{
-                                  titleFocusNode.unfocus();
-                                  addressFocusNode.unfocus();
-                                  descriptionFocusNode.unfocus();
-                                  _showPicker(context: context);
-                                }
-                              },
-                            ) : Stack(
-                              alignment: Alignment.bottomRight,
-                              children: [
-                                GestureDetector(
-                                    child: Center(child: Image.file(galleryFile!)),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Take a photo',style: TextStyle(fontSize: 14,color: Colors.black),),
+                            Text(' *',style: TextStyle(fontSize: 18,color: Colors.red),),
+                          ],
+                        ),
+                        Container(
+                          height: 150,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          child:Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(5),
+                              child: Container(
+                                width: double.infinity,
+                                color: Colors.grey[100],
+                                child: galleryFile == null ?  GestureDetector(
+                                    child: Icon(Icons.add_a_photo,color: Colors.black,size: 50,),
                                   onTap: (){
                                     if(galleryFile!=null){
                                       Alert(
@@ -466,97 +423,156 @@ class _complaintScreenState extends State<complaintScreen> {
                                       _showPicker(context: context);
                                     }
                                   },
+                                ) : Stack(
+                                  alignment: Alignment.bottomRight,
+                                  children: [
+                                    GestureDetector(
+                                        child: Center(child: Image.file(galleryFile!)),
+                                      onTap: (){
+                                        if(galleryFile!=null){
+                                          Alert(
+                                            context: context,
+                                            style: AlertStyle(
+                                                descStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),
+                                                descPadding: EdgeInsets.all(5)
+                                            ),
+                                            image: Padding(
+                                              padding: const EdgeInsets.only(top: 10),
+                                              child: ClipRRect(
+                                                  borderRadius: BorderRadius.circular(5),
+                                                  child: ExtendedImage.file(
+                                                    galleryFile!,
+                                                    fit: BoxFit.contain,
+                                                    //enableLoadState: false,
+                                                    mode: ExtendedImageMode.gesture,
+                                                    initGestureConfigHandler: (state) {
+                                                      return GestureConfig(
+                                                        minScale: 0.9,
+                                                        animationMinScale: 0.7,
+                                                        maxScale: 3.0,
+                                                        animationMaxScale: 3.5,
+                                                        speed: 1.0,
+                                                        inertialSpeed: 100.0,
+                                                        initialScale: 1.0,
+                                                        inPageView: false,
+                                                        initialAlignment: InitialAlignment.center,
+                                                      );
+                                                    },
+                                                  )
+                                              ),
+                                            ),
+                                            buttons: [
+                                              DialogButton(
+                                                gradient: LinearGradient(colors: [
+                                                  Color.fromRGBO(116, 116, 191, 1.0),
+                                                  Color.fromRGBO(52, 138, 199, 1.0)]),
+                                                child: Text("OK", style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white, fontSize: 16),),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                              )
+                                            ],
+                                          ).show();
+                                        }else{
+                                          titleFocusNode.unfocus();
+                                          addressFocusNode.unfocus();
+                                          descriptionFocusNode.unfocus();
+                                          _showPicker(context: context);
+                                        }
+                                      },
+                                    ),
+                                    Positioned(
+                                      child: GestureDetector(
+                                          child: Icon(Icons.change_circle_outlined,size: 30,color: appcolors.primaryColor,),
+                                        onTap: (){
+                                          titleFocusNode.unfocus();
+                                          addressFocusNode.unfocus();
+                                          descriptionFocusNode.unfocus();
+                                          _showPicker(context: context);
+                                        },
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                Positioned(
-                                  child: GestureDetector(
-                                      child: Icon(Icons.change_circle_outlined,size: 30,color: appcolors.primaryColor,),
-                                    onTap: (){
-                                      titleFocusNode.unfocus();
-                                      addressFocusNode.unfocus();
-                                      descriptionFocusNode.unfocus();
-                                      _showPicker(context: context);
-                                    },
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
-                ),
 
-                SizedBox(height: 10,),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
+                    SizedBox(height: 10,),
+                    Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Comments',style: TextStyle(fontSize: 14,color: Colors.black),),
-                        Text(' (optional)',style: TextStyle(fontSize: 14,color: Colors.red),),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Comments',style: TextStyle(fontSize: 14,color: Colors.black),),
+                            Text(' (optional)',style: TextStyle(fontSize: 14,color: Colors.red),),
+                          ],
+                        ),
+                        SizedBox(height: 5,),
+                        Container(
+                          height: 90,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5.0), // Adjust the radius as needed
+                          ),
+                          child: TextField(
+                            maxLines: 3,
+                            maxLength: 200,
+                            keyboardType:TextInputType.text,
+                            controller: descriptionController,
+                            focusNode: descriptionFocusNode,
+                            style: TextStyle(fontSize: 12,color: Colors.black),
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: BorderSide(
+                                    color: Color(0xffC5C5C5), // Border color
+                                    width: 0.5,         // Border width
+                                  ),
+                                ),
+                                floatingLabelBehavior: FloatingLabelBehavior.always,
+                                counterText: '',
+                                labelText: '',
+                                hintText:'Enter your comment (optional)',
+                                hintStyle: TextStyle(fontSize: 14)
+                            ),
+                          ),
+                        ),
                       ],
                     ),
-                    SizedBox(height: 5,),
-                    Container(
-                      height: 90,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5.0), // Adjust the radius as needed
-                      ),
-                      child: TextField(
-                        maxLines: 3,
-                        maxLength: 200,
-                        keyboardType:TextInputType.text,
-                        controller: descriptionController,
-                        focusNode: descriptionFocusNode,
-                        style: TextStyle(fontSize: 12,color: Colors.black),
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(
-                                color: Color(0xffC5C5C5), // Border color
-                                width: 0.5,         // Border width
-                              ),
-                            ),
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            counterText: '',
-                            labelText: '',
-                            hintText:'Enter your comment (optional)',
-                            hintStyle: TextStyle(fontSize: 14)
-                        ),
-                      ),
+
+
+                    SizedBox(height: 30,),
+                    InkWell(
+                      child: normalButton(name: 'Submit',height:45,bordeRadious: 25,fontSize:14,textColor: Colors.white,bckColor: appcolors.buttonColor,),
+                      onTap: () async {
+                        titleFocusNode.unfocus();
+                        addressFocusNode.unfocus();
+                        descriptionFocusNode.unfocus();
+                        reportLatFocusNode.unfocus();
+                        reportLongFocusNode.unfocus();
+                        if(titleController.text.isEmpty || galleryFile==null){
+                          toasts().redToastLong('Please fill all the details');
+                        }else{
+                          double lat= await getCurrentLatitude();
+                          double lng= await getCurrentLongitude();
+                          sendReportIssueAPI(lat.toString(),lng.toString());
+                        }
+                      },
                     ),
+                    SizedBox(height: 50,),
+
                   ],
                 ),
-
-
-                SizedBox(height: 30,),
-                InkWell(
-                  child: normalButton(name: 'Submit',height:45,bordeRadious: 25,fontSize:14,textColor: Colors.white,bckColor: appcolors.buttonColor,),
-                  onTap: () async {
-                    titleFocusNode.unfocus();
-                    addressFocusNode.unfocus();
-                    descriptionFocusNode.unfocus();
-                    reportLatFocusNode.unfocus();
-                    reportLongFocusNode.unfocus();
-                    if(titleController.text.isEmpty || galleryFile==null){
-                      toasts().redToastLong('Please fill all the details');
-                    }else{
-                      double lat= await getCurrentLatitude();
-                      double lng= await getCurrentLongitude();
-                      sendReportIssueAPI(lat.toString(),lng.toString());
-                    }
-                  },
-                ),
-                SizedBox(height: 50,),
-
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

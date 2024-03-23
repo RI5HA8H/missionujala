@@ -323,6 +323,8 @@ class _userProfileState extends State<userProfile> {
     if (response.statusCode == 200) {
       debugPrint(await 'aaaaaaaaa-----${results}');
       allUVData=results;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('profileImg', results['profilePic']);
 
       uvContactName=results['userName']=='' ? '' : allFunctions().decryptStringFromBase64(results['userName']);
       uvContactName=results['userContactName']=='' ? 'N/A' : allFunctions().decryptStringFromBase64(results['userContactName']);
@@ -494,6 +496,7 @@ class _userProfileState extends State<userProfile> {
       toasts().redToastShort('Server Error');
     }
   }
+
 
 
   void _showEditDialog(BuildContext context) {

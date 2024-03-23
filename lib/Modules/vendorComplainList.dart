@@ -43,6 +43,7 @@ class _vendorComplainListState extends State<vendorComplainList> {
   String vendorToken='';
   String vendorCompanyKey='';
   String vendorId='';
+  String profileImg='';
 
   var vendorComplaintList=[];
 
@@ -61,6 +62,7 @@ class _vendorComplainListState extends State<vendorComplainList> {
       vendorToken = prefs.getString('vendorToken')!;
       vendorCompanyKey = prefs.getString('vendorCompanyKey')!;
       vendorId = prefs.getString('vendorKey')!;
+      profileImg = prefs.getString('profileImg')!;
     });
     complainListFunction();
   }
@@ -92,8 +94,15 @@ class _vendorComplainListState extends State<vendorComplainList> {
                 );
               },
             ),
+            titleSpacing: 0,
             title: Image.asset(Assets.imagesSuryodayAppbarLogo,height: 50,),
             actions: [
+              IconButton(
+                icon: Container(width: 5,),
+                onPressed: () {
+                  //Navigator.of(context).push(MaterialPageRoute(builder: (context) => userProfile()));
+                },
+              ),
               IconButton(
                 icon: Image.asset(Assets.imagesDepartmentLogo,width: 50,height: 50,),
                 onPressed: () {
@@ -101,7 +110,13 @@ class _vendorComplainListState extends State<vendorComplainList> {
                 },
               ),
               IconButton(
-                icon: Icon(Icons.account_circle,size: 35,color: appcolors.greenTextColor,),
+                icon: CircleAvatar(
+                  radius: 18,
+                  backgroundColor: Colors.grey[200],
+                  child:  profileImg == ''
+                      ?  Center(child:ClipRect(child: Image.network('https://cdn-icons-png.flaticon.com/512/219/219983.png',)))
+                      : ClipOval(child: Image.network('$profileImg',fit: BoxFit.cover,height: 100,width: 100,),),
+                ),
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(builder: (context) => userProfile()));
                 },

@@ -49,6 +49,7 @@ class _userComplaintListState extends State<userComplaintList> {
   String userToken='';
   String userCompanyKey='';
   String userId='';
+  String profileImg='';
 
   var feedbackStatusDropdownValue='Satishfied';
 
@@ -70,6 +71,7 @@ class _userComplaintListState extends State<userComplaintList> {
       userToken = prefs.getString('userToken')!;
       userCompanyKey = prefs.getString('userCompanyKey')!;
       userId = prefs.getString('userKey')!;
+      profileImg = prefs.getString('profileImg')!;
     });
     userComplainListFunction();
   }
@@ -101,8 +103,15 @@ class _userComplaintListState extends State<userComplaintList> {
                 );
               },
             ),
+            titleSpacing: 0,
             title: Image.asset(Assets.imagesSuryodayAppbarLogo,height: 50,),
             actions: [
+              IconButton(
+                icon: Container(width: 5,),
+                onPressed: () {
+                  //Navigator.of(context).push(MaterialPageRoute(builder: (context) => userProfile()));
+                },
+              ),
               IconButton(
                 icon: Image.asset(Assets.imagesDepartmentLogo,width: 50,height: 50,),
                 onPressed: () {
@@ -110,7 +119,13 @@ class _userComplaintListState extends State<userComplaintList> {
                 },
               ),
               IconButton(
-                icon: Icon(Icons.account_circle,size: 35,color: appcolors.greenTextColor,),
+                icon: CircleAvatar(
+                  radius: 18,
+                  backgroundColor: Colors.grey[200],
+                  child:  profileImg == ''
+                      ?  Center(child:ClipRect(child: Image.network('https://cdn-icons-png.flaticon.com/512/219/219983.png',)))
+                      : ClipOval(child: Image.network('$profileImg',fit: BoxFit.cover,height: 100,width: 100,),),
+                ),
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(builder: (context) => userProfile()));
                 },

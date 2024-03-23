@@ -211,8 +211,8 @@ class _vendorServiceCenterListState extends State<vendorServiceCenterList> {
                               ),
                               CustomInfoWindow(
                                 controller: customInfoWindowController,
-                                height: 180,
-                                width: 280,
+                                height: 175,
+                                width: 250,
                                 offset: 50,
                               ),
                             ],
@@ -409,52 +409,34 @@ class _vendorServiceCenterListState extends State<vendorServiceCenterList> {
                     borderRadius: BorderRadius.circular(10),
                     child: Scaffold(
                       body: Container(
-                        width: 350,
-                        height: 400,
+                        width: 250,
+                        height: 350,
                         color: Colors.white,
                         padding: EdgeInsets.all(10),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 60,
-                                  color: Colors.grey[200],
-                                  child: Image.network('https://i.pinimg.com/736x/44/27/2d/44272df32b1b832c9ea8f596fb4d76b2.jpg',width: 60,height: 60,fit: BoxFit.fill,),
-                                ),
-                                SizedBox(width: 5,),
-                                Container(
-                                  width: 190,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text('${serviceCenterTypeItem[i]['scName']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,),maxLines: 3,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 2,),
-                                      Text('${serviceCenterTypeItem[i]['districtName']}',style: TextStyle(fontSize: 12,color: Colors.black),maxLines: 2,overflow: TextOverflow.ellipsis,),
-                                      SizedBox(height: 5,),
-                                      Text('${serviceCenterTypeItem[i]['scContactNo']}',style: TextStyle(fontSize: 12,color: Colors.black,),),
-                                      SizedBox(height: 2,),
-                                    ],
-                                  ),
-
-                                ),
-                              ],
-                            ),
-
-                          ],
+                        child: Container(
+                          width: 250,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('${serviceCenterTypeItem[i]['scName']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,),maxLines: 2,overflow: TextOverflow.ellipsis,),
+                              SizedBox(height: 2,),
+                              //Text('${serviceCenterTypeItem[i]['districtName']}',style: TextStyle(fontSize: 12,color: Colors.black),maxLines: 2,overflow: TextOverflow.ellipsis,),
+                              //SizedBox(height: 5,),
+                              Text('${serviceCenterTypeItem[i]['scContactNo']}',style: TextStyle(fontSize: 12,color: Colors.black,),),
+                              SizedBox(height: 2,),
+                              Text('${serviceCenterTypeItem[i]['scFullAdress']} ${serviceCenterTypeItem[i]['districtName']}',style: TextStyle(fontSize: 12,color: Colors.black,),maxLines: 3,overflow: TextOverflow.ellipsis,),
+                              SizedBox(height: 2,),
+                            ],
+                          ),
                         ),
                       ),
                       bottomNavigationBar: Padding(
                         padding: const EdgeInsets.only(bottom: 10,left: 10,right: 10),
                         child: InkWell(
-                          child: normalButton(name: 'Show More',height:35,width: 100,bordeRadious: 10,fontSize:10,textColor: Colors.white,bckColor: appcolors.greenTextColor,),
+                          child: normalButton(name: 'Show More',height:30,width: 100,bordeRadious: 10,fontSize:10,textColor: Colors.white,bckColor: appcolors.greenTextColor,),
                           onTap: () async {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => vendorServiceCenterDetailedPage(serviceCenterTypeItem[i])));
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => userServiceCenterDetailedPage(serviceCenterTypeItem[i])));
                           },
                         ),
                       ),

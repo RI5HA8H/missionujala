@@ -56,6 +56,7 @@ class _viewLocationsState extends State<viewLocations> {
   final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
   static  CameraPosition _kGooglePlex = CameraPosition(target: LatLng(26.439602610044293, 82.58186811379103), zoom: 20,);
 
+  String profileImg='';
   late ProgressDialog progressDialog1;
   late ProgressDialog progressDialog2;
   late ProgressDialog progressDialog3;
@@ -98,8 +99,13 @@ class _viewLocationsState extends State<viewLocations> {
     super.dispose();
   }
 
+
+
   getUserToken() async {
     getDistrict();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    profileImg = prefs.getString('profileImg')!;
+
     //getServiceCenterList();
     double latitude=await getCurrentLatitude();
     double longitude=await getCurrentLongitude();
@@ -128,8 +134,15 @@ class _viewLocationsState extends State<viewLocations> {
               );
             },
           ),
+          titleSpacing: 0,
           title: Image.asset(Assets.imagesSuryodayAppbarLogo,height: 50,),
           actions: [
+            IconButton(
+              icon: Container(width: 5,),
+              onPressed: () {
+                //Navigator.of(context).push(MaterialPageRoute(builder: (context) => userProfile()));
+              },
+            ),
             IconButton(
               icon: Image.asset(Assets.imagesDepartmentLogo,width: 50,height: 50,),
               onPressed: () {
@@ -137,7 +150,13 @@ class _viewLocationsState extends State<viewLocations> {
               },
             ),
             IconButton(
-              icon: Icon(Icons.account_circle,size: 35,color: appcolors.greenTextColor,),
+              icon: CircleAvatar(
+                radius: 18,
+                backgroundColor: Colors.grey[200],
+                child:  profileImg == ''
+                    ?  Center(child:ClipRect(child: Image.network('https://cdn-icons-png.flaticon.com/512/219/219983.png',)))
+                    : ClipOval(child: Image.network('$profileImg',fit: BoxFit.cover,height: 100,width: 100,),),
+              ),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => userProfile()));
               },

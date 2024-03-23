@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:intl/intl.dart';
 import 'package:missionujala/Resource/Colors/app_colors.dart';
 import 'package:missionujala/Resource/Utiles/appBar.dart';
@@ -12,6 +13,7 @@ import '../Resource/StringLocalization/allAPI.dart';
 import '../Resource/StringLocalization/baseUrl.dart';
 import '../Resource/Utiles/bottomNavigationBar.dart';
 import '../Resource/Utiles/emptyContainer.dart';
+import '../Resource/Utiles/normalButton.dart';
 import '../Resource/Utiles/toasts.dart';
 import '../homeScreen.dart';
 
@@ -104,53 +106,71 @@ class _vendorNotificationScreenState extends State<vendorNotificationScreen> {
   Widget getRow(int index,var snapshot) {
     return Container(
       color: Colors.white,
-      child: Column(
+      child: Stack(
+        alignment: Alignment.topRight,
         children: [
-          ListTile(
-            title: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-
-                  Container(
-                    width: double.infinity,
-                    child: Text("${vendorNotificationAllItem[index]['notificationTitle']}",style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: appcolors.primaryColor),
-                      maxLines: 5,overflow: TextOverflow.ellipsis,),
-                  ),
-
-                  SizedBox(height: 5,),
-                  Container(
-                    width: double.infinity,
-                    child: Text("${vendorNotificationAllItem[index]['notificationBody']}",style: TextStyle(fontSize: 12,color: Colors.black),
-                      maxLines: 10,overflow: TextOverflow.ellipsis,),
-                  ),
-
-                  SizedBox(height: 5,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+          Column(
+            children: [
+              ListTile(
+                title: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(),
-                      Text('${formatDate(vendorNotificationAllItem[index]['createdOn'])}',style: TextStyle(fontSize: 8,color: Colors.black)),
-                    ],
-                  ),
 
-                ],
+                      Container(
+                        width: double.infinity,
+                        child: Text("${vendorNotificationAllItem[index]['notificationTitle']}",style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: appcolors.primaryColor),
+                          maxLines: 5,overflow: TextOverflow.ellipsis,),
+                      ),
+
+                      SizedBox(height: 5,),
+                      Container(
+                        width: double.infinity,
+                        child: Text("${vendorNotificationAllItem[index]['notificationBody']}",style: TextStyle(fontSize: 12,color: Colors.black),
+                          maxLines: 10,overflow: TextOverflow.ellipsis,),
+                      ),
+
+                      SizedBox(height: 5,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          vendorNotificationAllItem[index]['status']==true ? Container(
+                            child: normalButton(name: 'Viewed',height: 16,width: 50,fontSize: 8,bckColor: Colors.black26,bordeRadious: 20,),
+                          ) : Container(
+                            child: normalButton(name: 'New',height: 16,width: 50,fontSize: 8,bckColor: Colors.deepOrangeAccent,bordeRadious: 20,),
+                          ),
+                          /*Container(
+                            child: normalButton(name: '${formatDate(vendorNotificationAllItem[index]['createdOn'])}',height: 16,width: 100,fontSize: 8,bckColor: Colors.black26,bordeRadious: 20,),
+                          ),*/
+                          Text('${formatDate(vendorNotificationAllItem[index]['createdOn'])}',style: TextStyle(fontSize: 8,color: Colors.black)),
+                        ],
+                      ),
+
+                    ],
+
+                  ),
+                ),
 
               ),
-            ),
 
+              Container(
+                padding: EdgeInsets.only(left: 15,right: 15),
+                child: Divider(
+                  thickness: 0.5,
+                  color: Colors.grey[300],
+                ),
+              ),
+            ],
           ),
-
-          Container(
-            padding: EdgeInsets.only(left: 15,right: 15),
-            child: Divider(
-              thickness: 0.5,
-              color: Colors.grey[300],
-            ),
-          ),
+          /*Positioned(
+            right: 10,
+             child: vendorNotificationAllItem[index]['status']==true ? Container(
+               child: normalButton(name: 'New',height: 16,width: 50,fontSize: 8,bckColor: Colors.deepOrangeAccent,bordeRadious: 20,),
+             ) : Container(),
+          ),*/
         ],
       ),
     );
@@ -175,6 +195,7 @@ class _vendorNotificationScreenState extends State<vendorNotificationScreen> {
     if (response.statusCode == 200) {
       //debugPrint(await 'aaaaaaaaa-----${results}');
       vendorNotificationAllItem=results;
+      FlutterAppBadger.removeBadge();
       setState(() {scroll=false;});
     }
     else {

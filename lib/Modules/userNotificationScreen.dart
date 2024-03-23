@@ -2,11 +2,13 @@
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:intl/intl.dart';
 import 'package:missionujala/Resource/Colors/app_colors.dart';
 import 'package:missionujala/Resource/Utiles/appBar.dart';
 import 'package:missionujala/Resource/Utiles/drawer.dart';
 import 'package:http/http.dart' as http;
+import 'package:missionujala/Resource/Utiles/normalButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Resource/StringLocalization/allAPI.dart';
 import '../Resource/StringLocalization/baseUrl.dart';
@@ -133,7 +135,11 @@ class _userNotificationScreenState extends State<userNotificationScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(),
+                      userNotificationAllItem[index]['status']==true ? Container(
+                        child: normalButton(name: 'Viewed',height: 16,width: 50,fontSize: 8,bckColor: Colors.black26,bordeRadious: 20,),
+                      ) : Container(
+                        child: normalButton(name: 'New',height: 16,width: 50,fontSize: 8,bckColor: Colors.deepOrangeAccent,bordeRadious: 20,),
+                      ),
                       Text('${formatDate(userNotificationAllItem[index]['createdOn'])}',style: TextStyle(fontSize: 8,color: Colors.black)),
                     ],
                   ),
@@ -176,6 +182,7 @@ class _userNotificationScreenState extends State<userNotificationScreen> {
     if (response.statusCode == 200) {
       //debugPrint(await 'aaaaaaaaa-----${results}');
       userNotificationAllItem=results;
+      FlutterAppBadger.removeBadge();
       setState(() {scroll=false;});
     }
     else {
