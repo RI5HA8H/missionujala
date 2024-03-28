@@ -225,9 +225,11 @@ class _userComplaintDetailedPageState extends State<userComplaintDetailedPage> {
                         ],
                       ),
                     ),
+
+                    SizedBox(height: 50,),
                     
 
-                    Container(
+                    /*Container(
                       padding: EdgeInsets.all(20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -535,7 +537,7 @@ class _userComplaintDetailedPageState extends State<userComplaintDetailedPage> {
 
                         ],
                       ),
-                    ),
+                    ),*/
               
               
                   ],

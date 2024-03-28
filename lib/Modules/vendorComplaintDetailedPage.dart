@@ -279,8 +279,10 @@ class _vendorComplaintDetailedPageState extends State<vendorComplaintDetailedPag
                       ),
                     ),
 
+                    SizedBox(height: 50,),
 
-                    Container(
+
+                    /*Container(
                       padding: EdgeInsets.all(20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -337,6 +339,7 @@ class _vendorComplaintDetailedPageState extends State<vendorComplaintDetailedPag
                               }
                             },
                           ),
+
                           widget.vendorData['vendorFeedBackList'].length!=0 && widget.vendorData['userFeedBackList'].length!=0 ? GestureDetector(
                             child: Image.asset('assets/icons/comment.png',width: 30,height: 30,color: appcolors.primaryColor,),
                             onTap: (){
@@ -568,7 +571,7 @@ class _vendorComplaintDetailedPageState extends State<vendorComplaintDetailedPag
 
                         ],
                       ),
-                    ),
+                    ),*/
 
 
                   ],
