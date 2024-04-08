@@ -17,7 +17,8 @@ class verifyAppSignature extends StatefulWidget {
 
 class _verifyAppSignatureState extends State<verifyAppSignature> {
 
-   String developerSignature= 'A3:F3:10:77:01:AD:6D:DA:74:96:E5:7C:C1:64:57:5B:9D:B3:A7:0D';
+    String developerSignature= 'A3:F3:10:77:01:AD:6D:DA:74:96:E5:7C:C1:64:57:5B:9D:B3:A7:0D';
+    // String developerSignature= '49:B3:4F:CC:C0:79:95:B8:56:03:44:B5:E3:DF:56:67:60:67:FF:53';
 
    @override
     void initState() {

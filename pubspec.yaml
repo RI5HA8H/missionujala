@@ -65,7 +65,7 @@ dependencies:
   url_launcher:
   dropdown_button2:
   http:
-  connectivity_plus:
+  connectivity_plus: ^5.0.2
   in_app_update:
   geocoding:
   geolocator:

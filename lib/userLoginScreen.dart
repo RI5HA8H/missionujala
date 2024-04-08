@@ -47,30 +47,6 @@ class _userLoginScreenState extends State<userLoginScreen> {
   FocusNode otpFocusNode = FocusNode();
   int apiOTP=0;
 
-  StreamSubscription? internetconnection;
-  bool isoffline = false;
-  bool ActiveConnection = false;
-  String T = "";
-  Future CheckUserConnection() async {
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        setState(() {
-          ActiveConnection = true;
-          T = "Turn off the data and repress again";
-          //debugPrint(T);
-        });
-      }
-    } on SocketException catch (_) {
-      setState(() {
-        ActiveConnection = false;
-        setState(() {
-          isoffline = true;
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => checkInternet()));
-        });
-      });
-    }
-  }
 
   var token;
   notificationservices notiservices = notificationservices();
@@ -79,29 +55,6 @@ class _userLoginScreenState extends State<userLoginScreen> {
   @override
   void initState() {
     super.initState();
-    CheckUserConnection();
-    _checkVersion();
-    internetconnection = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-      // whenevery connection status is changed.
-      if(result == ConnectivityResult.none){
-        //there is no any connection
-        setState(() {
-          isoffline = true;
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => checkInternet()));
-        });
-      }else if(result == ConnectivityResult.mobile){
-        //connection is mobile data network
-        setState(() {
-          isoffline = false;
-        });
-      }else if(result == ConnectivityResult.wifi){
-        //connection is from wifi
-        setState(() {
-          isoffline = false;
-        });
-      }
-      super.initState();
-    });
     //debugPrint("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
     notiservices.requestNotificationPermissions();
     notiservices.firebaseinit(context);
@@ -113,35 +66,6 @@ class _userLoginScreenState extends State<userLoginScreen> {
     });
   }
 
-  @override
-  void dispose() {
-    internetconnection!.cancel();
-    super.dispose();
-  }
-
-  void _checkVersion() async {
-
-    InAppUpdate.checkForUpdate().then((updateInfo) {
-      if (updateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
-        if (updateInfo.immediateUpdateAllowed) {
-          // Perform immediate update
-          InAppUpdate.performImmediateUpdate().then((appUpdateResult) {
-            if (appUpdateResult == AppUpdateResult.success) {
-              //App Update successful
-            }
-          });
-        } else if (updateInfo.flexibleUpdateAllowed) {
-          //Perform flexible update
-          InAppUpdate.startFlexibleUpdate().then((appUpdateResult) {
-            if (appUpdateResult == AppUpdateResult.success) {
-              //App Update successful
-              InAppUpdate.completeFlexibleUpdate();
-            }
-          });
-        }
-      }
-    });
-  }
 
 
   @override
