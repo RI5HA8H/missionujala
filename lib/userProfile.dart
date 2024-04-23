@@ -44,6 +44,7 @@ class _userProfileState extends State<userProfile> {
   String uvMobileNo  = '';
   String uvEmail  = '';
   String uvDistrict  = '';
+  String uvCompanyName  = '';
   String uvAddress  ='';
   String uvImage  = '';
   String loginType='';
@@ -158,7 +159,7 @@ class _userProfileState extends State<userProfile> {
                             ),
                           ),
 
-                          SizedBox(height: 50,),
+                          SizedBox(height: 40,),
 
                           getRow('Name','${uvContactName}'),
                           divider(),
@@ -171,6 +172,13 @@ class _userProfileState extends State<userProfile> {
 
                           getRow('District','${uvDistrict}'),
                           divider(),
+
+                          loginType=='vendor' ? Column(
+                            children: [
+                              getRow('Company','${uvCompanyName}'),
+                              divider(),
+                            ],
+                          ) : Container(),
 
                           getRow('Address','${uvAddress}'),
                           divider(),
@@ -326,12 +334,13 @@ class _userProfileState extends State<userProfile> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('profileImg', results['profilePic']);
 
-      uvContactName=results['userName']=='' ? '' : allFunctions().decryptStringFromBase64(results['userName']);
+      uvUserName=results['userName']=='' ? '' : allFunctions().decryptStringFromBase64(results['userName']);
       uvContactName=results['userContactName']=='' ? 'N/A' : allFunctions().decryptStringFromBase64(results['userContactName']);
       uvMobileNo=results['mobileNo']=='' ? 'N/A' : allFunctions().decryptStringFromBase64(results['mobileNo']);
       uvEmail=results['emailId']=='' ? 'N/A' : allFunctions().decryptStringFromBase64(results['emailId']);
       uvDistrict=results['districtName']=='' ? 'N/A' : allFunctions().decryptStringFromBase64(results['districtName']);
       uvAddress=results['userAddress']=='' ? 'N/A' : allFunctions().decryptStringFromBase64(results['userAddress']);
+      uvCompanyName=results['companyName']=='' ? 'N/A' : allFunctions().decryptStringFromBase64(results['companyName']);
       //debugPrint('ppppp${allFunctions().decryptStringFromBase64('8s8ixdg9KOTDiTHg/Z0qQupOmUthnQix4c3pIn0Ia0yRiVaHg7AGhkA5AZRtI9ZedbSCY+hw2OMEyMxiWAnKYGim9NnlsLXVXpipC6BKnvskB790Rf7soO5F4w+IgmWd')}');
       uvImage=results['profilePic']=='' ? 'https://cdn-icons-png.flaticon.com/512/219/219983.png' : results['profilePic'];
 
@@ -556,6 +565,7 @@ class _userProfileState extends State<userProfile> {
                       },
                     ),
 
+
                     SizedBox(height: 20,),
 
                     GestureDetector(
@@ -568,7 +578,7 @@ class _userProfileState extends State<userProfile> {
                           uploadProfileAPI();
                         }
                       },
-                    )
+                    ),
 
 
                   ],

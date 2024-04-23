@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Mission Ujala',
+      title: 'UP Suryoday',
       theme: ThemeData(
           fontFamily: 'Poppins',
           primarySwatch:mainAppColor,
@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
             foregroundColor: appcolors.whiteColor,
           ),
           ),
-      home:  const verifyAppSignature(),
+      home:  const splashScreen(),
     );
   }
 }

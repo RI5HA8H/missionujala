@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:http/http.dart' as http;
@@ -69,12 +70,18 @@ class _viewLocationsState extends State<viewLocations> {
   bool showFilterButtonColor=false;
   Position? currentPosition;
   final Set<Marker> markerr={};
-  var allApiMarker=[];
+  List<dynamic> allApiMarker=[];
+  List<dynamic> allApiMarkerCopy=[];
   double lat= 26.830000;
   double long= 80.91999;
   var districtTypeItem = [];
   var allServiceCenterItem = [];
   var districtDropdownValue;
+
+  String query = '';
+  final filterController = TextEditingController();
+  FocusNode filterFocusNode = FocusNode();
+  final ScrollController scrollController=ScrollController();
 
   List<LatLng> latlng=[
     LatLng(26.830000,80.91999),
@@ -99,8 +106,6 @@ class _viewLocationsState extends State<viewLocations> {
     super.dispose();
   }
 
-
-
   getUserToken() async {
     getDistrict();
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -117,6 +122,9 @@ class _viewLocationsState extends State<viewLocations> {
 
   @override
   Widget build(BuildContext context) {
+    final styleActive = TextStyle(color: Colors.black);
+    final styleHint = TextStyle(color: Colors.black54);
+    final style = query.isEmpty ? styleHint : styleActive;
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -158,6 +166,8 @@ class _viewLocationsState extends State<viewLocations> {
                     : ClipOval(child: Image.network('$profileImg',fit: BoxFit.cover,height: 100,width: 100,),),
               ),
               onPressed: () {
+                filterController.clear();
+                filterFocusNode.unfocus();
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => userProfile()));
               },
             ),
@@ -193,6 +203,9 @@ class _viewLocationsState extends State<viewLocations> {
                                 child: InkWell(
                                   child: normalButton(name: 'Near by',width:MediaQuery.of(context).size.width/2.5,height:35,bordeRadious: 5,fontSize:14,textColor: showFilter ? Colors.black : Colors.white,bckColor: showFilter ? appcolors.whiteColor : appcolors.greenTextColor,),
                                   onTap: () async {
+                                    query='';
+                                    filterController.clear();
+                                    filterFocusNode.unfocus();
                                     districtDropdownValue=null;
                                     setState(() {showFilter=false;showFilterButtonColor=false;});
                                     double latitude=await getCurrentLatitude();
@@ -219,6 +232,9 @@ class _viewLocationsState extends State<viewLocations> {
                                 child: InkWell(
                                   child: normalButton(name: 'Choose Location',width:MediaQuery.of(context).size.width/2.5,height:35,bordeRadious: 5,fontSize:14,textColor: showFilter ? Colors.white : Colors.black,bckColor: showFilter ? appcolors.greenTextColor : Colors.white,),
                                   onTap: (){
+                                    query='';
+                                    filterController.clear();
+                                    filterFocusNode.unfocus();
                                     setState(() {showFilter=true;showFilterButtonColor=true;});
                                   },
                                 ),
@@ -393,10 +409,12 @@ class _viewLocationsState extends State<viewLocations> {
                   mapType: MapType.normal,
                   initialCameraPosition: _kGooglePlex,
                   markers: Set<Marker>.of(markerr),
+                  myLocationEnabled: true,
+                  myLocationButtonEnabled: true,
                   onMapCreated: (GoogleMapController controller) {
                     //_controller.complete(controller);
                     controller.animateCamera(CameraUpdate.newCameraPosition(
-                        CameraPosition(target: LatLng(lat,long), zoom: 12,)
+                        CameraPosition(target: LatLng(lat,long), zoom: 16,)
                     ));
                     customInfoWindowController.googleMapController = controller;
                   },
@@ -417,9 +435,60 @@ class _viewLocationsState extends State<viewLocations> {
             ),
             Container(
               padding: EdgeInsets.only(top: 5),
-              child: ListView.builder(
-                  itemCount: allApiMarker[0]['installedSystemList'].length,
-                  itemBuilder: (BuildContext context, int index) => getRow(index, context)
+              child: Column(
+                children: [
+                  Container(
+                    height: 50,
+                    margin: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25),
+                      color: Colors.white,
+                      border: Border.all(color: Colors.black26),
+                    ),
+                    padding: const EdgeInsets.only(left: 15),
+                    child: TextFormField(
+                      style: style,
+                      keyboardType: TextInputType.number,
+                      controller: filterController,
+                      focusNode: filterFocusNode,
+                      decoration: InputDecoration(
+                        icon: Icon(Icons.search, color: style.color),
+                        suffixIcon: query.isNotEmpty
+                            ? GestureDetector(
+                          child: Icon(Icons.close, color: style.color),
+                          onTap: () {
+                            setState(() {});
+                            filterController.clear();
+                            query='';
+                            FocusScope.of(context).requestFocus(FocusNode());
+                          },
+                        ) : null,
+                        hintText: 'Search By UID',
+                        hintStyle: style,
+                        border: InputBorder.none,
+                      ),
+                      onChanged: (String? value){
+                        setState(() {
+                          query=value.toString();
+                        });
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: Scrollbar(
+                      thumbVisibility: true,
+                      thickness: 6,
+                      interactive: true,
+                      radius: Radius.circular(5),
+                      controller: scrollController,
+                      child: ListView.builder(
+                          controller: scrollController,
+                          itemCount: allApiMarker[0]['installedSystemList'].length,
+                          itemBuilder: (BuildContext context, int index) => getRow(index, context)
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -431,81 +500,186 @@ class _viewLocationsState extends State<viewLocations> {
 
 
   Widget getRow(int index,var snapshot) {
-    return  Container(
-      padding: EdgeInsets.fromLTRB(10,0,10,5),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: Container(
-          color: allApiMarker[0]['installedSystemList'][index]['isCorrect_LatLong']==true ? Colors.green[100] : Colors.grey[100],
-          child: Stack(
-            alignment: Alignment.topRight,
-            children: [
-              Container(
-                child: ListTile(
-                  title: Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+    late String position=allApiMarker[0]['installedSystemList'][index]['uidNo'].toString();
+    if(filterController.text.isEmpty){
+      return  Container(
+        padding: EdgeInsets.fromLTRB(10,0,10,5),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Container(
+            color: allApiMarker[0]['installedSystemList'][index]['isCorrect_LatLong']==true ? Colors.green[100] : Colors.grey[100],
+            child: Stack(
+              alignment: Alignment.topRight,
+              children: [
+                Container(
+                  child: ListTile(
+                    title: Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
 
-                          Text('UID No.: ${allApiMarker[0]['installedSystemList'][index]['uidNo']}',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black),),
-                          Text('Installation Date : ${allApiMarker[0]['installedSystemList'][index]['installationDate']}',style: TextStyle(fontSize: 14,color: Colors.black)),
-                          Text('${allApiMarker[0]['installedSystemList'][index]['placeName']},${allApiMarker[0]['installedSystemList'][index]['villageName']}',style: TextStyle(fontSize: 12,color: Colors.black)),
+                            Text('UID No.: ${allApiMarker[0]['installedSystemList'][index]['uidNo']}',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black),),
+                            Text('Installation Date : ${allApiMarker[0]['installedSystemList'][index]['installationDate']}',style: TextStyle(fontSize: 14,color: Colors.black)),
+                            Text('${allApiMarker[0]['installedSystemList'][index]['placeName']},${allApiMarker[0]['installedSystemList'][index]['villageName']}',style: TextStyle(fontSize: 12,color: Colors.black)),
 
-                        ],
-                      )
-                  ),
-                  onTap: () async {
-                    bool updateUid= false;
-                    updateUid=await Navigator.of(context).push(MaterialPageRoute(builder: (context) => viewLocationFullDetails(
-                      allApiMarker[0]['installedSystemList'][index]['uidKey'],
-                      allApiMarker[0]['installedSystemList'][index]['uidNo'],
-                      allApiMarker[0]['installedSystemList'][index]['mobileNo'],
-                      allApiMarker[0]['installedSystemList'][index]['villageName'],
-                      allApiMarker[0]['installedSystemList'][index]['placeName'],
-                      allApiMarker[0]['installedSystemList'][index]['blockName'],
-                      allApiMarker[0]['installedSystemList'][index]['districtName'],
-                      allApiMarker[0]['installedSystemList'][index]['installationDate'],
+                          ],
+                        )
+                    ),
+                    onTap: () async {
+                      query='';
+                      filterController.clear();
+                      filterFocusNode.unfocus();
+                      bool updateUid= false;
+                      updateUid=await Navigator.of(context).push(MaterialPageRoute(builder: (context) => viewLocationFullDetails(
+                        allApiMarker[0]['installedSystemList'][index]['uidKey'],
+                        allApiMarker[0]['installedSystemList'][index]['uidNo'],
+                        allApiMarker[0]['installedSystemList'][index]['mobileNo'],
+                        allApiMarker[0]['installedSystemList'][index]['villageName'],
+                        allApiMarker[0]['installedSystemList'][index]['placeName'],
+                        allApiMarker[0]['installedSystemList'][index]['blockName'],
+                        allApiMarker[0]['installedSystemList'][index]['districtName'],
+                        allApiMarker[0]['installedSystemList'][index]['installationDate'],
 
-                      allApiMarker[0]['installedSystemList'][index]['status'],
-                      allApiMarker[0]['installedSystemList'][index]['beneficiaryName'],
-                      allApiMarker[0]['installedSystemList'][index]['fatherName'],
-                      allApiMarker[0]['installedSystemList'][index]['gramPanchayat'],
-                      allApiMarker[0]['installedSystemList'][index]['latitude'],
-                      allApiMarker[0]['installedSystemList'][index]['longitude'],
-                      allApiMarker[0]['installedSystemList'][index]['photoPath'],
-                      allApiMarker[0]['installedSystemList'][index]['formatPath1'],
-                      allApiMarker[0]['installedSystemList'][index]['formatPath1Extn'],
-                      allApiMarker[0]['installedSystemList'][index]['schemeName'],
-                      allApiMarker[0]['installedSystemList'][index]['serviceValidTill'],
-                    )));
-                    //debugPrint('uuuuuuuuuuuuuuu-->$updateUid');
+                        allApiMarker[0]['installedSystemList'][index]['status'],
+                        allApiMarker[0]['installedSystemList'][index]['beneficiaryName'],
+                        allApiMarker[0]['installedSystemList'][index]['fatherName'],
+                        allApiMarker[0]['installedSystemList'][index]['gramPanchayat'],
+                        allApiMarker[0]['installedSystemList'][index]['latitude'],
+                        allApiMarker[0]['installedSystemList'][index]['longitude'],
+                        allApiMarker[0]['installedSystemList'][index]['photoPath'],
+                        allApiMarker[0]['installedSystemList'][index]['formatPath1'],
+                        allApiMarker[0]['installedSystemList'][index]['formatPath1Extn'],
+                        allApiMarker[0]['installedSystemList'][index]['schemeName'],
+                        allApiMarker[0]['installedSystemList'][index]['serviceValidTill'],
+                        allApiMarker[0]['installedSystemList'][index]['companyName'],
+                      )));
+                      //debugPrint('uuuuuuuuuuuuuuu-->$updateUid');
 
-                    if(updateUid == true){
-                      if(districtDropdownValue!=null){
-                        getUidByDistrictBlock();
-                      }else{
-                        double latitude=await getCurrentLatitude();
-                        double longitude=await getCurrentLongitude();
-                        getRadiousLatlong(latitude,longitude);
+                      if(updateUid == true){
+                        if(districtDropdownValue!=null){
+                          getUidByDistrictBlock();
+                        }else{
+                          double latitude=await getCurrentLatitude();
+                          double longitude=await getCurrentLongitude();
+                          getRadiousLatlong(latitude,longitude);
+                        }
                       }
-                    }
 
-                  },
+                    },
+                  ),
                 ),
-              ),
-              Positioned(
-                child: '${allApiMarker[0]['installedSystemList'][index]['latitude']}' == 'null' ? Container() : Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Image.asset('assets/icons/isMapMarker.png',width: 20,height: 20,),
+                Positioned(
+                  child: '${allApiMarker[0]['installedSystemList'][index]['latitude']}' == 'null' ? Container() : Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Image.asset('assets/icons/isMapMarker.png',width: 20,height: 20,),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    }else{
+      if(position.toLowerCase().contains(filterController.text.toLowerCase())){
+        return  Container(
+          padding: EdgeInsets.fromLTRB(10,0,10,5),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Container(
+              color: allApiMarker[0]['installedSystemList'][index]['isCorrect_LatLong']==true ? Colors.green[100] : Colors.grey[100],
+              child: Stack(
+                alignment: Alignment.topRight,
+                children: [
+                  Container(
+                    child: ListTile(
+                      title: Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              RichText(
+                                text: TextSpan(
+                                  text: 'UID No.: ',
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: '${allApiMarker[0]['installedSystemList'][index]['uidNo']}',style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold,color: Colors.red),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              //Text('${allApiMarker[0]['installedSystemList'][index]['uidNo']}',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black),),
+                              Text('Installation Date : ${allApiMarker[0]['installedSystemList'][index]['installationDate']}',style: TextStyle(fontSize: 14,color: Colors.black)),
+                              Text('${allApiMarker[0]['installedSystemList'][index]['placeName']},${allApiMarker[0]['installedSystemList'][index]['villageName']}',style: TextStyle(fontSize: 12,color: Colors.black)),
+
+                            ],
+                          )
+                      ),
+                      onTap: () async {
+                        query='';
+                        filterController.clear();
+                        filterFocusNode.unfocus();
+                        bool updateUid= false;
+                        updateUid=await Navigator.of(context).push(MaterialPageRoute(builder: (context) => viewLocationFullDetails(
+                          allApiMarker[0]['installedSystemList'][index]['uidKey'],
+                          allApiMarker[0]['installedSystemList'][index]['uidNo'],
+                          allApiMarker[0]['installedSystemList'][index]['mobileNo'],
+                          allApiMarker[0]['installedSystemList'][index]['villageName'],
+                          allApiMarker[0]['installedSystemList'][index]['placeName'],
+                          allApiMarker[0]['installedSystemList'][index]['blockName'],
+                          allApiMarker[0]['installedSystemList'][index]['districtName'],
+                          allApiMarker[0]['installedSystemList'][index]['installationDate'],
+
+                          allApiMarker[0]['installedSystemList'][index]['status'],
+                          allApiMarker[0]['installedSystemList'][index]['beneficiaryName'],
+                          allApiMarker[0]['installedSystemList'][index]['fatherName'],
+                          allApiMarker[0]['installedSystemList'][index]['gramPanchayat'],
+                          allApiMarker[0]['installedSystemList'][index]['latitude'],
+                          allApiMarker[0]['installedSystemList'][index]['longitude'],
+                          allApiMarker[0]['installedSystemList'][index]['photoPath'],
+                          allApiMarker[0]['installedSystemList'][index]['formatPath1'],
+                          allApiMarker[0]['installedSystemList'][index]['formatPath1Extn'],
+                          allApiMarker[0]['installedSystemList'][index]['schemeName'],
+                          allApiMarker[0]['installedSystemList'][index]['serviceValidTill'],
+                          allApiMarker[0]['installedSystemList'][index]['companyName'],
+                        )));
+                        //debugPrint('uuuuuuuuuuuuuuu-->$updateUid');
+
+                        if(updateUid == true){
+                          if(districtDropdownValue!=null){
+                            getUidByDistrictBlock();
+                          }else{
+                            double latitude=await getCurrentLatitude();
+                            double longitude=await getCurrentLongitude();
+                            getRadiousLatlong(latitude,longitude);
+                          }
+                        }
+
+                      },
+                    ),
+                  ),
+                  Positioned(
+                    child: '${allApiMarker[0]['installedSystemList'][index]['latitude']}' == 'null' ? Container() : Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Image.asset('assets/icons/isMapMarker.png',width: 20,height: 20,),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      }else{
+        return Container();
+      }
+    }
   }
 
   Future<void> getLocation() async {
@@ -637,7 +811,7 @@ class _viewLocationsState extends State<viewLocations> {
                         ),
                       ),
                       bottomNavigationBar: Padding(
-                        padding: const EdgeInsets.only(bottom: 10,left: 10,right: 10),
+                        padding: const EdgeInsets.only(bottom: 5,left: 10,right: 10),
                         child: InkWell(
                           child: normalButton(name: 'SHOW MORE',height:35,width: 100,bordeRadious: 10,fontSize:10,textColor: Colors.white,bckColor: appcolors.greenTextColor,),
                           onTap: () async {
@@ -663,6 +837,7 @@ class _viewLocationsState extends State<viewLocations> {
                               '${allApiMarker[0]['installedSystemList'][i]['formatPath1Extn']}',
                               '${allApiMarker[0]['installedSystemList'][i]['schemeName']}',
                               '${allApiMarker[0]['installedSystemList'][i]['serviceValidTill']}',
+                              allApiMarker[0]['installedSystemList'][i]['companyName'],
                             )));
                             //debugPrint('uuuuuuuuuuuuuuu-->$updateUid');
 
@@ -810,7 +985,8 @@ class _viewLocationsState extends State<viewLocations> {
     var results = jsonDecode(await response.stream.bytesToString());
     if (response.statusCode == 200) {
       //debugPrint(await 'ffffffffffffffff-----${results}');
-      allApiMarker=results;
+      allApiMarker=List.from(results);
+      allApiMarkerCopy=List.from(results);
       //debugPrint('llllllllll--->${results.length}');
       showMarkers();
       setState(() {scroll1=false;});
@@ -877,7 +1053,8 @@ class _viewLocationsState extends State<viewLocations> {
 
     if (response.statusCode == 200) {
       //debugPrint(await 'aaaaaaaaa-----${results}');
-      allApiMarker=results;
+      allApiMarker=List.from(results);
+      allApiMarkerCopy=List.from(results);
       showMarkers();
       setState(() {scroll1=false;});
     }

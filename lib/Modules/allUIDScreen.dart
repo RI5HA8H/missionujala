@@ -603,6 +603,7 @@ class _allUIDScreenState extends State<allUIDScreen> {
                       installedSystemList[index]['formatPath1Extn'],
                       installedSystemList[index]['schemeName'],
                       installedSystemList[index]['serviceValidTill'],
+                      installedSystemList[index]['companyName'],
                     )));
                     //debugPrint('uuuuuuuuuuuuuuu-->$updateUid');
 
@@ -675,6 +676,7 @@ class _allUIDScreenState extends State<allUIDScreen> {
                       installedSystemList[index]['formatPath1Extn'],
                       installedSystemList[index]['schemeName'],
                       installedSystemList[index]['serviceValidTill'],
+                      installedSystemList[index]['companyName'],
                     )));
                     //debugPrint('uuuuuuuuuuuuuuu-->$updateUid');
 

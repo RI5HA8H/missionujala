@@ -216,6 +216,7 @@ class _venderLoginScreenState extends State<venderLoginScreen> {
         prefs.setString('vendorCompanyName', results['companyName']);
         prefs.setString('vendorDistrictName', results['districtName']);
         prefs.setString('vendorToken', results['userToken']);
+        prefs.setString('profileImg', results['profilePic']);
         prefs.setString('loginType', 'vendor');
 
         progressDialog.dismiss();

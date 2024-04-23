@@ -252,6 +252,7 @@ class _userLoginScreenState extends State<userLoginScreen> {
         prefs.setString('userDistrictKey', '${results['districtKey']}');
         prefs.setString('userCompanyKey', '${results['companyKey']}');
         prefs.setString('userToken', results['userToken']);
+        prefs.setString('profileImg', results['profilePic']);
         prefs.setString('loginType', 'user');
         apiOTP=int.parse('${allFunctions().decryptStringFromBase64(results['otp'])}');
         //debugPrint('aaaaaaaaaaaaa-->$apiOTP');
