@@ -58,6 +58,12 @@ class _allUIDScreenState extends State<allUIDScreen> {
   int totalSystemCount=0;
   int installedSystemCount=0;
 
+  int searchBy=0;
+  String query = '';
+  final filterController = TextEditingController();
+  FocusNode filterFocusNode = FocusNode();
+  final ScrollController scrollController=ScrollController();
+
 
   @override
   void initState() {
@@ -78,6 +84,9 @@ class _allUIDScreenState extends State<allUIDScreen> {
 
   @override
   Widget build(BuildContext context){
+    final styleActive = TextStyle(color: Colors.black);
+    final styleHint = TextStyle(color: Colors.black54);
+    final style = query.isEmpty ? styleHint : styleActive;
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -90,7 +99,7 @@ class _allUIDScreenState extends State<allUIDScreen> {
               return <Widget>[
                 // SliverAppBar is the header that remains visible while scrolling
                 SliverAppBar(
-                  expandedHeight: MediaQuery.of(context).size.height*0.55,
+                  expandedHeight: MediaQuery.of(context).size.height*0.80,
                   floating: false,
                   elevation: 0,
                   forceElevated: true,
@@ -479,14 +488,17 @@ class _allUIDScreenState extends State<allUIDScreen> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 5,),
+                          SizedBox(height: 10,),
                           InkWell(
                             child: normalButton(name: 'Search',height:45,bordeRadious: 25,fontSize:14,textColor: Colors.white,bckColor: appcolors.greenTextColor,),
                             onTap: (){
                               setState(() {
                                 if(financialDropdownValue==null || schemsDropdownValue==null || purchaseDropdownValue==null || districtsDropdownValue==null ){
-                                  toasts().redToastLong('Proper select the datails');
+                                  toasts().redToastLong('Proper select the details');
                                 }else{
+                                  searchBy=0;
+                                  query='';
+                                  filterController.clear();
                                   getInstalledList();
                                 }
                               });
@@ -494,18 +506,88 @@ class _allUIDScreenState extends State<allUIDScreen> {
                           ),
                           SizedBox(height: 10,),
 
+                          Center(
+                            child: Text('OR',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black45),),
+                          ),
+
+                          SizedBox(height: 10,),
+                          Container(
+                            height: 50,
+                            //margin: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(25),
+                              color: Colors.white,
+                              border: Border.all(color: Colors.black26),
+                            ),
+                            padding: const EdgeInsets.only(left: 15),
+                            child: TextFormField(
+                              style: style,
+                              keyboardType: TextInputType.number,
+                              controller: filterController,
+                              focusNode: filterFocusNode,
+                              decoration: InputDecoration(
+                                icon: Icon(Icons.search, color: style.color),
+                                suffixIcon: query.isNotEmpty
+                                    ? GestureDetector(
+                                  child: Icon(Icons.close, color: style.color),
+                                  onTap: () {
+                                    setState(() {});
+                                    filterController.clear();
+                                    query='';
+                                    FocusScope.of(context).requestFocus(FocusNode());
+                                  },
+                                ) : null,
+                                hintText: 'Search By UID',
+                                hintStyle: style,
+                                border: InputBorder.none,
+                              ),
+                              onChanged: (String? value){
+                                setState(() {
+                                  query=value.toString();
+                                  print('qqqqqqq$query');
+                                });
+                              },
+                            ),
+                          ),
+                          SizedBox(height: 10,),
+                          InkWell(
+                            child: normalButton(name: 'Search',height:45,bordeRadious: 25,fontSize:14,textColor: Colors.white,bckColor: appcolors.greenTextColor,),
+                            onTap: (){
+                              setState(() {
+                                if(query.isEmpty){
+                                  toasts().redToastLong('Enter UID Number');
+                                }else{
+                                  searchBy=1;
+                                  schemsTypeItem.clear();
+                                  purchaseTypeItem.clear();
+                                  districtsTypeItem.clear();
+                                  blocksTypeItem.clear();
+                                  villagesTypeItem.clear();
+
+                                  financialDropdownValue=null;
+                                  schemsDropdownValue=null;
+                                  purchaseDropdownValue=null;
+                                  districtsDropdownValue=null;
+                                  blocksDropdownValue=null;
+                                  villagesDropdownValue=null;
+                                  searcByUid();
+                                }
+                              });
+                            },
+                          ),
+                          SizedBox(height: 10,),
                         ],
                       ),
                     ),
                   ),
                 ),
                 installedSystemList.isEmpty ? SliverPersistentHeader(
-                    pinned: true,
-                    delegate:MySliverPersistentHeaderDelegate(
+                  pinned: true,
+                  delegate:MySliverPersistentHeaderDelegate(
                       minHeight: 0,
                       maxHeight: 0,
                       child: Container()
-                    ),
+                  ),
                 ) : SliverPersistentHeader(
                   pinned: true,
                   delegate: MySliverPersistentHeaderDelegate(
@@ -550,7 +632,7 @@ class _allUIDScreenState extends State<allUIDScreen> {
             ),
           ),
         ),
-       // bottomNavigationBar: bottomNavigationBar(1),
+        // bottomNavigationBar: bottomNavigationBar(1),
       ),
     );
   }
@@ -607,8 +689,13 @@ class _allUIDScreenState extends State<allUIDScreen> {
                     )));
                     //debugPrint('uuuuuuuuuuuuuuu-->$updateUid');
 
-                    if(updateUid != null){
-                      getInstalledList();
+                    if(updateUid == true){
+                      if(searchBy==0){
+                        getInstalledList();
+                      }else{
+                        searcByUid();
+                      }
+
                     }
 
                   },
@@ -650,8 +737,9 @@ class _allUIDScreenState extends State<allUIDScreen> {
                           Text('UID No.: ${installedSystemList[index]['uidNo']}',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black),),
                           Text('Installation Date : ${installedSystemList[index]['installationDate']}',style: TextStyle(fontSize: 14,color: Colors.black)),
                           Text('${installedSystemList[index]['placeName']},${installedSystemList[index]['villageName']}',style: TextStyle(fontSize: 12,color: Colors.black)),
+
                         ],
-                      )
+                      ),
                   ),
                   onTap: () async {
                     bool updateUid= false;
@@ -681,7 +769,12 @@ class _allUIDScreenState extends State<allUIDScreen> {
                     //debugPrint('uuuuuuuuuuuuuuu-->$updateUid');
 
                     if(updateUid == true){
-                      getInstalledList();
+                      if(searchBy==0){
+                        getInstalledList();
+                      }else{
+                        searcByUid();
+                      }
+
                     }
 
                   },
@@ -882,6 +975,29 @@ class _allUIDScreenState extends State<allUIDScreen> {
       installedSystemList=results['installedSystemList'];
       totalSystemCount= results['totalSytemCount'];
       installedSystemCount= results['installedSytemCount'];
+      setState(() {scroll1 = false;});
+    }
+    else {
+      toasts().redToastLong('Server Error');
+      setState(() {scroll1 = false;});
+    }
+  }
+
+  Future<void> searcByUid() async {
+    setState(() {scroll1 = true;});
+
+    var headers = {
+      'Authorization': 'Bearer $userToken'
+    };
+    //debug//debugPrint(await 'aaaaaaaaa-----${urls().base_url + allAPI().installedAllListURL+'/$purchaseOrderKey/$districtsDropdownValue/$blocksDropdownValue/$villagesDropdownValue'}');
+
+    var request = http.Request('GET', Uri.parse(urls().base_url + allAPI().getDataByUIDURL+'/$query'));
+    request.headers.addAll(headers);
+    var response = await request.send();
+    var results = jsonDecode(await response.stream.bytesToString());
+
+    if (response.statusCode == 200) {
+      installedSystemList=results['installedSystemList'];
       setState(() {scroll1 = false;});
     }
     else {

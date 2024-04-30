@@ -66,6 +66,7 @@ class _viewLocationFullDetailsState extends State<viewLocationFullDetails> {
       );
 
   String loginType='';
+  String companyName  = '';
   late PDFViewController pdfViewController;
 
   @override
@@ -78,7 +79,9 @@ class _viewLocationFullDetailsState extends State<viewLocationFullDetails> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       loginType = prefs.getString('loginType')!;
-      //debugPrint('uuu--${loginType}');
+      if(loginType=='vendor'){
+        companyName = prefs.getString('vendorCompanyName')!;
+      }
     });
 
   }
@@ -341,21 +344,25 @@ class _viewLocationFullDetailsState extends State<viewLocationFullDetails> {
             },
           ) :
           InkWell(
-            child: normalButton(name: 'Update Location',height:45,bordeRadious: 10,fontSize:14,textColor: Colors.white,bckColor: appcolors.buttonColor,),
+            child: normalButton(name: 'Update Location',height:45,bordeRadious: 10,fontSize:14,textColor: Colors.white,bckColor: companyName==widget.uIdCompanyName ? appcolors.buttonColor : Colors.black12 ,),
             onTap: (){
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => updateLocation(
-                '${widget.uIdNo}',
-                '${widget.uIdLati}',
-                '${widget.uIdLongi}',
+              if(companyName==widget.uIdCompanyName){
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => updateLocation(
+                  '${widget.uIdNo}',
+                  '${widget.uIdLati}',
+                  '${widget.uIdLongi}',
 
-                '${widget.uIdPlace}',
-                '${widget.uIdVillage}',
-                '${widget.uIdBlock}',
-                '${widget.uIdDist}',
-                '${widget.uIdSVTill}',
-                '${widget.uIdPhotoPath}',
+                  '${widget.uIdPlace}',
+                  '${widget.uIdVillage}',
+                  '${widget.uIdBlock}',
+                  '${widget.uIdDist}',
+                  '${widget.uIdSVTill}',
+                  '${widget.uIdPhotoPath}',
 
-              )));
+                )));
+              }else{
+                toasts().redToastLong('sorry this UID not under this company');
+              }
             },
           ),
         ),

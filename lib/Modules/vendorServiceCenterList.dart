@@ -84,7 +84,7 @@ class _vendorServiceCenterListState extends State<vendorServiceCenterList> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => homeScreen()));
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => homeScreen()), (Route<dynamic> route) => false);
         return false;
       },
       child: DefaultTabController(

@@ -4,6 +4,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app_badger/flutter_app_badger.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:material_text_fields/theme/material_text_field_theme.dart';
 import 'package:missionujala/Resource/Colors/app_colors.dart';
 import 'package:missionujala/splashScreen.dart';
@@ -47,7 +49,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'UP Suryoday',
       theme: ThemeData(
           fontFamily: 'Poppins',
@@ -61,6 +63,7 @@ class MyApp extends StatelessWidget {
             foregroundColor: appcolors.whiteColor,
           ),
           ),
+      defaultTransition: Transition.fadeIn,
       home:  const splashScreen(),
     );
   }

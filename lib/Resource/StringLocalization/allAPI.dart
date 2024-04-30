@@ -44,6 +44,8 @@ class allAPI{
 
   String getUVProfileURL = 'ViewProfile';
 
+  String getDataByUIDURL = 'GetDetailByUID';
+
 
 
 
