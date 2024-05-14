@@ -233,7 +233,7 @@ class _userProfileState extends State<userProfile> {
                                 onTap: (){
                                   _showEditDialog(context);
                                 },
-                              )
+                              ),
                             ],
                           ) : GestureDetector(
                             child: normalButton(name: 'Logout',height: 40,),

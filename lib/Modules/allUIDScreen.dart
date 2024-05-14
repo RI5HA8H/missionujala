@@ -686,6 +686,7 @@ class _allUIDScreenState extends State<allUIDScreen> {
                       installedSystemList[index]['schemeName'],
                       installedSystemList[index]['serviceValidTill'],
                       installedSystemList[index]['companyName'],
+                      installedSystemList[index]['isCorrect_LatLong'],
                     )));
                     //debugPrint('uuuuuuuuuuuuuuu-->$updateUid');
 
@@ -765,6 +766,7 @@ class _allUIDScreenState extends State<allUIDScreen> {
                       installedSystemList[index]['schemeName'],
                       installedSystemList[index]['serviceValidTill'],
                       installedSystemList[index]['companyName'],
+                      installedSystemList[index]['isCorrect_LatLong'],
                     )));
                     //debugPrint('uuuuuuuuuuuuuuu-->$updateUid');
 
@@ -1007,6 +1009,7 @@ class _allUIDScreenState extends State<allUIDScreen> {
   }
 
 }
+
 class MySliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
   final double minHeight;
   final double maxHeight;
@@ -1026,7 +1029,7 @@ class MySliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    BuildContext context, double shrinkOffset, bool overlapsContent) {
     return SizedBox.expand(
       child: child,
     );
@@ -1038,4 +1041,5 @@ class MySliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
         minHeight != oldDelegate.minHeight ||
         child != oldDelegate.child;
   }
+
 }

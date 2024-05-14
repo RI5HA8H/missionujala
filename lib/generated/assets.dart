@@ -47,6 +47,7 @@ class Assets {
   static const String iconsLogout = 'assets/icons/logout.png';
   static const String iconsMarkerIcon = 'assets/icons/markerIcon.png';
   static const String iconsMarkerIconNew = 'assets/icons/markerIconNew.png';
+  static const String iconsCorrectedMarkerIcon = 'assets/icons/correctedMarkerIcon.png';
   static const String iconsMenuIcon = 'assets/icons/menuIcon.png';
   static const String iconsNotificationHomeBox = 'assets/icons/notificationHomeBox.png';
   static const String iconsPdfIcon = 'assets/icons/pdfIcon.png';

@@ -38,13 +38,14 @@ class viewLocationFullDetails extends StatefulWidget {
   var uIdScheme;
   var uIdSVTill;
   var uIdCompanyName;
+  var uIdIsCorrectLatLong;
 
   viewLocationFullDetails(
       this.uIdKey,this.uIdNo,this.uIdMob,this.uIdVillage,
       this.uIdPlace,this.uIdBlock,this.uIdDist,
       this.uIdInstallDate,this.uIdStatus,this.uIdBeniNAme,
       this.uIdFatherName,this.uIdGramPanchayt,this.uIdLati,this.uIdLongi,
-      this.uIdPhotoPath,this.uIdPdfPath,this.uIdPhotoPathExtn,this.uIdScheme,this.uIdSVTill,this.uIdCompanyName
+      this.uIdPhotoPath,this.uIdPdfPath,this.uIdPhotoPathExtn,this.uIdScheme,this.uIdSVTill,this.uIdCompanyName,this.uIdIsCorrectLatLong,
       );
 
 
@@ -53,7 +54,7 @@ class viewLocationFullDetails extends StatefulWidget {
     uIdNo,uIdNo,uIdMob,uIdVillage,
     uIdPlace,uIdBlock,uIdDist,
     uIdInstallDate,uIdStatus,uIdBeniNAme,
-    uIdFatherName,uIdGramPanchayt,uIdLati,uIdLongi,uIdPhotoPath,uIdPdfPath,uIdPhotoPathExtn,uIdScheme,uIdSVTill,uIdCompanyName
+    uIdFatherName,uIdGramPanchayt,uIdLati,uIdLongi,uIdPhotoPath,uIdPdfPath,uIdPhotoPathExtn,uIdScheme,uIdSVTill,uIdCompanyName,uIdIsCorrectLatLong
   );
 }
 
@@ -62,7 +63,7 @@ class _viewLocationFullDetailsState extends State<viewLocationFullDetails> {
       uIdNo,uId,uIdMob,uIdVillage,
       uIdPlace,uIdBlock,uIdDist,
       uIdInstallD,uIdStatus,uIdBeniNAme,
-      uIdFatherNa,uIdGramPanc,uIdLati,uIdLongi,uIdPhotoPath,uIdPdfPath,uIdPhotoPathExtn,uIdScheme,uIdSVTill,uIdCompanyName
+      uIdFatherNa,uIdGramPanc,uIdLati,uIdLongi,uIdPhotoPath,uIdPdfPath,uIdPhotoPathExtn,uIdScheme,uIdSVTill,uIdCompanyName,uIdIsCorrectLatLong
       );
 
   String loginType='';
@@ -358,6 +359,7 @@ class _viewLocationFullDetailsState extends State<viewLocationFullDetails> {
                   '${widget.uIdDist}',
                   '${widget.uIdSVTill}',
                   '${widget.uIdPhotoPath}',
+                  '${widget.uIdIsCorrectLatLong}',
 
                 )));
               }else{

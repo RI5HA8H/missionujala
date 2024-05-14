@@ -554,6 +554,7 @@ class _viewLocationsState extends State<viewLocations> {
                         allApiMarker[0]['installedSystemList'][index]['schemeName'],
                         allApiMarker[0]['installedSystemList'][index]['serviceValidTill'],
                         allApiMarker[0]['installedSystemList'][index]['companyName'],
+                        '${allApiMarker[0]['installedSystemList'][index]['isCorrect_LatLong']}',
                       )));
                       //debugPrint('uuuuuuuuuuuuuuu-->$updateUid');
 
@@ -649,6 +650,7 @@ class _viewLocationsState extends State<viewLocations> {
                           allApiMarker[0]['installedSystemList'][index]['schemeName'],
                           allApiMarker[0]['installedSystemList'][index]['serviceValidTill'],
                           allApiMarker[0]['installedSystemList'][index]['companyName'],
+                          '${allApiMarker[0]['installedSystemList'][index]['isCorrect_LatLong']}',
                         )));
                         //debugPrint('uuuuuuuuuuuuuuu-->$updateUid');
 
@@ -743,6 +745,7 @@ class _viewLocationsState extends State<viewLocations> {
 
   showMarkers() async {
     final Uint8List? markerIcon = await getBytesFromAsset(Assets.iconsMarkerIconNew, 100);
+    final Uint8List? correctedMarkerIcon = await getBytesFromAsset(Assets.iconsCorrectedMarkerIcon, 100);
     //final Uint8List? scmarkerIcon = await getBytesFromAsset('assets/icons/serviceCenterMarkerIcon.png', 150);
 
     for(int i=0;i<allApiMarker[0]['installedSystemList'].length;i++)
@@ -837,7 +840,8 @@ class _viewLocationsState extends State<viewLocations> {
                               '${allApiMarker[0]['installedSystemList'][i]['formatPath1Extn']}',
                               '${allApiMarker[0]['installedSystemList'][i]['schemeName']}',
                               '${allApiMarker[0]['installedSystemList'][i]['serviceValidTill']}',
-                              allApiMarker[0]['installedSystemList'][i]['companyName'],
+                              '${allApiMarker[0]['installedSystemList'][i]['companyName']}',
+                              '${allApiMarker[0]['installedSystemList'][i]['isCorrect_LatLong']}',
                             )));
                             //debugPrint('uuuuuuuuuuuuuuu-->$updateUid');
 
@@ -860,7 +864,7 @@ class _viewLocationsState extends State<viewLocations> {
                 LatLng(double.parse('${allApiMarker[0]['installedSystemList'][i]['latitude']}'),double.parse('${allApiMarker[0]['installedSystemList'][i]['longitude']}')),
               );
             },
-            icon: BitmapDescriptor.fromBytes(markerIcon!),
+            icon: BitmapDescriptor.fromBytes(allApiMarker[0]['installedSystemList'][i]['isCorrect_LatLong'] ? correctedMarkerIcon! : markerIcon!),
           ),
         );
       }

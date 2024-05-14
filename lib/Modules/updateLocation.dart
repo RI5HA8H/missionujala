@@ -40,16 +40,17 @@ class updateLocation extends StatefulWidget {
   var uIdDist;
   var uIdLVTill;
   var uIdPhotoPath;
+  var uIdIsCorrectLatLong;
 
 
-  updateLocation(this.uIdNo,this.uIdLat,this.uIdLong,this.uIdPlace,this.uIdVillage,this.uIdBlock,this.uIdDist,this.uIdLVTill,this.uIdPhotoPath);
+  updateLocation(this.uIdNo,this.uIdLat,this.uIdLong,this.uIdPlace,this.uIdVillage,this.uIdBlock,this.uIdDist,this.uIdLVTill,this.uIdPhotoPath,this.uIdIsCorrectLatLong);
 
   @override
-  State<updateLocation> createState() => _updateLocationState(uIdNo,uIdLat,uIdLong,uIdPlace,uIdVillage,uIdBlock,uIdDist,uIdLVTill,uIdPhotoPath);
+  State<updateLocation> createState() => _updateLocationState(uIdNo,uIdLat,uIdLong,uIdPlace,uIdVillage,uIdBlock,uIdDist,uIdLVTill,uIdPhotoPath,uIdIsCorrectLatLong);
 }
 
 class _updateLocationState extends State<updateLocation> {
-  _updateLocationState(uIdNo,uIdLat,uIdLong,uIdPlace,uIdVillage,uIdBlock,uIdDist,uIdLVTill,uIdPhotoPath);
+  _updateLocationState(uIdNo,uIdLat,uIdLong,uIdPlace,uIdVillage,uIdBlock,uIdDist,uIdLVTill,uIdPhotoPath,uIdIsCorrectLatLong);
 
   CustomInfoWindowController customInfoWindowController2 = CustomInfoWindowController();
 
@@ -64,7 +65,9 @@ class _updateLocationState extends State<updateLocation> {
   bool isLatLong=false;
   bool notShowMarker=false;
   Position? currentPosition;
+  String isCorrectLatLong='';
   late final Uint8List? markerIcon;
+  late final Uint8List? correctedMarkerIcon;
   //final Set<Marker> markerr={};
 
   double lat= 1.1;
@@ -94,7 +97,9 @@ class _updateLocationState extends State<updateLocation> {
   getUserToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userToken = prefs.getString('vendorToken')!;
+    isCorrectLatLong=widget.uIdIsCorrectLatLong;
     markerIcon = await getBytesFromAsset(Assets.iconsMarkerIconNew, 100);
+    correctedMarkerIcon = await getBytesFromAsset(Assets.iconsCorrectedMarkerIcon, 100);
 
     //debugPrint('kkkkkkkkkkkkkkkk$lat');
     if(widget.uIdLat.toString() != 'null'){
@@ -196,7 +201,7 @@ class _updateLocationState extends State<updateLocation> {
               markers: <Marker>[
                 Marker(markerId:MarkerId('1'),
                   position: LatLng(lat, long),
-                  icon: BitmapDescriptor.fromBytes(markerIcon!),
+                  icon: BitmapDescriptor.fromBytes(isCorrectLatLong=='true' ? correctedMarkerIcon! : markerIcon!),
                   onTap: () {
                     customInfoWindowController2.addInfoWindow!(
                       ClipRRect(
@@ -411,6 +416,7 @@ class _updateLocationState extends State<updateLocation> {
 
     if (response.statusCode == 200) {
       latlonfUpdated=true;
+      isCorrectLatLong='true';
       //debugPrint(await 'aaaaaaaaa-----${results}');
       getUidRefresh();
       //setState(() {scroll = false;});
