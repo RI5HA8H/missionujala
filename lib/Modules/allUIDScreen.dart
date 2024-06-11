@@ -967,8 +967,8 @@ class _allUIDScreenState extends State<allUIDScreen> {
       'Authorization': 'Bearer $userToken'
     };
 
-    debugPrint('ttttt$userToken');
-    debugPrint(await 'aaaaaaaaa-----${urls().base_url + allAPI().installedAllListURL+'/$purchaseOrderKey/$districtsDropdownValue/$blocksDropdownValue/$villagesDropdownValue'}');
+    //debugPrint('ttttt$userToken');
+    //debugPrint(await 'aaaaaaaaa-----${urls().base_url + allAPI().installedAllListURL+'/$purchaseOrderKey/$districtsDropdownValue/$blocksDropdownValue/$villagesDropdownValue'}');
 
     var request = http.Request('GET', Uri.parse(urls().base_url + allAPI().installedAllListURL+'/$purchaseOrderKey/$districtsDropdownValue/$blocksDropdownValue/$villagesDropdownValue'));
     request.headers.addAll(headers);
