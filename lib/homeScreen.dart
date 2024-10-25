@@ -3,6 +3,8 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:blinking_text/blinking_text.dart';
+import 'package:chewie/chewie.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -24,7 +26,9 @@ import 'package:missionujala/userLoginScreen.dart';
 import 'package:missionujala/userProfile.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:video_player/video_player.dart';
 
+import 'Modules/reportByUID.dart';
 import 'Modules/userServiceCenterList.dart';
 import 'Resource/StringLocalization/titles.dart';
 import 'Resource/Utiles/appBar.dart';
@@ -47,12 +51,15 @@ class homeScreen extends StatefulWidget {
 class _homeScreenState extends State<homeScreen> {
 
   bool scroll=false;
-  String userName  = "XYZ";
+  String userName  = "";
   String loginType='';
   Position? currentPosition;
 
   TextEditingController userNameController = TextEditingController();
   FocusNode userNameFocusNode = FocusNode();
+
+
+
 
 
   StreamSubscription? internetconnection;
@@ -115,12 +122,16 @@ class _homeScreenState extends State<homeScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       loginType = prefs.getString('loginType')!;
+      debugPrint('tttttttttttttttttttttttt-----${loginType}');
 
       if(loginType=='user'){
         userName = allFunctions().decryptStringFromBase64(prefs.getString('userName')!);
+        debugPrint('tttttttttttttttttttttttt-----${userName}');
       }else{
         userName = allFunctions().decryptStringFromBase64(prefs.getString('vendorName')!);
+        debugPrint('tttttttttttttttttttttttt-----${userName}');
       }
+
 
     });
   }
@@ -163,26 +174,53 @@ class _homeScreenState extends State<homeScreen> {
     return Scaffold(
         appBar: appBar(),
         drawer: drawer(),
-        body: SingleChildScrollView(
-          child: Container(
-            color: appcolors.whiteColor,
-            child: Column(
-              children: [
-          
-                Container(
-                  color: appcolors.screenBckColor,
-                  padding: EdgeInsets.fromLTRB(15, 20, 15, 20),
-                  alignment: Alignment.centerLeft,
-                  child: Text('Welcome, $userName',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: appcolors.primaryColor),maxLines: 2,),
+        body: Container(
+          color: appcolors.whiteColor,
+          child: Column(
+            children: [
+
+              Container(
+                color: appcolors.screenBckColor,
+                padding: EdgeInsets.fromLTRB(15, 20, 15, 20),
+                alignment: Alignment.centerLeft,
+                child: Text('Welcome, $userName',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: appcolors.primaryColor),maxLines: 2,),
+              ),
+
+              /*SizedBox(height: 10,),
+              Container(
+                padding: EdgeInsets.only(left: 15,right: 15),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(10),
+                    color: Colors.green[200],
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const BlinkText(
+                            'Click Now Watch Manual Video',
+                            style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600, color: Colors.yellow),
+                            beginColor: Colors.redAccent,
+                            endColor: Colors.blueAccent,
+                            //times: 10,
+                            //duration: Duration(seconds: 1)
+                        ),
+                        Icon(Icons.touch_app_outlined,color: Colors.redAccent,)
+                      ],
+                    ),
+                  ),
                 ),
-                /*Container(
-                  child: Image.asset(Assets.imagesHomeBanner),
-                ),*/
-                Container(
+              ),*/
+
+
+              SizedBox(height: 10,),
+              Expanded(
+                child: Container(
                   padding:  EdgeInsets.fromLTRB(10, 10, 10, 10),
                   child: GridView(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    //shrinkWrap: true,
+                    //physics: NeverScrollableScrollPhysics(),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 10,
@@ -236,23 +274,23 @@ class _homeScreenState extends State<homeScreen> {
                         },
                       ),
 
-                     /* loginType=='user' ? Container() : InkWell(
-                        child: moduleview(title: '${allTitle.dashBoard}', path: Assets.iconsDashboard,),
+                      loginType=='user' ? InkWell(
+                        child: moduleview(title: '${allTitle.userComplaint}', path: 'assets/icons/userReport.png',),
                         onTap: (){
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => dashBoard()));
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => reportByUID()));
                         },
-                      ),*/
+                      ) : Container() ,
 
 
 
                     ],
                   ),
                 ),
+              ),
 
 
 
-              ],
-            ),
+            ],
           ),
         ),
       bottomNavigationBar: bottomNavigationBar(0),

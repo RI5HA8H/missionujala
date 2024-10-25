@@ -333,7 +333,7 @@ class _viewLocationFullDetailsState extends State<viewLocationFullDetails> {
           color: appcolors.screenBckColor,
           padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
           child: loginType=='user' ? InkWell(
-            child: normalButton(name: 'Report Issue',height:45,bordeRadious: 10,fontSize:14,textColor: Colors.white,bckColor: appcolors.buttonColor,),
+            child: normalButton(name: '${allTitle.userComplaint}',height:45,bordeRadious: 10,fontSize:14,textColor: Colors.white,bckColor: appcolors.buttonColor,),
             onTap: (){
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => complaintScreen(
                 '${widget.uIdNo}',

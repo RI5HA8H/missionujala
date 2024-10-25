@@ -240,20 +240,21 @@ class _userLoginScreenState extends State<userLoginScreen> {
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      //debugPrint(await 'aaaaaaaaa-----${results}');
+      debugPrint(await 'aaaaaaaaa-----${results}');
       if(results['userKey'].runtimeType==int){
         setState(() {halfUI = false;});
         toasts().greenToastShort('OTP Send Successfull');
         SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('loginType', 'user');
         prefs.setString('userKey', '${results['userKey']}');
-        prefs.setString('userName', '${results['userContactName']}');
+        prefs.setString('userName', '${results['userName']}');
         prefs.setString('userMobile', '${results['mobileNo']}');
         prefs.setString('userType', '${results['uType']}');
         prefs.setString('userDistrictKey', '${results['districtKey']}');
         prefs.setString('userCompanyKey', '${results['companyKey']}');
         prefs.setString('userToken', results['userToken']);
         prefs.setString('profileImg', results['profilePic']);
-        prefs.setString('loginType', 'user');
+
         apiOTP=int.parse('${allFunctions().decryptStringFromBase64(results['otp'])}');
         //debugPrint('aaaaaaaaaaaaa-->$apiOTP');
         progressDialog.dismiss();

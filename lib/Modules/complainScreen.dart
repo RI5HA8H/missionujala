@@ -47,11 +47,13 @@ class _complaintScreenState extends State<complaintScreen> {
   FocusNode reportLatFocusNode = FocusNode();
   FocusNode reportLongFocusNode = FocusNode();
   FocusNode addressFocusNode = FocusNode();
+  FocusNode mobileFocusNode = FocusNode();
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController reportLatController = TextEditingController();
   TextEditingController reportLongController = TextEditingController();
   TextEditingController addressController = TextEditingController();
+  TextEditingController mobileController = TextEditingController();
   File? galleryFile;
   final picker = ImagePicker();
   String userId='';
@@ -105,7 +107,7 @@ class _complaintScreenState extends State<complaintScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
 
-                    SizedBox(height: 10,),
+                    SizedBox(height: 5,),
                     Container(
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -154,7 +156,7 @@ class _complaintScreenState extends State<complaintScreen> {
                           ]),
                     ),
 
-                    SizedBox(height: 10,),
+                    SizedBox(height: 5,),
                     Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -201,7 +203,7 @@ class _complaintScreenState extends State<complaintScreen> {
                             ),),
                         ]),
 
-                    SizedBox(height: 10,),
+                    SizedBox(height: 5,),
                     Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -248,7 +250,7 @@ class _complaintScreenState extends State<complaintScreen> {
                             ),),
                         ]),
 
-                    SizedBox(height: 10,),
+                    SizedBox(height: 5,),
                     Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -296,8 +298,6 @@ class _complaintScreenState extends State<complaintScreen> {
                         ]),
 
 
-                    SizedBox(height: 20,),
-
                    /* editTextSimple(
                       controllers: titleController,
                       focusNode: titleFocusNode,
@@ -344,6 +344,8 @@ class _complaintScreenState extends State<complaintScreen> {
                     ),
               */
 
+
+                    SizedBox(height: 10,),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -353,7 +355,7 @@ class _complaintScreenState extends State<complaintScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text('Take a photo',style: TextStyle(fontSize: 14,color: Colors.black),),
-                            Text(' *',style: TextStyle(fontSize: 18,color: Colors.red),),
+                            //Text(' *',style: TextStyle(fontSize: 18,color: Colors.red),),
                           ],
                         ),
                         Container(
@@ -420,6 +422,7 @@ class _complaintScreenState extends State<complaintScreen> {
                                       titleFocusNode.unfocus();
                                       addressFocusNode.unfocus();
                                       descriptionFocusNode.unfocus();
+                                      mobileFocusNode.unfocus();
                                       _showPicker(context: context);
                                     }
                                   },
@@ -477,6 +480,7 @@ class _complaintScreenState extends State<complaintScreen> {
                                           titleFocusNode.unfocus();
                                           addressFocusNode.unfocus();
                                           descriptionFocusNode.unfocus();
+                                          mobileFocusNode.unfocus();
                                           _showPicker(context: context);
                                         }
                                       },
@@ -488,6 +492,7 @@ class _complaintScreenState extends State<complaintScreen> {
                                           titleFocusNode.unfocus();
                                           addressFocusNode.unfocus();
                                           descriptionFocusNode.unfocus();
+                                          mobileFocusNode.unfocus();
                                           _showPicker(context: context);
                                         },
                                       ),
@@ -498,6 +503,30 @@ class _complaintScreenState extends State<complaintScreen> {
                             ),
                           ),
                         ),
+                      ],
+                    ),
+
+
+                    SizedBox(height: 10,),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Mobile No.',style: TextStyle(fontSize: 14,color: Colors.black),),
+                            //Text(' (optional)',style: TextStyle(fontSize: 14,color: Colors.red),),
+                          ],
+                        ),
+                        SizedBox(height: 5,),
+                        editTextSimple(
+                          controllers: mobileController,
+                          focusNode: mobileFocusNode,
+                          hint: 'Enter Mobile No.',
+                          keyboardTypes: TextInputType.number,
+                          maxlength: 10,),
                       ],
                     ),
 
@@ -558,7 +587,8 @@ class _complaintScreenState extends State<complaintScreen> {
                         descriptionFocusNode.unfocus();
                         reportLatFocusNode.unfocus();
                         reportLongFocusNode.unfocus();
-                        if(titleController.text.isEmpty || galleryFile==null){
+                        mobileFocusNode.unfocus();
+                        if(titleController.text.isEmpty){
                           toasts().redToastLong('Please fill all the details');
                         }else{
                           double lat= await getCurrentLatitude();
@@ -670,6 +700,7 @@ class _complaintScreenState extends State<complaintScreen> {
       'IsBatteryWorking': '$isBattery',
       'IsPannelOk': '$isPanel',
       'IsPoleBroken': '$isPole',
+      'complainant_Mobile': '${mobileController.text}',
     });
 
    galleryFile == null ?  debugPrint('') : request.files.add(await http.MultipartFile.fromPath('FilePhoto','${await compressImage(galleryFile!)}'),);
@@ -682,6 +713,7 @@ class _complaintScreenState extends State<complaintScreen> {
       //debugPrint(await 'aaaaaaaaa-----${results}');
       toasts().greenToastShort('${results['statusMsg']}');
       descriptionController.clear();
+      mobileController.clear();
       galleryFile=null;
       isBattery='';
       isPanel='';

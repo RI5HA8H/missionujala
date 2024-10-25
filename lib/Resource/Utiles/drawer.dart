@@ -17,6 +17,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Modules/addServiceCenter.dart';
+import '../../Modules/userManualScreen.dart';
 import '../../loginDashboard.dart';
 import '../../venderLoginScreen.dart';
 import '../../userProfile.dart';
@@ -35,6 +36,7 @@ class _drawerState extends State<drawer> {
   String userName  = "XXXXXXXXXX";
   String _version = 'Loading...';
   String loginType='';
+  String vendorVideoUrl = '';
 
   @override
   void initState() {
@@ -195,6 +197,26 @@ class _drawerState extends State<drawer> {
                     Navigator.of(context).push(MaterialPageRoute(builder: (context) => vendorComplainList()));
                   },
                 ),
+
+                loginType=='user' ? Container() : InkWell(
+                  child: ListTile(
+                    dense: true,
+                    visualDensity: VisualDensity(vertical: 3),
+                    title: Text('${allTitle.userManual}',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16,color: appcolors.primaryColor,)),
+                    leading:ImageIcon(
+                      AssetImage('assets/icons/userManual.png'),
+                      color: appcolors.primaryColor,
+                      size:24,
+                    ),
+                  ),
+                  onTap: () async {
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    vendorVideoUrl = prefs.getString('vendorVideoUrl') ?? '';
+                    Navigator.pop(context);
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => userManualScreen(vendorVideoUrl)));
+                  },
+                ),
+
                 InkWell(
                   child: ListTile(
                     dense: true,

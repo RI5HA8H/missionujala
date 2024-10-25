@@ -684,6 +684,7 @@ class _viewLocationsState extends State<viewLocations> {
     }
   }
 
+
   Future<void> getLocation() async {
     var status = await Permission.location.request();
 

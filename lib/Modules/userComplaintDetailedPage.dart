@@ -160,7 +160,7 @@ class _userComplaintDetailedPageState extends State<userComplaintDetailedPage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Complaintent No. : ${ widget.userData['userMobileNo']==null ? 'N/A' : widget.userData['userMobileNo']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,),),
+                          Text('Complaintent No. 1 : ${ widget.userData['userMobileNo']==null ? 'N/A' : widget.userData['userMobileNo']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,),),
                           Divider(),
                         ],
                       ),
@@ -172,6 +172,25 @@ class _userComplaintDetailedPageState extends State<userComplaintDetailedPage> {
                          throw 'Could not launch $call';
                        }
                      },
+                    ),
+
+                    GestureDetector(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Complaintent No. 2 : ${ widget.userData['complainant_Mobile']=="" ? 'N/A' : widget.userData['complainant_Mobile']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,),),
+                          Divider(),
+                        ],
+                      ),
+                      onTap: () async {
+                        final call = Uri.parse('tel:+91 ${widget.userData['complainant_Mobile']}');
+                        if (await canLaunchUrl(call)) {
+                          widget.userData['complainant_Mobile']=="" ? "" : launchUrl(call);
+                        } else {
+                          throw 'Could not launch $call';
+                        }
+                      },
                     ),
 
                     Container(

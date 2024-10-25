@@ -108,7 +108,7 @@ class _venderLoginScreenState extends State<venderLoginScreen> {
                       borderRadius: BorderRadius.circular(5.0), // Adjust the radius as needed
                     ),
                     child: TextField(
-                      maxLength: 10,
+                      maxLength: 20,
                       controller: passwordController,
                       focusNode: passwordFocusNode,
                       obscureText: _isObscure,
@@ -203,10 +203,11 @@ class _venderLoginScreenState extends State<venderLoginScreen> {
     var results = jsonDecode(await response.stream.bytesToString());
 
     if (response.statusCode == 200) {
-      //debugPrint(await 'aaaaaaaaa-----${results}');
+      debugPrint(await 'aaaaaaaaa-----${results}');
       if(results['userKey'].runtimeType==int){
         toasts().greenToastShort('Login Successfull');
         SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('loginType', 'vendor');
         prefs.setString('vendorKey', '${results['userKey']}');
         prefs.setString('vendorName', '${results['userContactName']}');
         prefs.setString('vendorMobile', '${results['mobileNo']}');
@@ -216,8 +217,9 @@ class _venderLoginScreenState extends State<venderLoginScreen> {
         prefs.setString('vendorCompanyName', results['companyName']);
         prefs.setString('vendorDistrictName', results['districtName']);
         prefs.setString('vendorToken', results['userToken']);
+        prefs.setString('vendorVideoUrl', results['vendorVideo_URL']);
         prefs.setString('profileImg', results['profilePic']);
-        prefs.setString('loginType', 'vendor');
+
 
         progressDialog.dismiss();
         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => homeScreen()), (Route<dynamic> route) => false);

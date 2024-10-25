@@ -547,6 +547,29 @@ class _vendorComplainListState extends State<vendorComplainList> {
                       },
                     ),
 
+                    vendorComplaintList[index]['complainant_Mobile'] == "" ?Container() : GestureDetector(
+                      child: Container(
+                        padding: EdgeInsets.only(top: 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset('assets/icons/complaineNumber.png',width: 20,height: 20,),
+                            SizedBox(width: 10,),
+                            Text('${vendorComplaintList[index]['complainant_Mobile']}',style: TextStyle(fontSize: 12,color: Colors.black54)),
+                          ],
+                        ),
+                      ),
+                      onTap: () async {
+                        final call = Uri.parse('tel:+91 ${vendorComplaintList[index]['complainant_Mobile']}');
+                        if (await canLaunchUrl(call)) {
+                          launchUrl(call);
+                        } else {
+                          throw 'Could not launch $call';
+                        }
+                      },
+                    ),
+
 
                     vendorComplaintList[index]['isAcknowledge']==false ? GestureDetector(
                       child: Container(
@@ -898,6 +921,29 @@ class _vendorComplainListState extends State<vendorComplainList> {
                       },
                     ),
 
+
+                    vendorComplaintList[index]['complainant_Mobile'] == "" ?Container() : GestureDetector(
+                      child: Container(
+                        padding: EdgeInsets.only(top: 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset('assets/icons/complaineNumber.png',width: 20,height: 20,),
+                            SizedBox(width: 10,),
+                            Text('${vendorComplaintList[index]['complainant_Mobile']}',style: TextStyle(fontSize: 12,color: Colors.black54)),
+                          ],
+                        ),
+                      ),
+                      onTap: () async {
+                        final call = Uri.parse('tel:+91 ${vendorComplaintList[index]['complainant_Mobile']}');
+                        if (await canLaunchUrl(call)) {
+                          launchUrl(call);
+                        } else {
+                          throw 'Could not launch $call';
+                        }
+                      },
+                    ),
 
 
                     SizedBox(height: 2,),

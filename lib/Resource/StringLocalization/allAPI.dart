@@ -46,6 +46,8 @@ class allAPI{
 
   String getDataByUIDURL = 'GetDetailByUID';
 
+  String getDataByUID1URL = 'GetDetailByUID1';
+
 
 
 

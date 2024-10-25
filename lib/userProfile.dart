@@ -73,9 +73,9 @@ class _userProfileState extends State<userProfile> {
 
   @override
   void initState() {
+    super.initState();
     getDistrict();
     getUserName();
-    super.initState();
   }
 
 
@@ -161,7 +161,7 @@ class _userProfileState extends State<userProfile> {
 
                           SizedBox(height: 40,),
 
-                          getRow('Name','${uvContactName}'),
+                          getRow('Name','${loginType=='user' ? uvUserName : uvContactName}'),
                           divider(),
 
                           getRow('Mobile No','${uvMobileNo}'),
@@ -324,6 +324,8 @@ class _userProfileState extends State<userProfile> {
   Future<void> getProfileApi() async {
     setState(() {scroll=true;});
     var request = http.Request('GET', Uri.parse(urls().base_url + allAPI().getUVProfileURL+'/$uvKey/$loginType'));
+
+    //debugPrint(await 'aaaaaaaaa-----${Uri.parse(urls().base_url + allAPI().getUVProfileURL+'/$uvKey/$loginType')}');
 
     var response = await request.send();
     var results = jsonDecode(await response.stream.bytesToString());
@@ -525,16 +527,17 @@ class _userProfileState extends State<userProfile> {
                       focusNode: uvUserNameFocusNode,
                       hint: 'Enter User Name',
                       keyboardTypes: TextInputType.text,
+                      readOnly: true,
                       maxlength: 50,),
 
-                    SizedBox(height: 10,),
+                    /*SizedBox(height: 10,),
 
                     editTextSimple(
                       controllers: uvContactNameController,
                       focusNode: uvContactNameFocusNode,
                       hint: 'Enter Contact Name',
                       keyboardTypes: TextInputType.text,
-                      maxlength: 50,),
+                      maxlength: 50,),*/
 
                     SizedBox(height: 10,),
 
@@ -571,7 +574,7 @@ class _userProfileState extends State<userProfile> {
                     GestureDetector(
                       child: normalButton(name: 'Update',height: 50,),
                       onTap: (){
-                        if(uvUserNameController.text.isEmpty || uvContactNameController.text.isEmpty || uvEmailController.text.isEmpty || uvAddressController.text.isEmpty || districtDropdownValue==null || districtDropdownValue==0 ){
+                        if(uvUserNameController.text.isEmpty || uvEmailController.text.isEmpty || uvAddressController.text.isEmpty || districtDropdownValue==null || districtDropdownValue==0 ){
                           toasts().redToastShort('Proper Fill The Details');
                         }else{
                           Navigator.pop(context);

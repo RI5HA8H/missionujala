@@ -194,7 +194,7 @@ class _vendorComplaintDetailedPageState extends State<vendorComplaintDetailedPag
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Complaintent No. : ${ widget
+                          Text('Complaintent No. 1 : ${ widget
                               .vendorData['userMobileNo'] == null ? 'N/A' : widget
                               .vendorData['userMobileNo']}', style: TextStyle(
                             fontSize: 14, fontWeight: FontWeight.bold,),),
@@ -206,6 +206,29 @@ class _vendorComplaintDetailedPageState extends State<vendorComplaintDetailedPag
                             .vendorData['userMobileNo']}');
                         if (await canLaunchUrl(call)) {
                           launchUrl(call);
+                        } else {
+                          throw 'Could not launch $call';
+                        }
+                      },
+                    ),
+
+                    GestureDetector(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Complaintent No. 2 : ${ widget
+                              .vendorData['complainant_Mobile'] == "" ? 'N/A' : widget
+                              .vendorData['complainant_Mobile']}', style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.bold,),),
+                          Divider(),
+                        ],
+                      ),
+                      onTap: () async {
+                        final call = Uri.parse('tel:+91 ${widget
+                            .vendorData['complainant_Mobile']}');
+                        if (await canLaunchUrl(call)) {
+                          widget.vendorData['complainant_Mobile']=="" ? "" : launchUrl(call);
                         } else {
                           throw 'Could not launch $call';
                         }
