@@ -71,6 +71,8 @@ class allAPI{
 
   String updateComplaintStatusURL = 'UpdateComplaintStatus';
 
+  String updateComplaintStatusNewApiURL = 'UpdateComplaintStatusNew';
+
   String addUpdateServiceCenter = 'ServiceCenter';
 
   String userVerifyComplaintStatus = 'VerifyComplaintStatus';

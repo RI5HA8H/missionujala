@@ -6,6 +6,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
@@ -332,7 +333,57 @@ class _userComplaintListState extends State<userComplaintList> {
                                                                 mainAxisAlignment: MainAxisAlignment.start,
                                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                                 children: [
-                                                                  Text('${userComplaintList[index]['vendorRemarks'][indexs]['vendorStatus']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: appcolors.primaryColor)),
+                                                                  Row(
+                                                                    children: [
+                                                                      Text('${userComplaintList[index]['vendorRemarks'][indexs]['vendorStatus']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: appcolors.primaryColor)),
+                                                                      SizedBox(width: 10,),
+                                                                      userComplaintList[index]['vendorRemarks'][indexs]['complainResolvedImage'] == null ? Container() : GestureDetector(child: normalButton(name: 'View Image',bckColor: appcolors.primaryColor,bordeRadious: 20,fontSize: 8, height: 20, width: 70,),
+                                                                        onTap: (){
+                                                                          Alert(
+                                                                            context: context,
+                                                                            style: AlertStyle(
+                                                                                descStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),
+                                                                                descPadding: EdgeInsets.all(5)
+                                                                            ),
+                                                                            image: Padding(
+                                                                              padding: const EdgeInsets.only(top: 10),
+                                                                              child: ClipRRect(
+                                                                                  borderRadius: BorderRadius.circular(5),
+                                                                                  child: ExtendedImage.network('https://missionujala.data-center.co.in/UploadedFiles/ComplainResolvedImage/${userComplaintList[index]['vendorRemarks'][indexs]['complainResolvedImage']}', fit: BoxFit.contain,
+                                                                                    //enableLoadState: false,
+                                                                                    mode: ExtendedImageMode.gesture,
+                                                                                    initGestureConfigHandler: (state) {
+                                                                                      return GestureConfig(
+                                                                                        minScale: 0.9,
+                                                                                        animationMinScale: 0.7,
+                                                                                        maxScale: 3.0,
+                                                                                        animationMaxScale: 3.5,
+                                                                                        speed: 1.0,
+                                                                                        inertialSpeed: 100.0,
+                                                                                        initialScale: 1.0,
+                                                                                        inPageView: false,
+                                                                                        initialAlignment: InitialAlignment.center,
+                                                                                      );
+                                                                                    },
+                                                                                  )
+                                                                              ),
+                                                                            ),
+                                                                            buttons: [
+                                                                              DialogButton(
+                                                                                gradient: LinearGradient(colors: [
+                                                                                  Color.fromRGBO(116, 116, 191, 1.0),
+                                                                                  Color.fromRGBO(52, 138, 199, 1.0)]),
+                                                                                child: Text("OK", style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white, fontSize: 16),),
+                                                                                onPressed: () {
+                                                                                  Navigator.pop(context);
+                                                                                },
+                                                                              )
+                                                                            ],
+                                                                          ).show();
+                                                                        },
+                                                                      ),
+                                                                    ],
+                                                                  ),
                                                                   //SizedBox(height: 2,),
                                                                   Text('${userComplaintList[index]['vendorRemarks'][indexs]['vendorFeedBacks']}',style: TextStyle(fontSize: 12,color: Colors.black)),
 
@@ -742,7 +793,57 @@ class _userComplaintListState extends State<userComplaintList> {
                                                                 mainAxisAlignment: MainAxisAlignment.start,
                                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                                 children: [
-                                                                  Text('${userComplaintList[index]['vendorRemarks'][indexs]['vendorStatus']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: appcolors.primaryColor)),
+                                                                  Row(
+                                                                    children: [
+                                                                      Text('${userComplaintList[index]['vendorRemarks'][indexs]['vendorStatus']}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: appcolors.primaryColor)),
+                                                                      SizedBox(width: 10,),
+                                                                      userComplaintList[index]['vendorRemarks'][indexs]['complainResolvedImage'] == null ? Container() : GestureDetector(child: normalButton(name: 'View Image',bckColor: appcolors.primaryColor,bordeRadious: 20,fontSize: 8, height: 20, width: 70,),
+                                                                        onTap: (){
+                                                                          Alert(
+                                                                            context: context,
+                                                                            style: AlertStyle(
+                                                                                descStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),
+                                                                                descPadding: EdgeInsets.all(5)
+                                                                            ),
+                                                                            image: Padding(
+                                                                              padding: const EdgeInsets.only(top: 10),
+                                                                              child: ClipRRect(
+                                                                                  borderRadius: BorderRadius.circular(5),
+                                                                                  child: ExtendedImage.network('https://missionujala.data-center.co.in/UploadedFiles/ComplainResolvedImage/${userComplaintList[index]['vendorRemarks'][indexs]['complainResolvedImage']}', fit: BoxFit.contain,
+                                                                                    //enableLoadState: false,
+                                                                                    mode: ExtendedImageMode.gesture,
+                                                                                    initGestureConfigHandler: (state) {
+                                                                                      return GestureConfig(
+                                                                                        minScale: 0.9,
+                                                                                        animationMinScale: 0.7,
+                                                                                        maxScale: 3.0,
+                                                                                        animationMaxScale: 3.5,
+                                                                                        speed: 1.0,
+                                                                                        inertialSpeed: 100.0,
+                                                                                        initialScale: 1.0,
+                                                                                        inPageView: false,
+                                                                                        initialAlignment: InitialAlignment.center,
+                                                                                      );
+                                                                                    },
+                                                                                  )
+                                                                              ),
+                                                                            ),
+                                                                            buttons: [
+                                                                              DialogButton(
+                                                                                gradient: LinearGradient(colors: [
+                                                                                  Color.fromRGBO(116, 116, 191, 1.0),
+                                                                                  Color.fromRGBO(52, 138, 199, 1.0)]),
+                                                                                child: Text("OK", style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white, fontSize: 16),),
+                                                                                onPressed: () {
+                                                                                  Navigator.pop(context);
+                                                                                },
+                                                                              )
+                                                                            ],
+                                                                          ).show();
+                                                                        },
+                                                                      ),
+                                                                    ],
+                                                                  ),
                                                                   Text('${userComplaintList[index]['vendorRemarks'][indexs]['vendorFeedBacks']}',style: TextStyle(fontSize: 12,color: Colors.black)),
                                                                 ],
                                                               ),

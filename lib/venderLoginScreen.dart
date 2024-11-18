@@ -188,6 +188,7 @@ class _venderLoginScreenState extends State<venderLoginScreen> {
     );
   }
 
+
   Future<void> vendorLogin() async {
     progressDialog=nDialog.nProgressDialog(context);
     progressDialog.show();
